@@ -10,10 +10,11 @@ import java.math.BigDecimal;
  * description : Excel 数据对象
  */
 @Data
-public class TestData {
+public class ExcelDataBO {
     private String lineNo;
     private String acc;
     private String name;
     private BigDecimal amt;
     private String desc;
+
 }
