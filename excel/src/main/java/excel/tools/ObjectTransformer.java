@@ -2,19 +2,20 @@ package excel.tools;
 
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * author : liuanglin
  * date : 2022/7/2 20:24
  * description : 对象转换工具类
  */
-public final class ObjectTransferUtils {
+public final class ObjectTransformer {
 
-    private ObjectTransferUtils(){ }
-    static class TransferImpl<S, T> implements Function<S, T> {
+    private ObjectTransformer(){ }
+    static class TransferImpl<T> implements Supplier<T> {
 
         private final T targetObject;
         public TransferImpl(T targetObject) {
@@ -22,8 +23,8 @@ public final class ObjectTransferUtils {
         }
 
         @Override
-        public T apply(S s) {
-            return this.targetObject;
+        public T get() {
+            return targetObject;
         }
     }
 
@@ -34,7 +35,12 @@ public final class ObjectTransferUtils {
                 BeanUtils.copyProperties(s,target);
                 return target;
             };
-        return new TransferImpl<>(tranFunc.apply(source, targetGen)).apply(source);
+        return new TransferImpl<>(tranFunc.apply(source, targetGen)).get();
     }
 
+    public static <S, T> List<T> batchTrans(final List<S> sourceList, final Supplier<T> tarGen) {
+        return sourceList.stream()
+            .map(source -> fromSourceToTargetObject(source, tarGen))
+            .collect(Collectors.toList());
+    }
 }

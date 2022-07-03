@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-import static excel.tools.ObjectTransferUtils.fromSourceToTargetObject;
+import static excel.tools.ObjectTransformer.fromSourceToTargetObject;
 
 /**
  * author : liuanglin
