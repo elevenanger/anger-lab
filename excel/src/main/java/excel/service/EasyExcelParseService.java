@@ -8,9 +8,7 @@ import excel.domain.ExcelDataBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
-import static excel.tools.ObjectTransformer.fromSourceToTargetObject;
+import static objects.ObjectTransformer.*;
 
 /**
  * author : liuanglin
@@ -29,9 +27,7 @@ public class EasyExcelParseService {
             new PageReadListener<ExcelDataBO>(
                 excelDataBOS ->
                     repository.saveAll(
-                        excelDataBOS.stream()
-                            .map(bo -> fromSourceToTargetObject(bo, ExcelDataPO::new))
-                            .collect(Collectors.toList())))).sheet().doRead();
+                        batchTrans(excelDataBOS, ExcelDataPO::new)))).sheet().doRead();
     }
 
 }

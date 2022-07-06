@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class EasyExcelParseServiceTest {
 
-    static final String FILE_PATH =  "./src/test/resources/normal.xlsx";
+    static final String FILE_PATH =  "./src/test/resources/test.xlsx";
 
     @Autowired
     EasyExcelParseService service;
