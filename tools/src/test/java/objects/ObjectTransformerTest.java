@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import static objects.ObjectTransformer.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 /**
  * author : liuanglin
@@ -22,6 +23,7 @@ class ObjectTransformerTest {
         EasyCome come = new EasyCome();
         come.setI(10);
         EasyGo go = fromSourceToTargetObject(come, EasyGo::new);
+        assertNotSame(go, come);
         assertEquals(come.getI(), go.getI());
     }
 

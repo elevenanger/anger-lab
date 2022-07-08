@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public final class ObjectTransformer {
 
-    private ObjectTransformer(){ }
+    private ObjectTransformer(){}
     static class TransferImpl<T> implements Supplier<T> {
 
         private final T targetObject;
