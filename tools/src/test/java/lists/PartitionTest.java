@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * author : liuanglin
  * date : 2022/7/8 15:51
- * description :
  */
 class PartitionTest {
 

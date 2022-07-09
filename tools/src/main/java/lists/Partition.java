@@ -1,7 +1,5 @@
 package lists;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +28,6 @@ public class Partition {
             end = Math.min(end, size);
         }
         partitionedList.add(originList.subList(start, end));
-        Lists.partition(originList, partitionSize);
         return partitionedList;
     }
 

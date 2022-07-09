@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,7 +25,7 @@ class GroupingTest {
             .mapToObj(Helper::new)
             .collect(Collectors.toList());
 
-    Function<Integer, Function<Helper, Integer>> partitionNumber =
+    IntFunction<Function<Helper, Integer>> partitionNumber =
         number -> helper -> helper.getI() % number;
 
     @Test

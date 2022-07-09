@@ -2,8 +2,8 @@ package excel.service;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.read.listener.PageReadListener;
+import excel.data.ExcelDataMapper;
 import excel.data.ExcelDataPO;
-import excel.data.ExcelDataRepository;
 import excel.domain.ExcelDataBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ import static objects.ObjectTransformer.*;
 public class EasyExcelParseService {
 
     @Autowired
-    ExcelDataRepository repository;
+    ExcelDataMapper mapper;
 
     public void parseFile(String filePath) {
         EasyExcelFactory.read(filePath, ExcelDataBO.class,
             new PageReadListener<ExcelDataBO>(
                 excelDataBOS ->
-                    repository.saveAll(
-                        batchTrans(excelDataBOS, ExcelDataPO::new)))).sheet().doRead();
+                    batchTrans(excelDataBOS, ExcelDataPO::new)
+                        .forEach(mapper::insert))).sheet().doRead();
     }
 
 }

@@ -1,8 +1,8 @@
 package excel.data;
 
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -12,19 +12,19 @@ import java.math.BigDecimal;
  * description : Excel 数据对象
  */
 @Data
-@Entity
-@Table(name = "excel_data")
+@TableName("excel_data")
+// 使用 KeySequence 声明 sequence
+@KeySequence(value = "test_data_id_seq")
 public class ExcelDataPO implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // 指定 sequence id 类型需要为 Input 类型
+    @TableId(type = IdType.INPUT)
     private long id;
     private String lineNo;
     private String acc;
-    @Column(name = "rec_name")
+    @TableField("rec_name")
     private String name;
-    @Column(name = "amount")
+    @TableField("amount")
     private BigDecimal amt;
-    @Column(name = "summary")
+    @TableField("summary")
     private String desc;
-
 }
