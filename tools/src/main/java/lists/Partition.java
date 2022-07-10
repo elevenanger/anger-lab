@@ -3,6 +3,9 @@ package lists;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * author : liuanglin
@@ -31,5 +34,25 @@ public class Partition {
         return partitionedList;
     }
 
+    public static <T> List<List<T>> partitionFunction(List<T> list, int partSize) {
+        final BiFunction<List<T>, Integer, List<List<T>>> partitionFunc =
+            (origin, partitionSize) -> {
+                final int size = origin.size();
+                final int[] initIndex = {0, partitionSize > size?size:partitionSize};
+                final int partitionNumber =
+                    size % partitionSize == 0?
+                        size / partitionSize:
+                        size / partitionSize + 1;
+                final UnaryOperator<int []> getIndexPair =
+                    intArr -> new int[] {intArr[1], Math.min(intArr[1] + partitionSize, size)};
+                final Function<int[], List<T>> getPartitionListByIndexPair =
+                    intArr -> origin.subList(intArr[0], intArr[1]);
+                return Stream.iterate(initIndex, getIndexPair)
+                    .map(getPartitionListByIndexPair)
+                    .limit(partitionNumber)
+                    .collect(Collectors.toList());
+            };
+        return partitionFunc.apply(list, partSize);
+    }
 
 }

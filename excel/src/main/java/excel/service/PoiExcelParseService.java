@@ -15,12 +15,10 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static objects.ObjectTransformer.*;
+import static objects.ObjectTransformer.fromSourceToTargetObject;
 
 /**
  * author : liuanglin

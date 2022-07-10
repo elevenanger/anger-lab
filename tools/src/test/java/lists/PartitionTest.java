@@ -1,28 +1,48 @@
 package lists;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * author : liuanglin
  * date : 2022/7/8 15:51
  */
 class PartitionTest {
+    static List<Integer> list;
+    static int partitionSize;
+    static int partitionNumber;
 
-    List<Integer> list = IntStream.rangeClosed(1, 102).boxed().collect(Collectors.toList());
+    @BeforeAll
+    static void prepare() {
+
+        partitionSize = 10;
+
+        list = IntStream.rangeClosed(1, 10002)
+            .boxed()
+            .collect(Collectors.toList());
+
+        partitionNumber =
+            list.size() % partitionSize == 0?
+                list.size() / partitionSize:
+                    list.size() / partitionSize + 1;
+    }
+
+    @Test
+    void testPartitionFunctional() {
+        List<List<Integer>> lists = (Partition.partitionFunction(list, partitionSize));
+        assertEquals(lists.size(), partitionNumber);
+    }
 
     @Test
     void testPartition() {
-        int partitionSize = 10;
         List<List<Integer>> lists = (Partition.partition(list, partitionSize));
-        lists.forEach(System.out::println);
-        int partitions = list.size() / partitionSize;
-        assertEquals(lists.size(), list.size() % partitions ==0? partitions:(partitions + 1));
+        assertEquals(lists.size(), partitionNumber);
     }
 
 }
