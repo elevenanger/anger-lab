@@ -1,8 +1,6 @@
 package lists;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,6 +51,33 @@ public class Partition {
                     .collect(Collectors.toList());
             };
         return partitionFunc.apply(list, partSize);
+    }
+
+    public static <T> List<List<T>> partitionByInner(List<T> origin, int size) {
+        if (size < 0) throw new IllegalArgumentException();
+        return new ListPartition<>(origin, size);
+    }
+    private static class ListPartition<T> extends AbstractList<List<T>> {
+        final List<T> list;
+        final int size;
+        public ListPartition(List<T> list, int size) {
+            this.list = list;
+            this.size = size;
+        }
+
+        @Override
+        public List<T> get(int index) {
+            int start = index * size;
+            int end = Math.min(start + size, size());
+            return list.subList(start, end);
+        }
+
+        @Override
+        public int size() {
+            return list.size() % size == 0?
+                list.size() / size:
+                list.size() / size+ 1;
+        }
     }
 
 }

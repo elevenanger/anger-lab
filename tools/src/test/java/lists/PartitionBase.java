@@ -1,5 +1,6 @@
 package lists;
 
+import com.google.common.collect.Lists;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.List;
@@ -54,5 +55,26 @@ public class PartitionBase {
     @Threads(4)
     public void partitionBase() {
         Partition.partition(list, partitionSize);
+    }
+
+
+    @Benchmark
+    @BenchmarkMode({Mode.Throughput})
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    @Warmup(iterations = 2, time = 1)
+    @Measurement(iterations = 2, time = 2)
+    @Threads(4)
+    public void guavaPartitionBase() {
+        Lists.partition(list, partitionSize);
+    }
+
+    @Benchmark
+    @BenchmarkMode({Mode.Throughput})
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    @Warmup(iterations = 2, time = 1)
+    @Measurement(iterations = 2, time = 2)
+    @Threads(4)
+    public void innerPartitionBase() {
+        Partition.partitionByInner(list, partitionSize);
     }
 }
