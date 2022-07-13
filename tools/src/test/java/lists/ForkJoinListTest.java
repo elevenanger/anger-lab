@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 class ForkJoinListTest {
 
     private static final List<SingleInt> list =
-            IntStream.rangeClosed(0, 1000)
+            IntStream.rangeClosed(0, 30)
                     .mapToObj(SingleInt::new)
                     .collect(Collectors.toList());
 

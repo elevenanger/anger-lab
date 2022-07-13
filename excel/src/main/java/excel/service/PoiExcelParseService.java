@@ -1,7 +1,7 @@
 package excel.service;
 
-import excel.data.ExcelDataMapper;
 import excel.data.ExcelDataPO;
+import excel.data.ExcelDataService;
 import excel.domain.ExcelDataBO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static objects.ObjectTransformer.fromSourceToTargetObject;
@@ -30,16 +31,17 @@ import static objects.ObjectTransformer.fromSourceToTargetObject;
 public class PoiExcelParseService {
 
     @Autowired
-    ExcelDataMapper mapper;
+    ExcelDataService service;
 
     public void parseFile(String filePath) {
         try (InputStream in = Files.newInputStream(Paths.get(filePath));
             Workbook workbook = WorkbookFactory.create(in)){
-                StreamSupport.stream(workbook.getSheetAt(0).spliterator(),false)
-                    .skip(1)
-                    .map(rowMapper)
-                    .map(bo -> fromSourceToTargetObject(bo, ExcelDataPO::new))
-                    .forEach(mapper::insert);
+                service.saveBatch(
+                    StreamSupport.stream(workbook.getSheetAt(0).spliterator(),false)
+                        .skip(1)
+                        .map(rowMapper)
+                        .map(bo -> fromSourceToTargetObject(bo, ExcelDataPO::new))
+                        .collect(Collectors.toList()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
