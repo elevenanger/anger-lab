@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 
 /**
  * author : liuanglin
- * date : 2022/7/13 14:20
  * description : 异步测试
  */
 @Slf4j
@@ -21,7 +20,7 @@ class ShopTest {
     void sync() {
         log.info("开始计算价格");
         double price = shop.getPrice(product);
-        shop.doSomethingElse();
+        doSomethingElse();
         log.info("价格：" +  price);
     }
 
@@ -31,7 +30,7 @@ class ShopTest {
         Future<Double> futurePrice = shop.getPriceAsync(product);
         Future<Double> futurePriceFac = shop.getPriceAsyncByFactory(product);
         // 在获取价格之前可以继续完成别的计算动作
-        shop.doSomethingElse();
+        doSomethingElse();
         try {
             // 从 Future 中读取结果，价格未知则会发生阻塞
             double price = futurePrice.get();
@@ -41,5 +40,9 @@ class ShopTest {
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static void doSomethingElse() {
+        log.info("干点别的。。。");
     }
 }

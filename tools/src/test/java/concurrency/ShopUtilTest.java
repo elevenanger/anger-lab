@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import static concurrency.ShopUtil.*;
+
 /**
  * author : liuanglin
- * date : 2022/7/13 15:55
  */
 @Slf4j
 class ShopUtilTest {
@@ -73,36 +74,42 @@ class ShopUtilTest {
     @Test
     void testFindPriceSync() {
         log.info("testFindPriceSync");
-        log.info(ShopUtil.findPricesSync(shops, product).toString());
+        log.info(findPricesSync(shops, product).toString());
     }
 
     @Test
     void testFindPricesParallel() {
         log.info("testFindPricesParallel");
-        log.info(ShopUtil.findPricesParallel(shops, product).toString());
+        log.info(findPricesParallel(shops, product).toString());
     }
 
     @Test
     void testFindPricesFuture() {
         log.info("testFindPricesFuture");
-        log.info(ShopUtil.findPricesFuture(shops, product).toString());
+        log.info(findPricesFuture(shops, product).toString());
     }
 
     @Test
     void testFindPricesWithExec() {
         log.info("testFindPricesWithExec");
-        log.info(ShopUtil.findPricesFutureWithSpecificExec(shops, product, exec).toString());
+        log.info(findPricesFutureWithSpecificExec(shops, product, exec).toString());
     }
 
     @Test
     void testFindPriceWithDiscount() {
         log.info("testFindPriceWithDiscount");
-        log.info(ShopUtil.findPricesWithDiscount(shops, product).toString());
+        log.info(findPricesWithDiscount(shops, product).toString());
     }
 
     @Test
     void testFindPriceWithDiscountFuture() {
         log.info("testFindPriceWithDiscountFuture");
-        log.info(ShopUtil.findPriceWithDiscountFuture(shops, product, exec).toString());
+        log.info(findPriceWithDiscountFuture(shops, product, exec).toString());
+    }
+
+    @Test
+    void testQuicklyFind() {
+        log.info("testQuicklyFind");
+        findFastest(shops, product, exec);
     }
 }

@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 
 /**
  * author : liuanglin
- * date : 2022/7/13 14:04
  * description : 同步和异步计算比较
  */
 @Slf4j
@@ -30,11 +29,15 @@ public class Shop {
         return calculatePrice(product);
     }
 
+    /*
+    格式化字符串
+    用于构造 Quote 对象
+     */
     public String getPriceStr(String product) {
         double price = calculatePrice(product);
         Discount.Code code =
             Discount.Code.values()[random.nextInt(Discount.Code.values().length)];
-        return String.format("%s:%.2f:%s", product, price, code);
+        return String.format("%s:%s:%.2f:%s",shopName, product, price, code);
     }
     /*
     异步计算商品的价格
@@ -73,19 +76,22 @@ public class Shop {
         return CompletableFuture.supplyAsync( () -> calculatePrice(product));
     }
 
+    /*
+    计算商品价格
+    设置一个延时
+     */
     public double calculatePrice(String product) {
         delay();
         return random.nextDouble() * product.charAt(0) + product.charAt(1);
     }
     public void delay() {
+        // 随机延时时间
+        int delay = 50 + random.nextInt(100);
         try {
-            Thread.sleep(50L);
+            Thread.sleep(delay);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void doSomethingElse() {
-        log.info("干点别的。。。");
-    }
 }
