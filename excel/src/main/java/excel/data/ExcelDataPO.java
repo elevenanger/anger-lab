@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class ExcelDataPO implements Serializable {
     // 指定 sequence id 类型需要为 Input 类型
     @TableId(type = IdType.INPUT)
-    private long id;
+    private Long id;
     private String lineNo;
     private String acc;
     @TableField("rec_name")

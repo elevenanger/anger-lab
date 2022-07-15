@@ -57,6 +57,7 @@
 		<module>excel</module>
         <module>tools</module>
 		<module>cache/cache</module>
+		<module>spring</module>
 	</modules>
 
 	<build>
