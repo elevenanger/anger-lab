@@ -21,12 +21,19 @@ public class Myna {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Myna{" +
+            "name='" + name + '\'' +
+            '}';
+    }
+
     /*
     使用 @PostConstruct 注解
     spring 会在实例化对象之后调用此方法进行相应操作
      */
     @PostConstruct
     public void init() {
-        this.name = "bag";
+        this.name = "init myna";
     }
 }
