@@ -1,12 +1,15 @@
 package repositories;
 
 import model.Comment;
+import org.springframework.stereotype.Repository;
 
 /**
  * author : liuanglin
  * date : 2022/7/16 20:23
  * description : Comment 持久化数据库接口实现类
+ * 注解 @Repository 声明该对象职责用于管理持久化的数据
  */
+@Repository
 public class DBCommentRepository implements CommentRepository{
 
     /*
