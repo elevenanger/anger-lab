@@ -58,7 +58,8 @@
         <module>tools</module>
 		<module>cache/cache</module>
 		<module>spring</module>
-	</modules>
+        <module>fastjson</module>
+    </modules>
 
 	<build>
 		<plugins>
