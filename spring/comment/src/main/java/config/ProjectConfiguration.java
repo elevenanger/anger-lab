@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(
-    basePackages = {"proxies", "service", "repositories"}
+    basePackages = {"proxies", "service", "repositories", "processor"}
 )
 public class ProjectConfiguration {}

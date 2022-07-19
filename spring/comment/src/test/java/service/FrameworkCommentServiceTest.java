@@ -2,6 +2,7 @@ package service;
 
 import config.ProjectConfiguration;
 import config.WiringConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import model.Comment;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * date : 2022/7/17 10:21
  * description : 测试使用 Spring 框架的服务
  */
+@Slf4j
 class FrameworkCommentServiceTest {
 
     AnnotationConfigApplicationContext context =
@@ -58,5 +60,13 @@ class FrameworkCommentServiceTest {
             context1.getBean("commentServiceBean", CommentService.class);
         assertNotNull(service);
         service.publishComment(comment);
+    }
+
+    @Test
+    void sendCommentTest() {
+        log.info("sendComment");
+        FrameworkCommentService service =
+            context.getBean(FrameworkCommentService.class);
+        service.sendComment(comment);
     }
 }
