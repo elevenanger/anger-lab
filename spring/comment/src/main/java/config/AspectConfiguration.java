@@ -1,6 +1,7 @@
 package config;
 
 import aspects.LoggingAspect;
+import aspects.SecurityAspect;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -47,5 +48,10 @@ public class AspectConfiguration {
     @Bean
     public LoggingAspect loggingAspect() {
         return new LoggingAspect();
+    }
+
+    @Bean
+    public SecurityAspect securityAspect() {
+        return new SecurityAspect();
     }
 }

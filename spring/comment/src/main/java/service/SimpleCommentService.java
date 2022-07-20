@@ -23,4 +23,9 @@ public class SimpleCommentService {
         log.info("发送评论：{}", comment);
         return "SUCCESS";
     }
+
+    public String readComment(Comment comment) {
+        log.info("阅读评论：{}", comment);
+        return "FINISHED";
+    }
 }
