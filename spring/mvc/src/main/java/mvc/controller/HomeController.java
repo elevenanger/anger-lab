@@ -2,6 +2,7 @@ package mvc.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,6 +27,16 @@ public class HomeController {
         page.addAttribute("username", name);
         page.addAttribute("color", color);
         return "home";
+    }
+
+    /*
+    使用 PathVariable 携带变量
+     */
+    @RequestMapping("/home/{color}")
+    public String homeWithColor(@PathVariable String color, Model page) {
+        page.addAttribute("username", "anger");
+        page.addAttribute("color", color);
+        return "home.html";
     }
 
 }
