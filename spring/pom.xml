@@ -13,6 +13,7 @@
         <module>context</module>
         <module>comment</module>
         <module>mvc</module>
+        <module>cache</module>
     </modules>
 
     <artifactId>spring</artifactId>
@@ -24,10 +25,5 @@
             <version>5.3.21</version>
         </dependency>
     </dependencies>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
 
 </project>

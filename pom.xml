@@ -56,7 +56,6 @@
 	<modules>
 		<module>excel</module>
         <module>tools</module>
-		<module>cache/cache</module>
 		<module>spring</module>
         <module>fastjson</module>
         <module>patterns</module>
