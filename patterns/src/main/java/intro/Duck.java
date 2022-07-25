@@ -11,6 +11,21 @@ import intro.behaviors.QuackBehavior;
  * 设计的原则：
  * 1、识别应用中变化的部分并将它与不变的部分区分开来
  * 2、编程为接口，而不是实现
+ * 3、偏好组合胜于继承
+ *
+ * 封装行为：
+ * 不再将鸭子的行为视为一组行为
+ * 而是将其视为一组算法
+ * 算法表达的鸭子会做的事情
+ *
+ * 将两个或者以上的类放在一起的行为叫做组合
+ * 相较于直接继承行为 (is-a 关系)
+ * 鸭子通过组合合适的对象获取正确的行为 （ has-a 关系）
+ *
+ * 这种设计模式称之为 ：策略模式
+ * 定义并封装一系列的算法族
+ * 使之可以互相替换
+ * 策略模式使得算法可以独立于使用它的客户 (算法：behavior 客户：duck)
  */
 public abstract class Duck {
 
@@ -52,5 +67,16 @@ public abstract class Duck {
 
     public void performQuack() {
         quackBehavior.quack();
+    }
+
+    /*
+    setter 方法可以动态地改变对象的行为
+     */
+    public void setFlyBehavior(FlyBehavior flyBehavior) {
+        this.flyBehavior = flyBehavior;
+    }
+
+    public void setQuackBehavior(QuackBehavior quackBehavior) {
+        this.quackBehavior = quackBehavior;
     }
 }
