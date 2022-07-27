@@ -1,4 +1,9 @@
-package monitor;
+package monitor.subject;
+
+import monitor.observer.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Anger
@@ -71,17 +76,26 @@ package monitor;
  * 5、改变 subject 或者 observer 不会互相影响
  * 设计原则：努力实现互相交互对象之间的松耦合设计
  */
-public class WeatherData {
-
+public class WeatherData implements Subject{
+    /*
+    Observer 对象列表
+    当前 subject 实体的 observer 实体列表
+     */
+    private List<Observer> observers;
     private float temperature;
     private float humidity;
     private float pressure;
+
+    public WeatherData() {
+        // 初始化 observes 对象
+        observers = new ArrayList<>();
+    }
 
     public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
+    private void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
@@ -89,7 +103,7 @@ public class WeatherData {
         return humidity;
     }
 
-    public void setHumidity(float humidity) {
+    private void setHumidity(float humidity) {
         this.humidity = humidity;
     }
 
@@ -97,8 +111,24 @@ public class WeatherData {
         return pressure;
     }
 
-    public void setPressure(float pressure) {
+    private void setPressure(float pressure) {
         this.pressure = pressure;
+    }
+
+    /**
+     * 采集并设置测量数据
+     * 并发送通知
+     * @param temperature 温度
+     * @param humidity 湿度
+     * @param pressure 气压
+     */
+    public void setMeasurements(float temperature,
+                                float humidity,
+                                float pressure) {
+        setTemperature(temperature);
+        setHumidity(humidity);
+        setPressure(pressure);
+        measurementsChanged();
     }
 
     /*
@@ -114,15 +144,38 @@ public class WeatherData {
     需要创建一个展示场景的拓展市场可以定义新展示场景
      */
     public void measurementsChanged() {
+        notifyObserver();
+    }
 
-        /*
-        首先获取当前最新的天气数据
-        赋值给局部变量
-         */
-        float temp = getTemperature();
-        float humidity = getHumidity();
-        float pressure = getPressure();
+    /**
+     * 新增注册一个 observer
+     * 将其添加到 observers 中
+     * @param observer 新增的 observer
+     */
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
 
+    /**
+     * 移除一个 observer
+     * 从 observers 列表中删除
+     * @param observer 需要移除的 observer
+     */
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
 
+    /**
+     * 状态变化时
+     * 通知所有 observer 更新状态信息
+     */
+    @Override
+    public void notifyObserver() {
+        observers.forEach(
+            observer -> observer.update(temperature,
+                                        humidity,
+                                        pressure));
     }
 }
