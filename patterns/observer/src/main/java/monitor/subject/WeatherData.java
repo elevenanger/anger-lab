@@ -81,7 +81,7 @@ public class WeatherData implements Subject{
     Observer 对象列表
     当前 subject 实体的 observer 实体列表
      */
-    private List<Observer> observers;
+    private final List<Observer> observers;
     private float temperature;
     private float humidity;
     private float pressure;
@@ -91,24 +91,26 @@ public class WeatherData implements Subject{
         observers = new ArrayList<>();
     }
 
+    /*
+    getter 方法
+    提供给 observer 主动来拉取需要的数据
+     */
+    public float getPressure() {
+        return pressure;
+    }
     public float getTemperature() {
         return temperature;
+    }
+    public float getHumidity() {
+        return humidity;
     }
 
     private void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
-    public float getHumidity() {
-        return humidity;
-    }
-
     private void setHumidity(float humidity) {
         this.humidity = humidity;
-    }
-
-    public float getPressure() {
-        return pressure;
     }
 
     private void setPressure(float pressure) {
@@ -173,9 +175,6 @@ public class WeatherData implements Subject{
      */
     @Override
     public void notifyObserver() {
-        observers.forEach(
-            observer -> observer.update(temperature,
-                                        humidity,
-                                        pressure));
+        observers.forEach(Observer::update);
     }
 }

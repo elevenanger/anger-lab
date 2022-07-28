@@ -16,7 +16,7 @@ public class CurrentConditionDisplay implements Observer, ElementDisplay {
     一旦 Observer 自身需要移除对 subject 的观察关系
     可以很方便进行调用 remove() 方法
      */
-    private WeatherData weatherData;
+    private final WeatherData weatherData;
 
     /**
      * 将需要注册的 Subject 对象作为构造函数的参数
@@ -46,9 +46,9 @@ public class CurrentConditionDisplay implements Observer, ElementDisplay {
      * 更新展示信息
      */
     @Override
-    public void update(float temp, float humidity, float pressure) {
-        this.humidity = humidity;
-        this.temperature = temp;
+    public void update() {
+        this.humidity = weatherData.getHumidity();
+        this.temperature = weatherData.getTemperature();
         display();
     }
 }

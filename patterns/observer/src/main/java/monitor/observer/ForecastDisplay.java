@@ -11,7 +11,7 @@ public class ForecastDisplay implements Observer, ElementDisplay {
     private float temp;
     private float humidity;
     private float pressure;
-    private WeatherData weatherData;
+    private final WeatherData weatherData;
 
     public ForecastDisplay(WeatherData weatherData) {
         this.weatherData = weatherData;
@@ -27,10 +27,10 @@ public class ForecastDisplay implements Observer, ElementDisplay {
     }
 
     @Override
-    public void update(float temp, float humidity, float pressure) {
-        this.temp = temp;
-        this.humidity = humidity;
-        this.pressure = pressure;
+    public void update() {
+        this.temp = weatherData.getTemperature();
+        this.humidity = weatherData.getHumidity();
+        this.pressure = weatherData.getPressure();
         display();
     }
 }
