@@ -9,6 +9,13 @@ import org.junit.jupiter.api.Test;
  * author : liuanglin
  * date : 2022/7/27 11:50
  * description : 斐波那契数列测试
+ * 微基准测试
+ * 针对一小块单元代码进行测试
+ * 选择性能最优的实现方案
+ * java 代码执行性能的一大特征是一段代码执行的次数越多则这段代码的执行效率越高
+ * 对于微基准测试
+ * 预热是非常有必要的
+ * 不然就是测试编译的性能而非代码实际执行的性能
  */
 @Slf4j
 class FibTest {
