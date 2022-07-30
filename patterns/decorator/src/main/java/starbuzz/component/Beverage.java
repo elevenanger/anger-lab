@@ -36,10 +36,21 @@ import java.math.BigDecimal;
 public abstract class Beverage {
     protected String description= "未知饮料";
 
+    protected Size size = Size.TALL;
+
     public abstract BigDecimal cost();
 
     public String getDescription() {
         return description;
     }
 
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
+    }
+
+    public enum Size {TALL, GRANDE, VENTI }
 }
