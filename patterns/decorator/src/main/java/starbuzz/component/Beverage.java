@@ -36,7 +36,7 @@ import java.math.BigDecimal;
 public abstract class Beverage {
     protected String description= "未知饮料";
 
-    protected Size size = Size.TALL;
+    public Size size = Size.TALL;
 
     public abstract BigDecimal cost();
 

@@ -28,7 +28,18 @@ public class Milk extends CondimentDecorator {
      */
     @Override
     public BigDecimal cost() {
-        return beverage.cost().add(BigDecimal.valueOf(0.2));
+        BigDecimal cost = beverage.cost();
+        switch (beverage.getSize()) {
+            case TALL: cost = cost.add(BigDecimal.valueOf(0.5));
+                break;
+            case GRANDE: cost = cost.add(BigDecimal.valueOf(1));
+                break;
+            case VENTI: cost = cost.add(BigDecimal.valueOf(1.5));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + beverage.getSize());
+        }
+        return cost;
     }
 
     /*
