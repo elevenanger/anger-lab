@@ -1,4 +1,4 @@
-package pizza.clients;
+package pizza.store;
 
 import pizza.pizzas.Pizza;
 
@@ -25,6 +25,13 @@ public abstract class PizzaStore {
     /*
     将 Pizza 的制作过程也封装在工厂方法中
     这样每个工厂类都有相同的常见过程
+
+    PizzaStore 仅仅依赖于抽象的 Pizza
+    而不依赖于具体的 Pizza 类
+    可以说它依赖于更高级别的抽象类
+    而不是低级别的具体的类
+    同理 PizzaStore 的具体实现类也依赖于抽象的 Pizza 类
+    这种低级别依赖于高级别的做法称为依赖倒置
      */
     public Pizza orderPizza(String type) {
         Pizza pizza;

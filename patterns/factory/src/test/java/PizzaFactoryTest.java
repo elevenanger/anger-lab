@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
-import pizza.clients.CNStylePizzaStore;
-import pizza.clients.PizzaStore;
-import pizza.clients.USStylePizzaStore;
+import pizza.store.CNStylePizzaStore;
+import pizza.store.PizzaStore;
+import pizza.store.USStylePizzaStore;
 
 /**
  * @author Anger

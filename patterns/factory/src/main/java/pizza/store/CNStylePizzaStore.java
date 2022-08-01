@@ -1,5 +1,7 @@
-package pizza.clients;
+package pizza.store;
 
+import pizza.ingredients.concrete.CNIngredientFactory;
+import pizza.ingredients.interfaces.PizzaIngredientFactory;
 import pizza.pizzas.*;
 
 /**
@@ -10,21 +12,25 @@ import pizza.pizzas.*;
  */
 public class CNStylePizzaStore extends PizzaStore{
 
+    private final PizzaIngredientFactory factory =
+        new CNIngredientFactory();
+
     /*
     实现具体的 createPizza() 方法
      */
     @Override
     Pizza createPizza(String type) {
+        System.out.println("CNStylePizzaStore.createPizza");
         Pizza pizza;
         switch (type) {
             case "veggie" :
-                pizza = new CNStyleVeggiePizza();
+                pizza = new VeggiePizza(factory);
                 break;
             case "clam" :
-                pizza = new CNStyleClamPizza();
+                pizza = new ClamPizza(factory);
                 break;
             case "cheese" :
-                pizza = new CNStyleCheesePizza();
+                pizza = new CheesePizza(factory);
                 break;
             default:
                 throw new IllegalStateException();

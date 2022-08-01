@@ -1,9 +1,11 @@
 package pizza.factory;
 
-import pizza.pizzas.USStyleCheesePizza;
-import pizza.pizzas.USStyleClamPizza;
+import pizza.ingredients.concrete.CNIngredientFactory;
+import pizza.ingredients.interfaces.PizzaIngredientFactory;
+import pizza.pizzas.CheesePizza;
+import pizza.pizzas.ClamPizza;
 import pizza.pizzas.Pizza;
-import pizza.pizzas.CNStyleVeggiePizza;
+import pizza.pizzas.VeggiePizza;
 
 /**
  * @author Anger
@@ -29,6 +31,9 @@ import pizza.pizzas.CNStyleVeggiePizza;
  */
 public class SimplePizzaFactory {
 
+    private final PizzaIngredientFactory factory =
+        new CNIngredientFactory();
+
     /**
      * 在工厂类中定义工厂方法
      * 负责 Pizza 对象的创建
@@ -39,20 +44,20 @@ public class SimplePizzaFactory {
      * 它更像一种编程习惯
      * @return 具体的 Pizza 实例
      */
-    public Pizza createPizza(String type) {
+    Pizza createPizza(String type) {
         Pizza pizza;
         switch (type) {
-            case "cheese":
-                pizza = new USStyleCheesePizza();
+            case "veggie" :
+                pizza = new VeggiePizza(factory);
                 break;
-            case "clam":
-                pizza = new USStyleClamPizza();
+            case "clam" :
+                pizza = new ClamPizza(factory);
                 break;
-            case "veggie":
-                pizza = new CNStyleVeggiePizza();
+            case "cheese" :
+                pizza = new CheesePizza(factory);
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + type);
+                throw new IllegalStateException();
         }
         return pizza;
     }
