@@ -29,4 +29,10 @@ public class LightOnCommand implements Command {
         System.out.println("LightOnCommand.execute");
         light.on();
     }
+
+    @Override
+    public void undo() {
+        System.out.println("LightOnCommand.undo");
+        light.off();
+    }
 }

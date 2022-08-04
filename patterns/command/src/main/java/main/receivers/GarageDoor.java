@@ -10,4 +10,8 @@ public class GarageDoor {
         System.out.println("GarageDoor.openDoor");
     }
 
+
+    public void closeDoor() {
+        System.out.println("GarageDoor.closeDoor");
+    }
 }

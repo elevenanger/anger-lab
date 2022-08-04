@@ -18,4 +18,10 @@ public class GarageDoorOpenCommand implements Command {
         System.out.println("GarageDoorOpenCommand.execute");
         garageDoor.openDoor();
     }
+
+    @Override
+    public void undo() {
+        System.out.println("GarageDoorOpenCommand.undo");
+        garageDoor.closeDoor();
+    }
 }
