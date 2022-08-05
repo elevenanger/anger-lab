@@ -72,7 +72,8 @@ public class MyBenchmark {
 
     @Benchmark
     @Warmup(time = 3, iterations = 1)
-    @Fork(warmups = 1, value = 2, jvmArgs = "-XX:StringTableSize=10000000")
+    @Fork(warmups = 1, value = 2,
+        jvmArgs = "-XX:StringTableSize=10000000 ")
     @Measurement(time = 3, iterations = 1)
     public void testMap(Blackhole blackhole) {
         for (int i = 0; i < nStrings; i++) {
