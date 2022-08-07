@@ -4,6 +4,8 @@ package facade;
  * author : liuanglin
  * date : 2022/8/6 21:05
  * description : 门面模式
+ * 联合系统中系统众多的接口
+ * 门面提供一个更高阶的接口使得系统中的子系统更易于使用
  * 门面 Facade 直接提供所需要的内容
  * 一个系统如果存在多个复杂的子系统
  * 使用门面模式实现一个门面类
@@ -30,6 +32,56 @@ package facade;
  * 门面模式和适配器模式都可以封装多个类
  * 门面模式的目的是对客户端简化系统的复杂度
  * 适配器模式是将接口转换成不同的东西以满足客户端的需要
+ *
+ * 最少知识原则:
+ * 将对象之间的交互减少到几个最亲密的"朋友"
+ * 只与最亲密的"朋友"交谈
+ * 设计一个系统
+ * 对于任意对象
+ * 需要特别谨慎设计对象之间的交互关系
+ * 以及对象之间的交互方式
+ * 最少知识原则的一些指导原则：
+ * 仅调用属于以下对象的方法：
+ * 1、对象本身的方法
+ * 2、作为方法参数传入的对象的方法
+ * 3、该方法创建或者实例化的任意对象的方法
+ * 4、对象任意组件对象（组合 has-a 关系的对象）的方法
  */
 public class HomeTheaterFacade {
+    private final Player player;
+    private final Amplifier amplifier;
+    private final Projector projector;
+    private final Screen screen;
+    private final TheaterLights lights;
+
+    public HomeTheaterFacade(Player player, Amplifier amplifier,
+                             Projector projector, Screen screen,
+                             TheaterLights lights) {
+        this.player = player;
+        this.amplifier = amplifier;
+        this.projector = projector;
+        this.screen = screen;
+        this.lights = lights;
+    }
+
+    /**
+     * 对外提供看电影的接口
+     * 客户端直接调用该接口即可
+     * 这个接口内部实现看电影相关的所有逻辑
+     * 简化了客户端调用的代码
+     */
+    public void watchMovie() {
+        System.out.println("HomeTheaterFacade.watchMovie");
+        amplifier.setPlayer(player);
+
+        player.on();
+        projector.on();
+        screen.down();
+        lights.on();
+
+        amplifier.setVolume(10);
+        projector.wideScreenMode();
+
+        player.play();
+    }
 }
