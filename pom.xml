@@ -60,8 +60,6 @@
         <module>fastjson</module>
         <module>patterns</module>
         <module>performance</module>
-        <module>performance/jp</module>
-        <module>patterns/command</module>
     </modules>
 
 	<build>
