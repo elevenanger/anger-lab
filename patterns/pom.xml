@@ -22,6 +22,7 @@
         <module>adapter</module>
         <module>facade</module>
         <module>template</module>
+        <module>iterator</module>
     </modules>
 
 </project>
