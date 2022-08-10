@@ -12,6 +12,8 @@ class WaitressTest {
     void testWaitressPrintMenu() {
         Waitress waitress = new Waitress(new DinerMenu());
         waitress.printMenu();
+        waitress = new Waitress(new CafeMenu());
+        waitress.printMenu();
     }
 
 }

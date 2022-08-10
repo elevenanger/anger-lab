@@ -8,15 +8,15 @@ import java.util.Iterator;
  * 餐厅服务员
  */
 public class Waitress {
-    private final DinerMenu dinerMenu;
+    private final Menu menu;
 
-    public Waitress(DinerMenu dinerMenu) {
-        this.dinerMenu = dinerMenu;
+    public Waitress(Menu menu) {
+        this.menu = menu;
     }
 
     public void printMenu() {
         Iterator<MenuItem> menuItemIterator =
-                dinerMenu.createIterator();
+                menu.createIterator();
         menuItemIterator.forEachRemaining(System.out::println);
     }
 

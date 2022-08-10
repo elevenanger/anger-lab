@@ -7,7 +7,7 @@ import java.util.Iterator;
  * created on 2022/8/9
  * 餐厅菜单
  */
-public class DinerMenu {
+public class DinerMenu implements Menu {
     static final int MAX_ITEMS = 5;
     int numberOfItems = 0;
     MenuItem [] menuItems;
@@ -37,6 +37,7 @@ public class DinerMenu {
      * 返回数组的迭代器
      * @return 菜单元素迭代器
      */
+    @Override
     public Iterator<MenuItem> createIterator() {
         return new DinerMenuIterator(menuItems);
     }
