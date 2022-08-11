@@ -23,6 +23,7 @@
         <module>facade</module>
         <module>template</module>
         <module>iterator</module>
+        <module>composite</module>
     </modules>
 
 </project>

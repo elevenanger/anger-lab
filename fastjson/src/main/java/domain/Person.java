@@ -4,7 +4,6 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * author : liuanglin
@@ -15,6 +14,4 @@ import java.util.List;
 public class Person {
     @JSONField(name = "date", format = "yyyyMMdd")
     private LocalDate date;
-    @JSONField(name = "child")
-    private List<Child> child;
 }

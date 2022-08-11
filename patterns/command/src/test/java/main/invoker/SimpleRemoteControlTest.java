@@ -37,7 +37,6 @@ class SimpleRemoteControlTest {
         control.setSlot(command);
         control.pressButton();
 
-        control.setSlot(() -> System.out.println("functional command"));
         control.pressButton();
     }
 }

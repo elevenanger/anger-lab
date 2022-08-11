@@ -20,31 +20,21 @@ import java.util.List;
 @Slf4j
 class PersonTest {
 
+    private static final String personString = "{\"date\":\"20220811\"}";
     @Test
     void testFormat() {
         Person person = new Person();
         person.setDate(LocalDate.now());
-        Child child = new Child();
-        child.setChildDate(LocalDate.now());
-
-        Child child2 = new Child();
-        Child child3 = new Child();
-        child2.setChildDate(LocalDate.now());
-        child3.setChildDate(LocalDate.now());
         String json = JSON.toJSONString(person);
         log.info(json);
     }
 
     @Test
-    void testParse() {
-        Person person = JSON.parseObject("{\"date\":\"20220718\"}", Person.class);
+    void jsonToPerson() {
+        JSONObject jsonObject = JSON.parseObject(personString);
+        Person person = JSON.toJavaObject(jsonObject, Person.class);
         log.info(person.toString());
-
-        JSONObject jsonObject = JSON.parseObject("{\"date\":\"20220718\"}");
-        Person person1 = JSON.toJavaObject(jsonObject, Person.class);
-        log.info(person1.toString());
     }
-
     private <T, S> T parse(String text, Class<T> type, Class<S> subType){
         JSONObject jsonObject = JSON.parseObject(text);
         log.info(jsonObject.toJSONString());
@@ -59,18 +49,6 @@ class PersonTest {
     }
 
     @Test
-    void testParseByGeneric() {
-
-        String json = "{\"child\":[{\"childDate\":\"20220718\",\"grandSonList\":\"\"}," +
-            "{\"childDate\":\"20220718\",\"grandSonList\":\"\"}," +
-            "{\"childDate\":\"20220718\",\"grandSonList\":\"\"}]," +
-            "\"date\":\"20220718\"}";
-
-        //log.info(parse("{\"child\":{\"childDate\":\"20220718\"},\"date\":\"20220718\"}", Child.class).toString());
-        log.info(parse(json, Person.class, List.class).toString());
-    }
-
-    @Test
     void testToJsonString() {
         D d = new D();
         d.setDate(LocalDate.now());
@@ -79,7 +57,7 @@ class PersonTest {
         b.setDate(LocalDate.now());
         A a = new A();
         a.setDate(LocalDate.now());
-        c.setDList(Collections.singletonList(d));
+        //c.setDList(Collections.singletonList(d));
         b.setCList(Collections.singletonList(c));
         a.setB(b);
         log.info(a.toString());
@@ -90,8 +68,8 @@ class PersonTest {
         log.info(b1.toString());
     }
 
-    String aString = "{\"date\":\"2022-07-19\"," +
-                        "\"b\":{\"date\":\"2022-07-19\"," +
+    String aString = "{\"date\":\"20220719\"," +
+                        "\"b\":{\"date\":\"20220719\"," +
                             "\"cList\":{\"dList\":\"\"}}}";
     @Test
     void parseObject() {
@@ -100,7 +78,9 @@ class PersonTest {
         JSONObject bJson = aJson.getJSONObject("b");
         log.info(bJson.toString());
         B b = JSON.parseObject(bJson.toJSONString(), B.class);
+        B bObj = JSON.toJavaObject(bJson, B.class);
         log.info(b.toString());
+        log.info(bObj.toString());
     }
 }
 
