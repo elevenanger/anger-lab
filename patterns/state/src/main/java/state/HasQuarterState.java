@@ -1,13 +1,17 @@
 package state;
 
+import java.io.Serializable;
+
 /**
  * author : liuanglin
  * date : 2022/8/12 10:53
  * description : 已投币状态
  */
-public class HasQuarterState implements State {
+public class HasQuarterState implements State, Serializable {
 
-    private final GumballMachine machine;
+    private static final long serialVersionUID = 2L;
+
+    private final transient GumballMachine machine;
 
     public HasQuarterState(GumballMachine machine) {
         this.machine = machine;

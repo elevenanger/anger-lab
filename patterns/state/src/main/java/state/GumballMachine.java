@@ -1,5 +1,11 @@
 package state;
 
+import state.remote.GumballMachineRemote;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Objects;
+
 /**
  * author : liuanglin
  * date : 2022/8/12 12:07
@@ -23,21 +29,26 @@ package state;
  *    每个具体的状态都为每一个 request() 方法提供一个实现
  *    通过这种方式，上下文切换状态它的行为也会随之变化
  */
-public class GumballMachine {
+public class GumballMachine
+                extends UnicastRemoteObject implements GumballMachineRemote {
+
+    private static final long serialVersionUID = 2L;
     private final State soldOutState;
     private final State noQuarterState;
     private final State hasQuarterState;
     private final State soldState;
     private final State winnerState;
     private State state;
+    private final String location;
     int count = 0;
 
-    public GumballMachine(int numberOfGumballs) {
+    public GumballMachine(String location, int numberOfGumballs) throws RemoteException {
         soldOutState = new SoldOutState(this);
         noQuarterState = new NoQuarterState(this);
         hasQuarterState = new HasQuarterState(this);
         soldState = new SoldState(this);
         winnerState = new WinnerState(this);
+        this.location = location;
 
         if (numberOfGumballs > 0){
             state = noQuarterState;
@@ -47,21 +58,20 @@ public class GumballMachine {
             state = soldOutState;
     }
 
+    @Override
     public void insertQuarter() {
         state.insertQuarter();
     }
 
+    @Override
     public void ejectQuarter() {
         state.ejectQuarter();
     }
 
+    @Override
     public void turnCrank() {
         state.turnCrank();
         state.dispense();
-    }
-
-    public State getState() {
-        return state;
     }
 
     public State getSoldOutState() {
@@ -88,6 +98,14 @@ public class GumballMachine {
         return count;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
     public void releaseBall() {
         System.out.println("从槽道将口香糖球传出");
         if (count > 0)
@@ -108,7 +126,32 @@ public class GumballMachine {
     public String toString() {
         return "GumballMachine{" +
             "state=" + state.getClass().getSimpleName() +
+            ", location=" + location +
             ", count=" + count +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GumballMachine that = (GumballMachine) o;
+        return count == that.count
+            && Objects.equals(soldOutState, that.soldOutState)
+            && Objects.equals(noQuarterState, that.noQuarterState)
+            && Objects.equals(hasQuarterState, that.hasQuarterState)
+            && Objects.equals(soldState, that.soldState)
+            && Objects.equals(winnerState, that.winnerState)
+            && Objects.equals(state, that.state)
+            && Objects.equals(location, that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), soldOutState,
+                            noQuarterState, hasQuarterState,
+                            soldState, winnerState, state,
+                            location, count);
     }
 }

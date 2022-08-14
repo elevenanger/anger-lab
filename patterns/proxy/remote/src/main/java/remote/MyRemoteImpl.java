@@ -12,6 +12,11 @@ import java.rmi.server.UnicastRemoteObject;
  * description : MyRemote 接口实现类
  * 远程方法的具体实现
  * 继承 UnicastRemoteObject 提供暴露为远程对象的能力
+ * proxy 设计模式：
+ * 为一个对象提供一个代理类或者占位符以控制对该对象的访问
+ * 远程代理控制对于远程对象的访问，使得客户端可以忽略底层网络相关的具体实现细节
+ * 虚拟代理控制对于创建开销较大的对象的访问
+ * 保护代理基于权限控制对于受保护资源的访问
  */
 public class MyRemoteImpl extends UnicastRemoteObject implements MyRemote {
 

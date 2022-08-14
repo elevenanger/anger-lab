@@ -1,12 +1,16 @@
 package state;
 
+import java.io.Serializable;
+
 /**
  * author : liuanglin
  * date : 2022/8/12 10:52
  * description : 售罄状态
  */
-public class SoldOutState implements State {
-    private final GumballMachine machine;
+public class SoldOutState implements State , Serializable {
+
+    private static final long serialVersionUID = 2L;
+    private final transient GumballMachine machine;
 
     public SoldOutState(GumballMachine machine) {
         this.machine = machine;
