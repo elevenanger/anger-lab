@@ -16,5 +16,4 @@ public class ExcelDataBO {
     private String name;
     private BigDecimal amt;
     private String desc;
-
 }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Primary
 @Service("excelService")
-public class ExcelDataServiceImpl extends ServiceImpl<ExcelDataMapper, ExcelDataPO> implements ExcelDataService{}
+public class ExcelDataServiceImpl extends ServiceImpl<ExcelDataMapper, ExcelDataPO> implements ExcelDataService{
+
+}

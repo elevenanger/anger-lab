@@ -3,26 +3,30 @@ package lists;
 import base.BaseResult;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class ForkJoinList<T extends Serializable> extends RecursiveTask<List<BaseResult>> {
+public class ForkJoinList<T> extends RecursiveTask<List<BaseResult>> {
     private final List<T> originList;
     private final int start;
     private final int end;
     private static final int PART_SIZE = 100;
 
-    public ForkJoinList(List<T> originList) {
-        this(originList, 0, originList.size());
+    private Consumer<List<T>> task;
+
+    public ForkJoinList(List<T> originList, Consumer<List<T>> task) {
+        this(originList, 0, originList.size(), task);
+        this.task = task;
     }
 
-    public ForkJoinList(List<T> originList, int start, int end) {
+    public ForkJoinList(List<T> originList, int start, int end, Consumer<List<T>> task) {
         this.originList = originList;
         this.start = start;
         this.end = end;
+        this.task = task;
     }
 
     @Override
@@ -31,9 +35,11 @@ public class ForkJoinList<T extends Serializable> extends RecursiveTask<List<Bas
         if (len < PART_SIZE)
             return sequentialCompute();
 
-        ForkJoinList<T> leftList = new ForkJoinList<>(originList, start, start + len/2);
+        ForkJoinList<T> leftList =
+            new ForkJoinList<>(originList, start, start + len/2, task);
         leftList.fork();
-        ForkJoinList<T> rightList = new ForkJoinList<>(originList, start + len/2, end);
+        ForkJoinList<T> rightList =
+            new ForkJoinList<>(originList, start + len/2, end, task);
         List<BaseResult> rightResult = rightList.compute();
         List<BaseResult> leftResult = leftList.join();
         leftResult.addAll(rightResult);
@@ -41,9 +47,10 @@ public class ForkJoinList<T extends Serializable> extends RecursiveTask<List<Bas
     }
 
     private List<BaseResult> sequentialCompute() {
+        task.accept(originList.subList(start, end));
         return originList.subList(start, end).stream()
-                .peek(v -> log.info(v.toString()))
                 .map(v -> new BaseResult(true))
                 .collect(Collectors.toList());
     }
+
 }

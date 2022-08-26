@@ -20,7 +20,7 @@ class ForkJoinListTest {
 
     @Test
     void test() {
-        ForkJoinTask<List<BaseResult>> results = new ForkJoinList<>(list);
+        ForkJoinTask<List<BaseResult>> results = new ForkJoinList<>(list,l -> l.forEach(System.out::println));
         results.invoke().forEach(result -> log.info(String.valueOf(result.isResult())));
     }
 
