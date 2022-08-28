@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 @Slf4j
 class EasyExcelParseServiceTest {
 
-    static final String FILE_PATH =  "./src/test/resources/write1661508833583.xlsx";
+    static final String FILE_PATH =  "./src/test/resources/write1661568972131.xlsx";
     static final String WRITE_FILE_PATH =  "./src/test/resources/";
 
     String fileName = WRITE_FILE_PATH + "write" + System.currentTimeMillis() + ".xlsx";
@@ -61,7 +61,7 @@ class EasyExcelParseServiceTest {
     };
 
     Supplier<Collection<?>> genList = () ->
-        IntStream.range(0, 100_00)
+        IntStream.range(0, 1000)
             .mapToObj(genData)
             .collect(Collectors.toCollection(ArrayList::new));
 }

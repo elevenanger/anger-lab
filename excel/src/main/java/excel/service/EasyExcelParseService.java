@@ -51,9 +51,7 @@ public class EasyExcelParseService {
                      .excelType(ExcelTypeEnum.XLSX)
                      .build()){
             WriteSheet writeSheet = EasyExcel.writerSheet("test").build();
-            for (int i = 0; i < 100; i++) {
-                writer.write(data.get(), writeSheet);
-            }
+            writer.write(data.get(), writeSheet);
         }
     }
 
