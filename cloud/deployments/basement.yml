@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basement
+  labels:
+    app: basement
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: basement
+  template:
+    metadata:
+      labels:
+        app: basement
+    spec:
+      containers:
+      - name: basement
+        image: angercn/basement:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+          limits:
+            cpu: "0.2"
+            memory: "512Mi"
+        ports:
+        - containerPort: 8081
+        envFrom:
+          - configMapRef:
+              name: global-config

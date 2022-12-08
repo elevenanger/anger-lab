@@ -29,10 +29,12 @@ public class Fib {
     private BigInteger left = BigInteger.ZERO;
 
     public BigInteger numbers(int i) {
-        Optional<BigInteger> re = Stream.iterate(BigInteger.ZERO, integer -> {
-            BigInteger result = integer.add(left);
-            left = result;
-            return result;})
+        Optional<BigInteger> re = Stream.iterate(
+            BigInteger.ZERO, integer -> {
+                BigInteger result = integer.add(left);
+                left = result;
+                return result;
+            })
             .limit(i)
             .max(BigInteger::compareTo);
         return re.get();

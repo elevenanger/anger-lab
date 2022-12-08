@@ -40,9 +40,9 @@ public class EchoService implements EchoRepository {
         }
     }
 
-    private static final Function<String, EchoPO> echoPOFunction =
-        echo -> {
+    private static final Function<String, EchoPO> echoPOFunction = echo -> {
         EchoPO echoPO = new EchoPO();
         echoPO.setEcho(echo);
-        return echoPO;};
+        return echoPO;
+    };
 }
