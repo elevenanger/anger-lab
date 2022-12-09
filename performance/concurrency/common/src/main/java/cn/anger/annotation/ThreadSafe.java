@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * author : liuanglin
- * 表示当前标记的内容是非线程安全的
+ * author : anger
+ * 将当前标记的内容标记为线程安全的
  */
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface NotThreadSafe { }
+public @interface ThreadSafe { }

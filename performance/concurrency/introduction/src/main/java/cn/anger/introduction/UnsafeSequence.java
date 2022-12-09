@@ -1,4 +1,4 @@
-package cn.anger.ch01.introduction;
+package cn.anger.introduction;
 
 import cn.anger.annotation.NotThreadSafe;
 

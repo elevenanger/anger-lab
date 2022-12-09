@@ -5,18 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.anger</groupId>
-        <artifactId>performance</artifactId>
+        <artifactId>concurrency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>concurrency</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>threadsafe</module>
-        <module>introduction</module>
-        <module>common</module>
-    </modules>
+    <artifactId>common</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
