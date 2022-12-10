@@ -31,8 +31,8 @@ import java.util.Arrays;
 public class StatelessFactorizer extends GenericServlet {
     @Override
     public void service(ServletRequest req, ServletResponse res) {
-        BigInteger i = extractFromRequest(req);
-        BigInteger[] factors = FactorizationUtil.doFactorization(i);
+        final BigInteger i = extractFromRequest(req);
+        final BigInteger[] factors = FactorizationUtil.doFactorization(i);
         encodeIntoResponse(res, factors);
     }
 

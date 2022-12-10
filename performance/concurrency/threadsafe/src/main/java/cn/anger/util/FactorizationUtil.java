@@ -35,8 +35,6 @@ public class FactorizationUtil {
 
         factors.add(num);
 
-        System.out.println(factors);
-
         return factors.toArray(new BigInteger[0]);
     }
 
