@@ -9,12 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class ThreadSafeCountingFactorizerTest extends FactorizerTest<ThreadSafeCountingFactorizer> {
 
-    final ThreadSafeCountingFactorizer servlet = new ThreadSafeCountingFactorizer();
+    @Override
+    ThreadSafeCountingFactorizer initializeFactorizer() {
+        return new ThreadSafeCountingFactorizer();
+    }
 
     @Test
     void testMultiThreadFactorizer() {
-        factorizationChain(servlet);
-        assertEquals((long) THREAD_NUM * LOOP_COUNT, servlet.getCount().get());
+        factorizationChain();
+        assertEquals((long) THREAD_NUM * LOOP_COUNT, immutableServlet.getCount().get());
     }
 
 }

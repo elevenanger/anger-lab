@@ -21,7 +21,7 @@ import javax.servlet.ServletResponse;
  * UnsafeCountingFactorizer 违反了原子性，所以它不是线程安全的
  */
 @NotThreadSafe
-public class UnsafeCountingFactorizer extends StatelessFactorizer {
+public class UnsafeCountingFactorizer extends Factorizer {
 
     private long count = 0;
 

@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author : anger
  */
 @ThreadSafe
-public class ThreadSafeCountingFactorizer extends StatelessFactorizer {
+public class ThreadSafeCountingFactorizer extends Factorizer {
     private final AtomicLong count = new AtomicLong(0);
 
     public AtomicLong getCount() {

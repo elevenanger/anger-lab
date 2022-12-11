@@ -1,43 +1,42 @@
 package cn.anger.servlet;
 
+import org.junit.jupiter.api.TestTemplate;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * @author : anger
+ * Factorizer 测试父类
+ * 实现测试相关的公共方法
  */
-public class FactorizerTest<T extends Servlet> {
+abstract class FactorizerTest<T extends Factorizer> {
+    private final static BigInteger TO_BE_FAC = new BigInteger("1000");
     final static Integer THREAD_NUM = 10;
     final static Integer LOOP_COUNT = 1_000;
-    private final static BigInteger TO_BE_FAC = new BigInteger("1000");
 
-    final Consumer<T> toFactorizer = servlet -> {
+    // 多个线程之间共享唯一实例
+    final T immutableServlet = initializeFactorizer();
+
+    abstract T initializeFactorizer();
+
+    final void toFactorizer() {
         ServletRequest request = new MockHttpServletRequest();
         request.setAttribute("number", TO_BE_FAC);
         ServletResponse response = new MockHttpServletResponse();
-
-        try {
-            servlet.service(request, response);
-        } catch (ServletException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        immutableServlet.service(request, response);
     };
 
-    final Function<T, Runnable> genTask = servlet -> () -> {
+    final Runnable loopFactorization = () -> {
         for (int i = 0; i < LOOP_COUNT; i++) {
-            toFactorizer.accept(servlet);
+            toFactorizer();
         }
     };
 
@@ -46,8 +45,8 @@ public class FactorizerTest<T extends Servlet> {
             .limit(THREAD_NUM)
             .collect(Collectors.toList());
 
-    final void factorizationChain(T servlet) {
-        List<Thread> threads = genTask.andThen(toWorkers).apply(servlet);
+    final void factorizationChain() {
+        List<Thread> threads = toWorkers.apply(loopFactorization);
         threads.forEach(Thread::start);
 
         for (Thread thread : threads) {
@@ -58,5 +57,8 @@ public class FactorizerTest<T extends Servlet> {
             }
         }
     }
+
+    @TestTemplate
+    abstract void testMultiThreadFactorizer();
 
 }
