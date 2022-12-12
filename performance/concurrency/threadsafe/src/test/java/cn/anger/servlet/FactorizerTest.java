@@ -8,6 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,25 +19,26 @@ import java.util.stream.Stream;
  * 实现测试相关的公共方法
  */
 abstract class FactorizerTest<T extends Factorizer> {
-    private final static BigInteger TO_BE_FAC = new BigInteger("1000");
+    final Random random = new Random();
     final static Integer THREAD_NUM = 10;
-    final static Integer LOOP_COUNT = 1_000;
+    final static Integer LOOP_COUNT = 10;
 
     // 多个线程之间共享唯一实例
-    final T immutableServlet = initializeFactorizer();
+    final T servlet = initializeFactorizer();
 
     abstract T initializeFactorizer();
 
-    final void toFactorizer() {
+    void requestToFactorizer() {
         ServletRequest request = new MockHttpServletRequest();
-        request.setAttribute("number", TO_BE_FAC);
+        request.setAttribute("number",
+            BigInteger.valueOf(random.nextInt(100)));
         ServletResponse response = new MockHttpServletResponse();
-        immutableServlet.service(request, response);
-    };
+        servlet.service(request, response);
+    }
 
-    final Runnable loopFactorization = () -> {
+    final Runnable requestLoop = () -> {
         for (int i = 0; i < LOOP_COUNT; i++) {
-            toFactorizer();
+            requestToFactorizer();
         }
     };
 
@@ -45,8 +47,8 @@ abstract class FactorizerTest<T extends Factorizer> {
             .limit(THREAD_NUM)
             .collect(Collectors.toList());
 
-    final void factorizationChain() {
-        List<Thread> threads = toWorkers.apply(loopFactorization);
+    final void genericMultiThreadFactorizationChain() {
+        List<Thread> threads = toWorkers.apply(requestLoop);
         threads.forEach(Thread::start);
 
         for (Thread thread : threads) {
@@ -56,6 +58,7 @@ abstract class FactorizerTest<T extends Factorizer> {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
     @TestTemplate

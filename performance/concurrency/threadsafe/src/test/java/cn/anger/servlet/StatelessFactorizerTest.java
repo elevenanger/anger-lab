@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
  * @author : anger
  */
 public class StatelessFactorizerTest extends FactorizerTest<StatelessFactorizer> {
+
     @Override
     StatelessFactorizer initializeFactorizer() {
         return new StatelessFactorizer();
@@ -13,7 +14,7 @@ public class StatelessFactorizerTest extends FactorizerTest<StatelessFactorizer>
 
     @Test
     void testMultiThreadFactorizer() {
-        factorizationChain();
+        genericMultiThreadFactorizationChain();
     }
 
 }

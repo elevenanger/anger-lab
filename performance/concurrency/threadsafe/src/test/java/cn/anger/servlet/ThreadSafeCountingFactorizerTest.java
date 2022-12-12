@@ -16,8 +16,8 @@ class ThreadSafeCountingFactorizerTest extends FactorizerTest<ThreadSafeCounting
 
     @Test
     void testMultiThreadFactorizer() {
-        factorizationChain();
-        assertEquals((long) THREAD_NUM * LOOP_COUNT, immutableServlet.getCount().get());
+        genericMultiThreadFactorizationChain();
+        assertEquals((long) THREAD_NUM * LOOP_COUNT, servlet.getCount());
     }
 
 }

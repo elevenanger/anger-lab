@@ -21,11 +21,11 @@ public class Factorizer extends GenericServlet {
         encodeIntoResponse(res, factors);
     }
 
-    private BigInteger extractFromRequest(ServletRequest request) {
+    BigInteger extractFromRequest(ServletRequest request) {
         return (BigInteger) request.getAttribute("number");
     }
 
-    private void encodeIntoResponse(ServletResponse response, BigInteger[] factors) {
+    void encodeIntoResponse(ServletResponse response, BigInteger[] factors) {
         try (PrintWriter writer = response.getWriter();){
             writer.write(Arrays.toString(factors));
         } catch (IOException e) {

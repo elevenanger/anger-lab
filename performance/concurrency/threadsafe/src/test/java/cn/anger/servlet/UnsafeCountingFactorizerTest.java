@@ -15,7 +15,7 @@ class UnsafeCountingFactorizerTest extends FactorizerTest<UnsafeCountingFactoriz
 
     @Test
     void testMultiThreadFactorizer() {
-        factorizationChain();
-        assertNotEquals((long) THREAD_NUM * LOOP_COUNT, immutableServlet.getCount());
+        genericMultiThreadFactorizationChain();
+        assertNotEquals((long) THREAD_NUM * LOOP_COUNT, servlet.getCount());
     }
 }
