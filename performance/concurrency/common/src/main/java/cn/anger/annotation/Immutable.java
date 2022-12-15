@@ -9,7 +9,5 @@ import java.lang.annotation.Target;
  * @author : anger
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface GuardedBy {
-    String value();
-}
+@Target(ElementType.TYPE)
+public @interface Immutable {}

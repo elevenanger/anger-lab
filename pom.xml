@@ -59,6 +59,7 @@
         <module>patterns</module>
         <module>performance</module>
         <module>middleware</module>
+        <module>performance/concurrency/composingobject</module>
     </modules>
 
 	<build>

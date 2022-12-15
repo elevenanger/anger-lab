@@ -10,7 +10,7 @@ import cn.anger.annotation.NotThreadSafe;
  */
 @NotThreadSafe
 public class UnsafeProvince {
-    private String[] provinces = new String[] {
+    private final String[] provinces = new String[] {
         "Hunan", "Guangdong", "Fujian"
     };
     public String[] getProvinces() {

@@ -22,9 +22,7 @@ import javax.servlet.ServletResponse;
  */
 @NotThreadSafe
 public class UnsafeCountingFactorizer extends Factorizer {
-
     private long count = 0;
-
     public long getCount() {
        return count;
     }

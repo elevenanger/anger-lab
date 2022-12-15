@@ -51,5 +51,4 @@ class UnsafeCachingFactorizerTest extends FactorizerTest<UnsafeCachingFactorizer
 
         }
     }
-
 }
