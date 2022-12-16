@@ -35,13 +35,15 @@ public class ProjectConfiguration {
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
+        config.setPoolName("persistence-1");
         config.setJdbcUrl(datasourceUrl);
         config.setDriverClassName(driverClass);
         config.setUsername(username);
         config.setPassword(password);
         config.setConnectionTimeout(1000);
         config.setTransactionIsolation(
-            String.valueOf(Connection.TRANSACTION_SERIALIZABLE));
+            String.valueOf(Connection.TRANSACTION_READ_COMMITTED));
+        config.setMaximumPoolSize(10);
         return new HikariDataSource(config);
     }
 }

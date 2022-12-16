@@ -6,6 +6,6 @@ create table if not exists purchase (
 
 create table if not exists account (
     id serial primary key ,
-    fullname varchar(20) not null ,
+    full_name varchar(20) not null ,
     amount numeric not null
 );
