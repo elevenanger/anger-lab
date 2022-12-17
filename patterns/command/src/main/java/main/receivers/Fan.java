@@ -6,7 +6,7 @@ package main.receivers;
  * 三档电风扇
  */
 public class Fan {
-    public enum Speed {OFF, LOW, HIGH}
+    public  Speed {OFF, LOW, HIGH}
 
     private Speed speed;
 

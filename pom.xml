@@ -60,6 +60,7 @@
         <module>performance</module>
         <module>middleware</module>
         <module>performance/concurrency/composingobject</module>
+        <module>util</module>
     </modules>
 
 	<build>
