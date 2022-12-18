@@ -52,13 +52,26 @@ public class ConcurrentWorkStream {
     }
 
     public ConcurrentWorkStream withWorkLoadConfig(WorkLoadConfig config) {
-        this.workload = config.workload;
-        this.workerAmount = config.workerAmount;
+        setWorkLoad(config.workload);
+        setWorkerAmount(config.workerAmount);
+        return this;
+    }
+
+    private void workerReady() {
+        List<Thread> generatedWorkers =
+            Stream.generate(() -> new Worker(task).withWorkload(workload))
+                .limit(workerAmount)
+                .collect(Collectors.toList());
+        workers.addAll(generatedWorkers);
+    }
+
+    public ConcurrentWorkStream setTask(Runnable task) {
+        this.task = task;
+        workerReady();
         return this;
     }
 
     public void doWork() {
-        workerReady();
         ThreadUtil.startAndJoin(workers);
         clean();
     }
@@ -89,11 +102,6 @@ public class ConcurrentWorkStream {
         return this;
     }
 
-    public ConcurrentWorkStream setTask(Runnable task) {
-        this.task = task;
-        return this;
-    }
-
     private ConcurrentWorkStream setWorkLoad(int workload) {
         this.workload = workload;
         return this;
@@ -102,14 +110,6 @@ public class ConcurrentWorkStream {
     private ConcurrentWorkStream setWorkerAmount(Integer workerAmount) {
         this.workerAmount = workerAmount;
         return this;
-    }
-
-    private void workerReady() {
-        List<Thread> generatedWorkers =
-            Stream.generate(() -> new Worker(task).withWorkload(workload))
-                .limit(workerAmount)
-                .collect(Collectors.toList());
-        workers.addAll(generatedWorkers);
     }
 
     public List<Thread> getWorkers() {

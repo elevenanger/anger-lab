@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentMap;
  * DelegatingVehicleTracker 并没有使用任何显式的同步机制
  * 但是对于其状态的访问都通过 ConcurrentHashMap 进行管理
  * Map 中所有的 key 和 value 值都是不可变的
- *
  */
 @ThreadSafe
 public class DelegatingVehicleTracker {
