@@ -5,20 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.anger</groupId>
-        <artifactId>performance</artifactId>
+        <artifactId>anger-lab</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>concurrency</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>threadsafe</module>
-        <module>introduction</module>
-        <module>common</module>
-        <module>sharingobjects</module>
-        <module>buildingblocks</module>
-    </modules>
+    <artifactId>buildingblocks</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -29,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.anger</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
