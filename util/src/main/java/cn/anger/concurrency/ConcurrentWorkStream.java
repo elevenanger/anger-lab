@@ -140,7 +140,7 @@ public class ConcurrentWorkStream {
         public static final WorkLoadConfig Standard =
             new WorkLoadConfig(10, 100);
         public static final WorkLoadConfig Heavy =
-            new WorkLoadConfig(100, 10_000);
+            new WorkLoadConfig(20, 10_000);
         public WorkLoadConfig(int workerAmount, int workload) {
             this.workerAmount = workerAmount;
             this.workload = workload;

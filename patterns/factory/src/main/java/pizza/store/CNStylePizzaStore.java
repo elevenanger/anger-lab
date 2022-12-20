@@ -33,7 +33,7 @@ public class CNStylePizzaStore extends PizzaStore{
                 pizza = new CheesePizza(factory);
                 break;
             default:
-                throw new IllegalStateException();
+                throw new IllegalArgumentException();
         }
         return pizza;
     }

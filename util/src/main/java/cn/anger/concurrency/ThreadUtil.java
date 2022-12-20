@@ -2,6 +2,7 @@ package cn.anger.concurrency;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,15 +78,31 @@ public class ThreadUtil {
      * @param threads 线程列表
      */
     public static void startAndJoin(List<Thread> threads) {
+        CountDownLatch startGate = new CountDownLatch(1);
+        CountDownLatch endGate = new CountDownLatch(threads.size());
+
         threads.forEach(Thread::start);
+
+        long start = System.nanoTime();
+        startGate.countDown();
 
         for (Thread thread : threads) {
             try {
                 thread.join();
+                endGate.countDown();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
             }
         }
+
+        try {
+            endGate.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        long end = System.nanoTime();
+        System.out.printf("time elapsed => %.2f ms\n", (float) (end - start) / 1_000_000);
     }
 
     public static void startAndJoin(Thread ... threads) {
