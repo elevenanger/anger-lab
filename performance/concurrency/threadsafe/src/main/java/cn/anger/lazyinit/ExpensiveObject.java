@@ -44,7 +44,7 @@ public class ExpensiveObject {
 
         List<String> numbers =
             IntStream.rangeClosed(10_000, 20_000)
-                .mapToObj(i -> String.valueOf(i + " "))
+                .mapToObj(i -> i + " ")
                 .collect(Collectors.toList());
 
         try {

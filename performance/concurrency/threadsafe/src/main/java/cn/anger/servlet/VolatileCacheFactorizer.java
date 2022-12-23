@@ -15,6 +15,7 @@ import java.math.BigInteger;
 public class VolatileCacheFactorizer extends Factorizer {
     private volatile OneValueCache cache =
         new OneValueCache(null, new BigInteger[0]);
+
     @Override
     public void service(ServletRequest req, ServletResponse res) {
         BigInteger i = extractFromRequest(req);

@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static objects.ObjectTransformer.fromSourceToTargetObject;
+import static cn.anger.objects.ObjectTransformer.*;
 
 /**
  * author : liuanglin

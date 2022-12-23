@@ -33,4 +33,11 @@ public class Factorizer extends GenericServlet {
         }
     }
 
+    void encodeError(ServletResponse response, String errMsg) {
+        try (PrintWriter writer = response.getWriter()) {
+            writer.write("Server err : " + errMsg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

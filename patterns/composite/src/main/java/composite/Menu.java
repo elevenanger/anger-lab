@@ -7,11 +7,10 @@ import java.util.List;
  * author : liuanglin
  * date : 2022/8/11 22:49
  * description : 菜单
- * 节点 继承 Component 类
+ * 节点继承 Component 类
  */
 public class Menu extends MenuComponent {
     private final List<MenuComponent> menuComponents;
-
     private final String name;
     private final String desc;
 

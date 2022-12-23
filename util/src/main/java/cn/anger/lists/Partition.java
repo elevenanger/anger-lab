@@ -1,4 +1,4 @@
-package lists;
+package cn.anger.lists;
 
 import java.util.*;
 import java.util.function.*;

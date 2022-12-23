@@ -1,4 +1,4 @@
-package objects;
+package cn.anger.objects;
 
 import org.springframework.beans.BeanUtils;
 

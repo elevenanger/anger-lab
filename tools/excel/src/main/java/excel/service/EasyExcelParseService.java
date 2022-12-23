@@ -1,6 +1,5 @@
 package excel.service;
 
-import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static objects.ObjectTransformer.batchTrans;
+import static cn.anger.objects.ObjectTransformer.batchTrans;
 
 /**
  * author : liuanglin
@@ -45,12 +44,12 @@ public class EasyExcelParseService {
             .doRead();
     }
 
-    public void write_excel(String fileName, Supplier<Collection<?>> data) {
+    public void writeExcel(String fileName, Supplier<Collection<?>> data) {
         try (ExcelWriter writer =
-                 EasyExcel.write(fileName, ExcelDataBO.class)
+                 EasyExcelFactory.write(fileName, ExcelDataBO.class)
                      .excelType(ExcelTypeEnum.XLSX)
                      .build()){
-            WriteSheet writeSheet = EasyExcel.writerSheet("test").build();
+            WriteSheet writeSheet = EasyExcelFactory.writerSheet("test").build();
             writer.write(data.get(), writeSheet);
         }
     }

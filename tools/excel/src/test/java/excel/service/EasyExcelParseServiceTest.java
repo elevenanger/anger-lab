@@ -36,7 +36,7 @@ class EasyExcelParseServiceTest {
     @Test
     void testWrite() {
         log.info(fileName);
-        service.write_excel(fileName, genList);
+        service.writeExcel(fileName, genList);
     }
 
     @Test

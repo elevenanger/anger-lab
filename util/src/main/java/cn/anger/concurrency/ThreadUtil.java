@@ -11,7 +11,8 @@ import java.util.stream.Stream;
  * @author : anger
  */
 public class ThreadUtil {
-    private final static long TICK_TIME = 50;
+    private ThreadUtil() {}
+    private static final long TICK_TIME = 50;
 
     /**
      * 线程休眠
@@ -21,7 +22,7 @@ public class ThreadUtil {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -32,7 +33,7 @@ public class ThreadUtil {
         try {
             Thread.sleep(TICK_TIME);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -59,7 +60,7 @@ public class ThreadUtil {
             try {
                 thread.join();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -69,7 +70,7 @@ public class ThreadUtil {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -78,16 +79,22 @@ public class ThreadUtil {
      * @param threads 线程列表
      */
     public static void startAndJoin(List<Thread> threads) {
+        // 开始执行和结束执行的 latch
+        // startGate count 设置为 1
         CountDownLatch startGate = new CountDownLatch(1);
+        // endGate count 设置为线程数
         CountDownLatch endGate = new CountDownLatch(threads.size());
 
+        // Thread.start 表示执行开始
+        // 计时，startGate countDown
         threads.forEach(Thread::start);
-
         long start = System.nanoTime();
         startGate.countDown();
 
         for (Thread thread : threads) {
             try {
+                // 每一个线程完成 join
+                // endGate countDown
                 thread.join();
                 endGate.countDown();
             } catch (InterruptedException e) {
@@ -96,13 +103,14 @@ public class ThreadUtil {
         }
 
         try {
+            // 等待所有线程 join ，count 减少到 0
             endGate.await();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
 
         long end = System.nanoTime();
-        System.out.printf("time elapsed => %.2f ms\n", (float) (end - start) / 1_000_000);
+        System.out.printf("time elapsed => %.2f ms%n", (float) (end - start) / 1_000_000);
     }
 
     public static void startAndJoin(Thread ... threads) {

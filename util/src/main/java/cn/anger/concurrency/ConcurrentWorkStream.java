@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * @author : anger
  */
 public class ConcurrentWorkStream {
-    private ConcurrentWorkStream() {};
+    private ConcurrentWorkStream() {}
     private final List<Thread> workers = new ArrayList<>();
     private Runnable task;
     private int workload;
@@ -30,7 +30,7 @@ public class ConcurrentWorkStream {
         return Arrays.stream(tasks)
             .map(ConcurrentWorkStream::commonWorkStream)
             .reduce(ConcurrentWorkStream::merge)
-            .get();
+            .orElseThrow(RuntimeException::new);
     }
 
     public static ConcurrentWorkStream singleWorkStream(Runnable task) {
@@ -48,7 +48,7 @@ public class ConcurrentWorkStream {
         return Arrays.stream(tasks)
             .map(ConcurrentWorkStream::singleWorkStream)
             .reduce(ConcurrentWorkStream::merge)
-            .get();
+            .orElseThrow(RuntimeException::new);
     }
 
     public ConcurrentWorkStream withWorkLoadConfig(WorkLoadConfig config) {
@@ -102,14 +102,12 @@ public class ConcurrentWorkStream {
         return this;
     }
 
-    private ConcurrentWorkStream setWorkLoad(int workload) {
+    private void setWorkLoad(int workload) {
         this.workload = workload;
-        return this;
     }
 
-    private ConcurrentWorkStream setWorkerAmount(Integer workerAmount) {
+    private void setWorkerAmount(Integer workerAmount) {
         this.workerAmount = workerAmount;
-        return this;
     }
 
     public List<Thread> getWorkers() {
@@ -132,13 +130,21 @@ public class ConcurrentWorkStream {
         }
     }
 
+    /**
+     * worker 参数配置类
+     */
     public static class WorkLoadConfig {
+        // worker 数量
         private final int workerAmount;
+        // 工作量
         private final int workload;
+        // 标准的单线程配置
         public static final WorkLoadConfig Single =
             new WorkLoadConfig(1, 1);
+        // 中等线程配置
         public static final WorkLoadConfig Standard =
             new WorkLoadConfig(10, 100);
+        // 多线程配置
         public static final WorkLoadConfig Heavy =
             new WorkLoadConfig(20, 10_000);
         public WorkLoadConfig(int workerAmount, int workload) {

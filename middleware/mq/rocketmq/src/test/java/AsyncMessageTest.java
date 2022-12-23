@@ -69,8 +69,7 @@ class AsyncMessageTest extends RocketMQTest {
                     log.info("消息发送失败：{}", messageText);
                 }
             });
-        } catch (MQClientException | RemotingException |
-                 InterruptedException e) {
+        } catch (MQClientException | RemotingException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

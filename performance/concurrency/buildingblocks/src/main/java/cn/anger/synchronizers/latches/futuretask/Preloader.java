@@ -1,10 +1,11 @@
 package cn.anger.synchronizers.latches.futuretask;
 
+import cn.anger.exception.LaunderThrowable;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -15,12 +16,7 @@ import java.util.concurrent.FutureTask;
  */
 public class Preloader {
     private final FutureTask<ProductInfo> future =
-        new FutureTask<>(new Callable<ProductInfo>() {
-            @Override
-            public ProductInfo call() throws DataloadException{
-                return loadProductInfo();
-            }
-        });
+        new FutureTask<>(this::loadProductInfo);
     private final Thread thread = new Thread(future);
 
     public void start() { thread.start(); }
@@ -34,7 +30,7 @@ public class Preloader {
             if (cause instanceof DataloadException)
                 throw (DataloadException) cause;
             else
-                throw launderThrowable(cause);
+                throw LaunderThrowable.launderThrowable(cause);
         }
     }
 
@@ -50,15 +46,6 @@ public class Preloader {
             throw new DataloadException(e.getMessage());
         }
         return productInfo;
-    }
-
-    public static RuntimeException launderThrowable(Throwable t) {
-        if (t instanceof RuntimeException)
-            return (RuntimeException) t;
-        else if (t instanceof Error)
-            throw (Error) t;
-        else
-            throw new IllegalStateException("Not checked", t);
     }
 
 }

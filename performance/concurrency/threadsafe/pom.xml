@@ -33,6 +33,11 @@
             <artifactId>sharingobjects</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>cn.anger</groupId>
+            <artifactId>buildingblocks</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

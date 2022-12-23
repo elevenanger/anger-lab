@@ -1,4 +1,4 @@
-package base;
+package cn.anger.base;
 
 import lombok.Data;
 

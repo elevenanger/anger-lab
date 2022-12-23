@@ -18,6 +18,7 @@
         <module>common</module>
         <module>sharingobjects</module>
         <module>buildingblocks</module>
+        <module>taskexecution</module>
     </modules>
 
     <properties>
