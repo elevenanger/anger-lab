@@ -1,5 +1,6 @@
 package lists;
 
+import cn.anger.lists.Partition;
 import com.google.common.collect.Lists;
 import org.openjdk.jmh.annotations.*;
 

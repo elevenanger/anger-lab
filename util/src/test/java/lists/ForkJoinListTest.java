@@ -1,7 +1,8 @@
 package lists;
 
-import base.BaseResult;
-import base.SingleInt;
+import cn.anger.base.BaseResult;
+import cn.anger.base.SingleInt;
+import cn.anger.lists.ForkJoinList;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ class ForkJoinListTest {
 
     @Test
     void test() {
-        ForkJoinTask<List<BaseResult>> results = new ForkJoinList<>(list,l -> l.forEach(System.out::println));
+        ForkJoinTask<List<BaseResult>> results = new ForkJoinList<>(list, l -> l.forEach(System.out::println));
         results.invoke().forEach(result -> log.info(String.valueOf(result.isResult())));
     }
 

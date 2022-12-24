@@ -1,5 +1,6 @@
 package lists;
 
+import cn.anger.lists.Partition;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
