@@ -20,12 +20,13 @@ public class TaskExecutionWebServer {
         Executors.newFixedThreadPool(N_THREADS);
 
     public static void main(String[] args) throws IOException {
-        ServerSocket server = new ServerSocket(8083);
-        while (true) {
-            final Socket connection = server.accept();
-            // 主线程提交任务，线程池中的线程消费任务执行任务逻辑
-            exec.execute(() ->
-                SocketUtil.handleConnection(connection, "Task execution server", 5));
+        try (ServerSocket server = new ServerSocket(8083)) {
+            while (true) {
+                final Socket connection = server.accept();
+                // 主线程提交任务，线程池中的线程消费任务执行任务逻辑
+                exec.execute(() ->
+                    SocketUtil.handleConnection(connection, "Task execution server", 5));
+            }
         }
     }
 }

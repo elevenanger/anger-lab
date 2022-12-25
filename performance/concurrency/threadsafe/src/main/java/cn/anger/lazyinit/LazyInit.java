@@ -7,5 +7,5 @@ public abstract class LazyInit<T> {
 
     protected T expensiveInstance = null;
 
-    abstract public T getInstance();
+    abstract T getInstance();
 }

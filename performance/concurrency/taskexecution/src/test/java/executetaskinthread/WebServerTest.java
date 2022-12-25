@@ -14,19 +14,25 @@ class WebServerTest {
     @Test
     void testSingleThreadWebServer() {
         ConcurrentWorkStream.commonWorkStream(() ->
-            SocketUtil.socketClient(PROXY, 8081)).doWork();
+            SocketUtil.socketClient(PROXY, 8081, "test")).doWork();
     }
 
     @Test
     void testThreadPerTaskWebServer() {
         ConcurrentWorkStream.commonWorkStream(() ->
-            SocketUtil.socketClient(PROXY, 8082)).doWork();
+            SocketUtil.socketClient(PROXY, 8082, "test")).doWork();
     }
 
     @Test
     void testExecutionWebServer() {
         ConcurrentWorkStream.commonWorkStream(() ->
-            SocketUtil.socketClient(PROXY, 8083)).doWork();
+            SocketUtil.socketClient(PROXY, 8083, "test\n")).doWork();
+    }
+
+    @Test
+    void testLifeCycleWebServer() {
+        ConcurrentWorkStream.singleWorkStream(() ->
+            SocketUtil.socketClient(PROXY, 8084, "test")).doWork();
     }
 
 }

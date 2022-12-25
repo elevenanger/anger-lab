@@ -3,11 +3,9 @@ package cn.anger.net;
 import cn.anger.concurrency.ThreadUtil;
 import cn.anger.exception.LaunderThrowable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.function.Predicate;
 
 /**
  * @author : anger
@@ -21,10 +19,14 @@ public class SocketUtil {
      * @param proxy server 地址
      * @param port 端口
      */
-    public static void socketClient(String proxy, int port) {
+    public static void socketClient(String proxy, int port, String msg) {
         try (Socket socket = new Socket(proxy, port);
-             BufferedReader reader = new BufferedReader(
-                 new InputStreamReader(socket.getInputStream()))){
+             PrintWriter writer = new PrintWriter(
+                 socket.getOutputStream())){
+            writer.write(msg);
+            writer.flush();
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(socket.getInputStream()));
             reader.lines().forEach(System.out::println);
         } catch (IOException e) {
             throw LaunderThrowable.launderThrowable(e.getCause());
@@ -45,10 +47,42 @@ public class SocketUtil {
             connection.getInetAddress().getHostAddress(),
             Thread.currentThread().getName());
 
+        try (InputStream inputStream = connection.getInputStream();
+                OutputStream outputStream = connection.getOutputStream()){
+            readInput(inputStream);
+            writeOutput(outputStream, msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 读取服务器收到的客户端发送的数据
+     * @param connection socket 连接
+     */
+    private static void readInput(InputStream inputStream) {
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream))) {
+            reader.lines().forEach(System.out::println);
+        } catch (IOException e) {
+            throw LaunderThrowable.launderThrowable(e.getCause());
+        }
+    }
+
+    private static void writeOutput(OutputStream outputStream, String msg) {
         try (PrintWriter writer = new PrintWriter(
-            connection.getOutputStream())){
+            outputStream)){
             writer.write(msg);
             writer.flush();
+        }
+    }
+
+    public static boolean readCommand(InputStream inputStream, String command) {
+        final Predicate<String> matchCommand = s -> s.contains(command);
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream))) {
+            return reader.lines().anyMatch(matchCommand);
         } catch (IOException e) {
             throw LaunderThrowable.launderThrowable(e.getCause());
         }
