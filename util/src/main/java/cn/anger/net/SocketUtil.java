@@ -21,15 +21,15 @@ public class SocketUtil {
      */
     public static void socketClient(String proxy, int port, String msg) {
         try (Socket socket = new Socket(proxy, port);
-             PrintWriter writer = new PrintWriter(
-                 socket.getOutputStream())){
-            writer.write(msg);
-            writer.flush();
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(socket.getInputStream()));
-            reader.lines().forEach(System.out::println);
-        } catch (IOException e) {
-            throw LaunderThrowable.launderThrowable(e.getCause());
+                BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+                PrintWriter writer = new PrintWriter(socket.getOutputStream())) {
+                    writer.write(msg);
+                    writer.flush();
+                    socket.shutdownOutput();
+                    reader.lines().forEach(System.out::println);
+            } catch (IOException e) {
+                throw LaunderThrowable.launderThrowable(e.getCause());
         }
     }
 
@@ -47,44 +47,20 @@ public class SocketUtil {
             connection.getInetAddress().getHostAddress(),
             Thread.currentThread().getName());
 
-        try (InputStream inputStream = connection.getInputStream();
-                OutputStream outputStream = connection.getOutputStream()){
-            readInput(inputStream);
-            writeOutput(outputStream, msg);
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+            PrintWriter writer = new PrintWriter(connection.getOutputStream())){
+            reader.lines().forEach(System.out::println);
+            writer.write(msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    /**
-     * 读取服务器收到的客户端发送的数据
-     * @param connection socket 连接
-     */
-    private static void readInput(InputStream inputStream) {
-        try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(inputStream))) {
-            reader.lines().forEach(System.out::println);
-        } catch (IOException e) {
-            throw LaunderThrowable.launderThrowable(e.getCause());
-        }
-    }
-
-    private static void writeOutput(OutputStream outputStream, String msg) {
-        try (PrintWriter writer = new PrintWriter(
-            outputStream)){
-            writer.write(msg);
-            writer.flush();
-        }
-    }
-
-    public static boolean readCommand(InputStream inputStream, String command) {
+    public static boolean matchCommand(InputStream inputStream, String command) {
         final Predicate<String> matchCommand = s -> s.contains(command);
-        try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(inputStream))) {
-            return reader.lines().anyMatch(matchCommand);
-        } catch (IOException e) {
-            throw LaunderThrowable.launderThrowable(e.getCause());
-        }
+        BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream));
+        return reader.lines().anyMatch(matchCommand);
     }
 }

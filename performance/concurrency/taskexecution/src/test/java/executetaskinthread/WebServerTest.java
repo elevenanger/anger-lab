@@ -31,8 +31,14 @@ class WebServerTest {
 
     @Test
     void testLifeCycleWebServer() {
-        ConcurrentWorkStream.singleWorkStream(() ->
+        ConcurrentWorkStream.commonWorkStream(() ->
             SocketUtil.socketClient(PROXY, 8084, "test")).doWork();
+    }
+
+    @Test
+    void testShutDownLifeCycleWebServer() {
+        ConcurrentWorkStream.singleWorkStream(() ->
+            SocketUtil.socketClient(PROXY, 8084, "quit")).doWork();
     }
 
 }

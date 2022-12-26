@@ -1,8 +1,11 @@
 package executorframework;
 
-import cn.anger.net.SocketUtil;
+import cn.anger.concurrency.ThreadUtil;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -19,19 +22,32 @@ public class LifeCycleWebServer {
 
     public void start() throws IOException {
         try (ServerSocket server = new ServerSocket(8084)) {
+            // 检查 exec 状态
             while (!exec.isShutdown()) {
                 try {
                     final Socket connection = server.accept();
                     exec.execute(() -> {
-                        try {
-                            if (SocketUtil.readCommand(connection.getInputStream(), "shutdown"))
-                                stop();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                            ThreadUtil.sleep(5);
 
-                        SocketUtil.handleConnection(connection, "Life Cycle Server", 5);
-                    });
+                            System.out.printf("Request from => %s, handled by => %s%n",
+                                connection.getInetAddress().getHostAddress(),
+                                Thread.currentThread().getName());
+
+                            try (
+                                BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(connection.getInputStream()));
+                                PrintWriter writer = new PrintWriter(connection.getOutputStream())){
+                                reader.lines()
+                                    .forEach(line -> {
+                                        if (line.contains("quit"))
+                                            stop();
+                                        System.out.println(line);
+                                    });
+                                writer.write("Life Cycle Web Server");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
                 } catch (RejectedExecutionException e) {
                     if (!exec.isShutdown())
                         System.err.printf("task submission rejected %s", e);
@@ -41,6 +57,7 @@ public class LifeCycleWebServer {
     }
 
     public void stop() {
+        System.out.println("shutting down...");
         exec.shutdown();
     }
 
