@@ -16,7 +16,7 @@ public class FileCrawler implements Runnable {
     public FileCrawler(BlockingQueue<File> fileQueue, FileFilter fileFilter, File root) {
         this.fileQueue = fileQueue;
         this.root = root;
-        this.fileFilter = f -> f.isDirectory() || fileFilter.accept(f);
+        this.fileFilter = f -> f.isDirectory() && fileFilter.accept(f);
     }
 
     private boolean alreadyIndexed(File file) {

@@ -20,6 +20,7 @@
         <module>buildingblocks</module>
         <module>taskexecution</module>
         <module>cancellationandshutdown</module>
+        <module>applyingthreadpool</module>
     </modules>
 
     <properties>
