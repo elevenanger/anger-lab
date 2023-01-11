@@ -10,6 +10,5 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 public class SyncProducer {
     public static void main(String[] args) {
         DefaultMQProducer producer = new DefaultMQProducer("sync_producer");
-
     }
 }
