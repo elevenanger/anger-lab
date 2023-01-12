@@ -12,15 +12,22 @@ public class CustomizeThreadPoolExecutor {
     private CustomizeThreadPoolExecutor() {}
 
     public static ThreadPoolExecutor customizeThreadPool() {
-        Executors.newSingleThreadExecutor();
         return new ThreadPoolExecutor(
-            1,
+            5,
             Runtime.getRuntime().availableProcessors(),
             1000,
             TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1000),
             new FixedSizeThreadFactory(10),
             new ThreadPoolExecutor.AbortPolicy()
+        );
+    }
+
+    public static ThreadPoolExecutor customizeSingleThreadPool() {
+        return new ThreadPoolExecutor(
+            1, 1,
+            100, TimeUnit.MILLISECONDS,
+            new ArrayBlockingQueue<>(1)
         );
     }
 
