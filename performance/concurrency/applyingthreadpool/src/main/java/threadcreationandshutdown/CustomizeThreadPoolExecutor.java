@@ -1,5 +1,8 @@
 package threadcreationandshutdown;
 
+import extendingthreadpool.TimingThreadPool;
+import threadfactory.MyThreadFactory;
+
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,6 +31,17 @@ public class CustomizeThreadPoolExecutor {
             1, 1,
             100, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(1)
+        );
+    }
+
+    public static ThreadPoolExecutor newTimingThreadPool() {
+        return new TimingThreadPool(
+            5,
+            10,
+            100, TimeUnit.MILLISECONDS,
+            new ArrayBlockingQueue<>(100),
+            new MyThreadFactory("timing thread"),
+            new ThreadPoolExecutor.DiscardPolicy()
         );
     }
 
