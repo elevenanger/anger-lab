@@ -21,6 +21,7 @@
         <module>taskexecution</module>
         <module>cancellationandshutdown</module>
         <module>applyingthreadpool</module>
+        <module>guiapplication</module>
     </modules>
 
     <properties>
