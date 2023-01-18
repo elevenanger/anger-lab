@@ -22,6 +22,7 @@
         <module>cancellationandshutdown</module>
         <module>applyingthreadpool</module>
         <module>guiapplication</module>
+        <module>livenesshazard</module>
     </modules>
 
     <properties>
