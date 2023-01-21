@@ -23,6 +23,7 @@
         <module>applyingthreadpool</module>
         <module>guiapplication</module>
         <module>livenesshazard</module>
+        <module>scalability</module>
     </modules>
 
     <properties>
