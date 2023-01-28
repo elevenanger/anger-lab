@@ -51,6 +51,12 @@ public class ConcurrentWorkStream {
             .orElseThrow(RuntimeException::new);
     }
 
+    public static ConcurrentWorkStream heavyWorkStream(Runnable task) {
+        return ConcurrentWorkStream.initialize()
+            .withWorkLoadConfig(WorkLoadConfig.Heavy)
+            .setTask(task);
+    }
+
     public ConcurrentWorkStream withWorkLoadConfig(WorkLoadConfig config) {
         setWorkLoad(config.workload);
         setWorkerAmount(config.workerAmount);
