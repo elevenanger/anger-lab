@@ -24,6 +24,7 @@
         <module>guiapplication</module>
         <module>livenesshazard</module>
         <module>scalability</module>
+        <module>testconcurrentprogramm</module>
     </modules>
 
     <properties>

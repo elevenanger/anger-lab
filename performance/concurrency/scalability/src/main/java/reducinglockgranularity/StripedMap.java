@@ -49,7 +49,6 @@ public class StripedMap<K, V> {
                 oldValue = buckets[hash % N_LOCKS].value;
             buckets[hash % N_LOCKS] = newNode;
         }
-
         return oldValue;
     }
 
