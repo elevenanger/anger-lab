@@ -16,10 +16,14 @@ public class Random {
         return xorShift(seed);
     }
 
+    public static int getRandomWithLimit(int limit) {
+        return getRandom() % limit;
+    }
+
     private static int xorShift(int y) {
         y ^= (y << 6);
         y ^= (y >>> 21);
         y ^= (y << 7);
-        return y;
+        return Math.abs(y);
     }
 }
