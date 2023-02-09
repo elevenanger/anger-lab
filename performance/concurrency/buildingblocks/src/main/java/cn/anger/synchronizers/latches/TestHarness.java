@@ -11,16 +11,13 @@ public class TestHarness {
         final CountDownLatch end = new CountDownLatch(nThreads);
 
         for (int i = 0; i < nThreads; i++) {
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        task.run();
-                    } finally {
-                        end.countDown();
-                    }
+            Thread thread = new Thread(() -> {
+                try {
+                    task.run();
+                } finally {
+                    end.countDown();
                 }
-            };
+            });
             thread.start();
         }
         long startTime = System.nanoTime();
