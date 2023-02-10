@@ -27,6 +27,7 @@
         <module>testconcurrentprogramm</module>
         <module>explicitlocks</module>
         <module>customsynchronizers</module>
+        <module>nonblocking</module>
     </modules>
 
     <properties>
