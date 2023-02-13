@@ -3,6 +3,8 @@ package cn.anger.concurrency;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -157,6 +159,37 @@ public class ConcurrentWorkStream {
             this.workerAmount = workerAmount;
             this.workload = workload;
         }
+
+        @Override
+        public String toString() {
+            return "WorkLoadConfig{" +
+                "workerAmount=" + workerAmount +
+                ", workload=" + workload +
+                '}';
+        }
+    }
+
+    public static void simpleBenchmark(final Runnable task, String desc) {
+        System.out.println(desc + " : ");
+        Semaphore semaphore = new Semaphore(1);
+        final Consumer<WorkLoadConfig> consumer =
+            config -> {
+                try {
+                    System.out.println(config);
+                    semaphore.acquire();
+                    initialize()
+                        .withWorkLoadConfig(config)
+                        .setTask(task)
+                        .doWork();
+                    semaphore.release();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            };
+
+        consumer.accept(WorkLoadConfig.Single);
+        consumer.accept(WorkLoadConfig.Standard);
+        consumer.accept(WorkLoadConfig.Heavy);
     }
 
 }
