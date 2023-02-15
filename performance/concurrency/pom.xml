@@ -28,6 +28,7 @@
         <module>explicitlocks</module>
         <module>customsynchronizers</module>
         <module>nonblocking</module>
+        <module>jmm</module>
     </modules>
 
     <properties>
