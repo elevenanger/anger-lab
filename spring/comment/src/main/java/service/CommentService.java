@@ -5,7 +5,7 @@ import proxies.CommentNotificationProxy;
 import repositories.CommentRepository;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/16 20:31
  * description : 评论服务类
  * 依赖评论持久化对象 CommentRepository

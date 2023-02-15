@@ -7,7 +7,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Objects;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/12 12:07
  * description : 机器
  * 状态模式：

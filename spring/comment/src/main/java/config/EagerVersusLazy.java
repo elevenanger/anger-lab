@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import repositories.DBCommentRepository;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/18 08:26
  * description : 比较热初始化和惰性初始化
  */

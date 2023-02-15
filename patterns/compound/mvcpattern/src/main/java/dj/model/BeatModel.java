@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/17 09:07
  */
 public class BeatModel implements BeatModelInterface, Runnable {
@@ -21,7 +21,7 @@ public class BeatModel implements BeatModelInterface, Runnable {
     @Override
     public void initialize() {
         try {
-            File resource = new File("/Users/liuanglin/data/bsj.wav");
+            File resource = new File("/Users/anger/data/bsj.wav");
             clip = (Clip) AudioSystem.getLine(new Line.Info(Clip.class));
             clip.open(AudioSystem.getAudioInputStream(resource));
         } catch (UnsupportedAudioFileException |

@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 12:02
  * description : GumballMachine 远程服务
  */

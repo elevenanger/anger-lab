@@ -3,7 +3,7 @@ package dj.view;
 import javax.swing.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/17 09:46
  */
 public class BeatBar extends JProgressBar implements Runnable {

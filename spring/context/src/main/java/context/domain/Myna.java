@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/15 18:47
  * description : 八哥 - 演示 Spring Component 注解
  * 往 spring context 添加 Bean

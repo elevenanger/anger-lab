@@ -6,7 +6,7 @@ import state.remote.GumballMachineRemote;
 
 import java.rmi.Naming;
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 12:41
  * description : GumballMachine 远程调用客户端测试
  */

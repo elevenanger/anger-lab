@@ -3,7 +3,7 @@ package mvc.model;
 import lombok.Data;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/22 14:35
  * description : 商品类
  */

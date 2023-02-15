@@ -3,7 +3,7 @@ package dynamic;
 import java.util.function.BiFunction;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/15 08:25
  * description : Person 接口实现类
  */

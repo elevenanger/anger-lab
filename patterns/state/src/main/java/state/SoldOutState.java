@@ -3,7 +3,7 @@ package state;
 import java.io.Serializable;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/12 10:52
  * description : 售罄状态
  */

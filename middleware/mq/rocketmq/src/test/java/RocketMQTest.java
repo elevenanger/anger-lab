@@ -1,5 +1,5 @@
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 17:14
  * description : RocketMQ 测试基础信息
  */

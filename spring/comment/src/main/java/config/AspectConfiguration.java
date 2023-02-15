@@ -10,7 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import service.SimpleCommentService;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/19 14:52
  * description : 面向切面编程相关配置
  * 注解 @EnableAspectJAutoProxy 在应用开启切面机制

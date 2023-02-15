@@ -8,7 +8,7 @@ import rest.exception.ErrorDetail;
 import rest.exception.NotEnoughMoneyException;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/23 17:43
  * description : 处理异常流程
  * 注解 @RestControllerAdvice 标记该类为一个 Rest controller advice

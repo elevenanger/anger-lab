@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/23 15:47
  * description : Rest 应用入口
  */

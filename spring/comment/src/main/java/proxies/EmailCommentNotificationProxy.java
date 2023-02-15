@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/16 20:27
  * description : 评论代理接口实现类
  * 定义具体的行为

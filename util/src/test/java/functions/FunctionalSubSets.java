@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/14 14:09
  * description : 求集合的子集，比较函数式和命令式思想之间的区别
  */

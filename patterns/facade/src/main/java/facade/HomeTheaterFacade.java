@@ -1,7 +1,7 @@
 package facade;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/6 21:05
  * description : 门面模式
  * 联合系统中系统众多的接口

@@ -1,7 +1,7 @@
 package duck.entity;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 08:53
  * description : 鹅
  */

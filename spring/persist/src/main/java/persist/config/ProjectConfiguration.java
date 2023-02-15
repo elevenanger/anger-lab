@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/25 15:26
  * description : 项目配置类
  */

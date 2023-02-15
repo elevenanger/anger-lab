@@ -6,7 +6,7 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/28 15:04
  * description : 使用 JMH 做基准测试
  */

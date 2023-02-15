@@ -1,7 +1,7 @@
 package adapter;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/5 21:01
  * description : 适配器模式
  * 将一个接口类型转换成另一个实际能够完成客户端期望操作的接口类型

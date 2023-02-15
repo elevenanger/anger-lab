@@ -3,7 +3,7 @@ package sync;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 17:04
  * description : rocketmq 同步模式生产者
  */

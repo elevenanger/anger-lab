@@ -3,7 +3,7 @@ package duck.factory;
 import duck.ability.Quackable;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 09:52
  * description : Duck 抽象工厂
  */

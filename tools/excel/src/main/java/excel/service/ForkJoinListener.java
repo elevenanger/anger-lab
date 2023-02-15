@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/26 21:03
  * description : 使用递归多线程处理数据
  */

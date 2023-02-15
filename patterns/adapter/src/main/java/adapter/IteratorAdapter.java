@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/6 16:32
  * description : Iterator 适配器
  * 使用 Enumeration 适配 Iterator

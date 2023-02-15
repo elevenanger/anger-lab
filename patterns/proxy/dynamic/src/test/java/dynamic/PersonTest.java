@@ -11,7 +11,7 @@ import static dynamic.NonOwnerInvocationHandler.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/15 11:34
  * description : 动态代理测试
  */

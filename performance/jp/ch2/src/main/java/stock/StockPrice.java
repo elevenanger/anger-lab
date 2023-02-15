@@ -1,7 +1,7 @@
 package stock;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/28 18:36
  * description : 股价
  */

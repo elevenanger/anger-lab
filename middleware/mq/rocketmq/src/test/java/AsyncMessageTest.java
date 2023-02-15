@@ -17,7 +17,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 17:18
  * description : 同步信息测试
  */

@@ -3,7 +3,7 @@ package state;
 import java.io.Serializable;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/12 10:48
  * description : 状态模式
  * 定义状态接口

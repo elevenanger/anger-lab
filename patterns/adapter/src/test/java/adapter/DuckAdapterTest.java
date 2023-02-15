@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/5 21:26
  * description : Duck 适配器测试
  */

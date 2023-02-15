@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/8 15:51
  */
 class PartitionTest {

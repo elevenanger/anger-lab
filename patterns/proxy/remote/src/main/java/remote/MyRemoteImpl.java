@@ -7,7 +7,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/13 21:28
  * description : MyRemote 接口实现类
  * 远程方法的具体实现

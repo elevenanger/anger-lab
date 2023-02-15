@@ -8,7 +8,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/9 19:35
  * description : Function 用法
  * 接收一个泛型 T 类型对象

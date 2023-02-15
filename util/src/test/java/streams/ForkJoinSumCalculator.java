@@ -3,7 +3,7 @@ package streams;
 import java.util.concurrent.RecursiveTask;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/12 18:34
  * description : 并行求和
  */

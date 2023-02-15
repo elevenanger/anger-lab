@@ -7,7 +7,7 @@ import java.lang.reflect.Proxy;
 import java.util.function.UnaryOperator;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/15 08:39
  * description : 不具备权限的 Handler
  * 只能给用户进行打分，不能访问其它方法

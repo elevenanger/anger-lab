@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
- * author : liuanglin
+ * author : anger
  * description : 同步和异步计算比较
  */
 @Slf4j

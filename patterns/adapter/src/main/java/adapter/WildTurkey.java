@@ -1,7 +1,7 @@
 package adapter;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/5 21:00
  * description : Turkey 实现类
  * 野生火鸡

@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/15 15:24
  * description : 测试将 Bean 添加到 spring 上下文中
  */

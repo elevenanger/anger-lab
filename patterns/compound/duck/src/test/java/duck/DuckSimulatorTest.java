@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import static duck.decorator.QuackCounter.getQuackCount;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 08:49
  */
 class DuckTest {

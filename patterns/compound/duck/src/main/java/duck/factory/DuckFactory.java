@@ -7,7 +7,7 @@ import duck.entity.RedHeadDuck;
 import duck.entity.RubberDuck;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 09:55
  * description : Duck 工厂
  */

@@ -6,7 +6,7 @@ import model.Comment;
 import org.springframework.stereotype.Service;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/19 16:08
  * description : 不依赖其它类的简单 service
  */

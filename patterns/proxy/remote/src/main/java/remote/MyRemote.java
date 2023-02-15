@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/13 21:21
  * description : 远程服务接口
  * 定义可以被远程调用的对象类型和方法

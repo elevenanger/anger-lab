@@ -3,7 +3,7 @@ package virtual;
 import java.awt.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 20:26
  * description : 虚拟代理
  * 图标接口

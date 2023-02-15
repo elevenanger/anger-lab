@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/2 20:24
  * description : 对象转换工具类
  */

@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/6 16:34
  * description : 使用适配器模式
  * Enumeration 类型对象

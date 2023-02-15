@@ -3,7 +3,7 @@ package rest.model;
 import lombok.Data;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/23 17:24
  * description : 支付明细
  */

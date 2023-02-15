@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/20 14:16
  * description : spring MVC 应用
  */

@@ -1,7 +1,7 @@
 package adapter;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/5 20:58
  * description : 适配器模式
  */

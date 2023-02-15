@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import provider.model.Payment;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/24 17:42
  * description : payment proxy
  * 定义 payment 接口

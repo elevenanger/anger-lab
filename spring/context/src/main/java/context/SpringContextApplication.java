@@ -7,7 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.util.function.Supplier;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/15 14:49
  * description : spring context 学习应用
  */

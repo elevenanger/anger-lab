@@ -6,7 +6,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import static org.junit.jupiter.api.Assertions.*;
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/17 20:09
  * description : Spring 中的单例 bean 作用域测试
  * 单例是 Spring bean 默认的作用域

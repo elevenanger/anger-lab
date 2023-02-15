@@ -7,7 +7,7 @@ import duck.observer.Observer;
 import duck.observer.QuackObservable;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 08:53
  * description : goose 适配器
  */

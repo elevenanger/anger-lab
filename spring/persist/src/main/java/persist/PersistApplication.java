@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/25 11:13
  * description : 持久化应用
  */

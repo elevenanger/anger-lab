@@ -7,7 +7,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import java.math.BigDecimal;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/25 18:10
  * description : 账户类
  */

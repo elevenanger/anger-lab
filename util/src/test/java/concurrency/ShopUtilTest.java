@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import static concurrency.ShopUtil.*;
 
 /**
- * author : liuanglin
+ * author : anger
  */
 @Slf4j
 class ShopUtilTest {

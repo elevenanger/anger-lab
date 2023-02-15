@@ -5,7 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 21:03
  * description : 图形代理
  * 实现 Subject（Icon） 接口

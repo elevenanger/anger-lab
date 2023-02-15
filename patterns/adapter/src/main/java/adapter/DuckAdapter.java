@@ -1,7 +1,7 @@
 package adapter;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/5 21:23
  * description : Duck 适配器
  * 将 Turkey 转换成 Duck

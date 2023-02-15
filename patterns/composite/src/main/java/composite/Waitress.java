@@ -1,7 +1,7 @@
 package composite;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/11 22:54
  */
 public class Waitress {

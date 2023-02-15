@@ -1,7 +1,7 @@
 package concurrency;
 
 /**
- * author : liuanglin
+ * author : anger
  * description : 折扣信息
  */
 public class Quote {

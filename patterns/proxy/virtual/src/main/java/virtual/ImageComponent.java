@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 20:54
  * description : 图形
  */

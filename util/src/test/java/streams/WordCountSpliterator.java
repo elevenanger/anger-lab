@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/13 08:31
  * description : 单词分片计数器
  */

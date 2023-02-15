@@ -1,7 +1,7 @@
 package concurrency;
 
 /**
- * author : liuanglin
+ * author : anger
  * description : 商品折扣类
  */
 public class Discount {

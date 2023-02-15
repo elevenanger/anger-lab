@@ -7,7 +7,7 @@ import proxies.CommentNotificationProxy;
 import repositories.CommentRepository;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/17 10:46
  * description : 从实例域进行依赖注入
  */

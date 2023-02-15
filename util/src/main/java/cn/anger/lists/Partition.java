@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/8 15:17
  * description : List 分区工具类
  */

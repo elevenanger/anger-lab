@@ -10,7 +10,7 @@ import repositories.DBCommentRepository;
 import service.CommentService;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/17 13:59
  * description : 演示通过配置文件进行 bean 注入
  */

@@ -4,7 +4,7 @@ import dj.model.BeatModelInterface;
 import dj.view.DJView;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/17 11:14
  */
 public class BeatController implements ControllerInterface {

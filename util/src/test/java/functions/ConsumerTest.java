@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.function.Consumer;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/9 19:19
  * description : Consumer 用法测试
  * 接收任意类型对象

@@ -4,7 +4,7 @@ import duck.ability.Quackable;
 import duck.observer.Observer;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 09:27
  * description : 统计鸭子的叫声数量
  */

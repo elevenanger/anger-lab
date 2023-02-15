@@ -8,7 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/16 15:42
  * description : @Autowired 注解测试
  */

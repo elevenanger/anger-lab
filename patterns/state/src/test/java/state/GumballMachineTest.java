@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/12 20:37
  * description : 状态模式测试
  */

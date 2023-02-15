@@ -1,7 +1,7 @@
 package composite;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/11 21:36
  * description : 菜单元素接口
  * 组合模式：

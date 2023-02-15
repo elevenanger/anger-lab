@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/9 18:30
  * description : 测试 Predicate 用法
  */

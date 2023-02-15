@@ -1,7 +1,7 @@
 package dynamic;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/15 08:23
  */
 public interface Person {

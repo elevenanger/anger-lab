@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/7 08:41
  * description : 测试分区收集器
  */

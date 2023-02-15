@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/22 21:31
  * description : 登录用户管理服务
  * 创建并维护 session

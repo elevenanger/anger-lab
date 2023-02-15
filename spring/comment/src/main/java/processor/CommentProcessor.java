@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import repositories.CommentRepository;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/19 09:56
  * description : 处理评论
  * 需要对评论对象进行修改操作

@@ -8,7 +8,7 @@ import persist.model.Purchase;
 import java.util.List;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/25 11:16
  * description : purchase 数据库对象
  * 实现 jdbcTemplate 操作数据库

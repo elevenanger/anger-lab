@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/16 11:40
  * description : Person 类
  * 演示依赖注入 Dependency Injection

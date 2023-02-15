@@ -3,7 +3,7 @@ package facade;
 import org.junit.jupiter.api.Test;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/7 16:25
  * description : 测试 HomeTheaterFacade.watchMovie() 方法
  */

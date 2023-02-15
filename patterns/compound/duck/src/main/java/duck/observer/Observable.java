@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 12:13
  */
 public class Observable implements QuackObservable {

@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 21:14
  * description : 虚拟代理测试
  */

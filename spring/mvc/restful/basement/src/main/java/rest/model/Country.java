@@ -3,7 +3,7 @@ package rest.model;
 import lombok.Data;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/23 16:29
  * description : DTO 对象
  * 经过 rest 端点返回 DTO 实例

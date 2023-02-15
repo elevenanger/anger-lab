@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * author : liuanglin
+ * author : anger
  * description : 异步测试
  */
 @Slf4j

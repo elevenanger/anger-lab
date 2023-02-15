@@ -7,7 +7,7 @@ import repositories.DBCommentRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/18 10:15
  * description : 测试原型作用域 bean 特性
  */

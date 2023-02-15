@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/8 17:14
  * description : 线程池处理器测试
  */

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/17 18:06
  * description : 直接推送评论通知-站内信模式
  * 演示一个接口多个实现的场景下，如何在 spring 上下文中选择正确的实现类的方法

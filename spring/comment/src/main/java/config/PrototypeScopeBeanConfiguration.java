@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import repositories.DBCommentRepository;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/18 08:50
  * description : 原型作用域 bean
  * 同一名称的单例 bean 只会在同一个 spring 上下文中创新一次并只会存在一个

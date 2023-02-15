@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/22 20:49
  * description : 登录处理程序
  * 注解 @RequestScope 是 Spring web 的注解

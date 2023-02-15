@@ -7,7 +7,7 @@ import org.springframework.web.context.annotation.ApplicationScope;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/22 22:00
  * description : 登录计数服务
  * 注解 @ApplicationScope bean

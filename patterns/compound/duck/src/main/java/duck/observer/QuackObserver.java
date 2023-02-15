@@ -1,7 +1,7 @@
 package duck.observer;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 12:22
  * description : 实际的观察者对象
  */

@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/10 10:06
  * description : Comparator 用法测试
  */

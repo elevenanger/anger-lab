@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/15 15:00
  * description : 项目的配置类
  * 使用 @Configuration 注解将该类声明为 spring 配置类

@@ -8,7 +8,7 @@ import repositories.DBCommentRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/18 08:33
  * description : 热初始化与懒初始化的比较
  */

@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 import static cn.anger.objects.ObjectTransformer.batchTrans;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/1 15:31
  * description : 使用 easy Excel 解析文件
  */

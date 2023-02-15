@@ -1,7 +1,7 @@
 package composite;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/11 22:45
  * description : 菜单元素
  * 叶子实现 Component 接口

@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/24 17:54
  * description : 应用配置类
  * 使用注解 @EnableFeignClients 开启 OpenFeign 功能

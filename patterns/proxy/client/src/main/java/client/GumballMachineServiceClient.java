@@ -5,7 +5,7 @@ import state.remote.GumballMachineRemote;
 import java.rmi.RemoteException;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 12:21
  * description : 远程调用 GumballMachine 接口客户端应用
  */

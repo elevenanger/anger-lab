@@ -2,7 +2,7 @@ package duck.observer;
 
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/16 12:06
  * description : 观察者模式
  * 被观察对象接口

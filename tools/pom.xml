@@ -14,6 +14,7 @@
         <module>mvel</module>
         <module>excel</module>
         <module>fastjson</module>
+        <module>seqaws</module>
     </modules>
 
     <artifactId>tools</artifactId>

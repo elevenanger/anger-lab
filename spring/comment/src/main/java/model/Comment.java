@@ -1,7 +1,7 @@
 package model;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/16 20:18
  * description : 评论 POJO
  * POJO 是一个简单的没有依赖的对象

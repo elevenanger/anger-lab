@@ -3,7 +3,7 @@ package provider.model;
 import lombok.Data;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/24 17:22
  * description : payment 类
  */

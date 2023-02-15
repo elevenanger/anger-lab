@@ -5,7 +5,7 @@ import remote.MyRemote;
 import java.rmi.Naming;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/13 22:09
  * description : RMI 服务客户端
  */

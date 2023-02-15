@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/14 11:38
  * description : 实现 Remote 接口，可以注册为远程服务
  * 需要确保接口中的返回对象类型都是可序列化的

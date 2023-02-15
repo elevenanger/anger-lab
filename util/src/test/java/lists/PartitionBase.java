@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/10 20:19
  * description : Partition 基准测试
  */

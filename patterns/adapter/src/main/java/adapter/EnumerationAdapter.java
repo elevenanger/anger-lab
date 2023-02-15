@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/8/6 15:56
  * description : 迭代适配器
  * 实现 Iterator 接口

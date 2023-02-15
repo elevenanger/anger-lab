@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/1 17:39
  * description : Excel 数据对象
  */

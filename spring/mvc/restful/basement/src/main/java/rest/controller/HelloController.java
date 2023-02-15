@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/23 15:50
  * description : RestController
  * 注解 @RestController 标记这个类作为一个 MVC controller

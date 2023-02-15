@@ -11,7 +11,7 @@ import proxies.CommentNotificationProxy;
 import repositories.CommentRepository;
 
 /**
- * author : liuanglin
+ * author : anger
  * date : 2022/7/17 10:12
  * description : 使用 Spring 框架的 CommentService
  * 注解为 @Component 将会被 Spring 实例化并添加到 Spring 上下文中
