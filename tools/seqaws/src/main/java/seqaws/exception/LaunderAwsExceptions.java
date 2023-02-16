@@ -13,8 +13,12 @@ public class LaunderAwsExceptions {
 
     private LaunderAwsExceptions() {}
 
-    public static void launder(AmazonServiceException e) {
-        log.error("status code : {} error code : {} error message : {}",
-                        e.getStatusCode(), e.getErrorCode(), e.getErrorMessage());
+    public static void launder(Throwable e) {
+        if (e instanceof AmazonServiceException) {
+            AmazonServiceException ex = (AmazonServiceException) e;
+            log.error("status code : {} error code : {} error message : {}",
+                ex.getStatusCode(), ex.getErrorCode(), ex.getErrorMessage());
+        } else
+            throw new RuntimeException(e);
     }
 }

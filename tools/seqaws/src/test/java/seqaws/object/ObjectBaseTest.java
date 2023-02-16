@@ -1,10 +1,9 @@
 package seqaws.object;
 
+import cn.anger.concurrency.ConcurrentWorkStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Anger
@@ -17,7 +16,18 @@ class ObjectBaseTest {
     ObjectBase objectBase;
 
     @Test
-    void getObject() {
-        objectBase.getObject("angersbucket", "D.jpeg");
+    void getObjectWithBuffer() {
+        ConcurrentWorkStream
+            .singleWorkStream(() ->
+                objectBase.getObjectWithBuffer("angersbucket", "caozuo.docx", "/Users/liuanglin/data/tmp"))
+            .doWork();
     }
+
+    @Test
+    void getObjectWithNioBuffer() {
+        ConcurrentWorkStream.singleWorkStream(() ->
+                objectBase.getObjectWithNioBuffer("angersbucket", "caozuo.docx", "/Users/liuanglin/data/tmp"))
+            .doWork();
+    }
+
 }

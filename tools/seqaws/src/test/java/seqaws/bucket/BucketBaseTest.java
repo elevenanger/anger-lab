@@ -7,8 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author Anger
  * created on 2023/2/15
@@ -23,5 +21,6 @@ class BucketBaseTest {
     void listObjects() {
         List<S3ObjectSummary> summaries = bucketBase.listObjects("angersbucket", "");
         System.out.println(summaries.size());
+        summaries.forEach(System.out::println);
     }
 }
