@@ -1,10 +1,11 @@
 package osscli.exec;
 
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import osscli.bucket.BucketBase;
 import osscli.object.ObjectBase;
+import osscli.services.aws.SeqAwsBucketService;
+import osscli.services.model.bucket.ListObjectRequest;
+import osscli.services.model.object.ObjectSummary;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,14 +22,16 @@ public class FileDownloader {
     private final ExecutorService exec = Executors.newCachedThreadPool();
     @Autowired
     private ObjectBase objectBase;
-    @Autowired
-    private BucketBase bucketBase;
 
     public void batchDownload(String bucket, String prefix, String downloadPath) {
-        List<S3ObjectSummary> objectSummaryList = bucketBase.listObjects(bucket, prefix);
+        ListObjectRequest request = new ListObjectRequest();
+        request.setBucketName(bucket);
+        request.setPrefix(prefix);
+
+        List<ObjectSummary> objectSummaryList = new SeqAwsBucketService().listObjects(request).getObjectSummaries();
 
         List<Future<?>> futures = objectSummaryList.stream()
-            .map(S3ObjectSummary::getKey)
+            .map(ObjectSummary::getKey)
             .map(key -> exec.submit(() -> objectBase.getObjectWithBuffer(bucket, key, downloadPath)))
             .collect(Collectors.toList());
 

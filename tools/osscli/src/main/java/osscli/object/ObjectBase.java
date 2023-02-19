@@ -1,16 +1,13 @@
 package osscli.object;
 
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import osscli.client.AWSClient;
 import osscli.exception.LaunderAwsExceptions;
+import osscli.services.ClientFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -22,17 +19,9 @@ public class ObjectBase {
 
     private static final int BUFFER_SIZE = 128 * 1024;
 
-    @Autowired
-    private AWSClient s3Client;
-
-    public void putObjectWithFile(String bucketName, String objectName, File file) {
-        PutObjectRequest request = new PutObjectRequest(bucketName, objectName, file);
-        s3Client.getS3Client().putObject(request);
-    }
-
     public void getObjectWithBuffer(String bucketName, String objectName, String dir) {
         GetObjectRequest request = new GetObjectRequest(bucketName, objectName, null);
-        S3Object result = s3Client.getS3Client().getObject(request);
+        S3Object result = ClientFactory.s3Client().getObject(request);
 
         try (BufferedInputStream s3is = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
              BufferedOutputStream fos = new BufferedOutputStream(
@@ -47,7 +36,7 @@ public class ObjectBase {
 
     public void getObjectWithNioBuffer(String bucketName, String objectName, String dir) {
         GetObjectRequest request = new GetObjectRequest(bucketName, objectName, null);
-        S3Object result = s3Client.getS3Client().getObject(request);
+        S3Object result = ClientFactory.s3Client().getObject(request);
 
         try (BufferedInputStream s3is = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
              FileOutputStream fos = new FileOutputStream(Paths.get(dir, objectName).toFile())) {

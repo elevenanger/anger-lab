@@ -14,10 +14,10 @@ import osscli.services.model.ClientConfiguration;
  * 初始化 client 类
  */
 public class SeqAWSClient implements Client<AmazonS3> {
-    private static AmazonS3 s3 = AmazonS3Holder.s3;
+    private static final AmazonS3 s3 = AmazonS3Holder.s3;
 
     private static class AmazonS3Holder {
-        public static AmazonS3 s3 = s3Initializer();
+        private static AmazonS3 s3 = s3Initializer();
 
         public static AmazonS3 s3Initializer() {
             System.out.println("initialize s3 client");

@@ -8,6 +8,7 @@ import osscli.services.aws.SeqAWSClient;
  * client 工厂方法
  */
 public class ClientFactory {
+
     public static AmazonS3 s3Client() {
         return new SeqAWSClient().getClient();
     }

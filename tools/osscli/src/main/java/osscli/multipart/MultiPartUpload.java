@@ -2,9 +2,8 @@ package osscli.multipart;
 
 import com.amazonaws.services.s3.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import osscli.client.AWSClient;
+import osscli.services.ClientFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,16 +12,14 @@ import java.util.List;
 @Component
 @Slf4j
 public class MultiPartUpload {
-    @Autowired
-    private AWSClient s3Client;
 
     public void multiPartUploadObject(String bucketName, String objectName, File file) {
         log.info("Multi part upload  enter");
-        long maxSize = 5 * 1024 * 1024;
+        long maxSize = 5 * 1024 * 1024L;
 
         List<PartETag> partETags = new ArrayList<>();
         InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(bucketName, objectName);
-        InitiateMultipartUploadResult result = s3Client.getS3Client().initiateMultipartUpload(initRequest);
+        InitiateMultipartUploadResult result = ClientFactory.s3Client().initiateMultipartUpload(initRequest);
         String uploadId = result.getUploadId();
 
         long filePosition = 0;
@@ -37,14 +34,14 @@ public class MultiPartUpload {
                 .withBucketName(bucketName)
                 .withKey(objectName)
                 .withUploadId(uploadId);
-            UploadPartResult uploadPartResult = s3Client.getS3Client().uploadPart(partRequest);
+            UploadPartResult uploadPartResult = ClientFactory.s3Client().uploadPart(partRequest);
             partETags.add(uploadPartResult.getPartETag());
             filePosition += partSize;
         }
 
         ListPartsRequest listPartsRequest =
             new ListPartsRequest(bucketName, objectName, uploadId);
-        PartListing listResult = s3Client.getS3Client().listParts(listPartsRequest);
+        PartListing listResult = ClientFactory.s3Client().listParts(listPartsRequest);
         int size = listResult.getParts().size();
         for (int i = 0; i < size; i++) {
             log.info("i:" + i +
@@ -58,7 +55,7 @@ public class MultiPartUpload {
             .withKey(objectName)
             .withUploadId(uploadId)
             .withPartETags(partETags);
-        CompleteMultipartUploadResult result1 = s3Client.getS3Client().completeMultipartUpload(completeRequest);
+        CompleteMultipartUploadResult result1 = ClientFactory.s3Client().completeMultipartUpload(completeRequest);
         log.info("complete eTag:" + result1.getETag());
     }
 }
