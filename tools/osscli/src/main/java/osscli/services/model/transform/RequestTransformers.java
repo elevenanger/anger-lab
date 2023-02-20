@@ -2,6 +2,7 @@ package osscli.services.model.transform;
 
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import osscli.services.model.bucket.ListObjectRequest;
+import osscli.services.model.object.GetObjectRequest;
 import osscli.services.model.object.PutObjectRequest;
 
 /**
@@ -32,4 +33,16 @@ public class RequestTransformers {
             originRequest.getKey(),
             originRequest.getFile()
         );
+
+    public static final RequestTransformer<GetObjectRequest, com.amazonaws.services.s3.model.GetObjectRequest>
+        seqAwsGetObjectRequestTransformer =
+        originRequest ->
+            originRequest.getVersionId() == null ?
+               new com.amazonaws.services.s3.model.GetObjectRequest(
+                   originRequest.getBucketName(),
+                   originRequest.getKey()) :
+                new com.amazonaws.services.s3.model.GetObjectRequest(
+                    originRequest.getBucketName(),
+                    originRequest.getKey(),
+                    originRequest.getVersionId());
 }
