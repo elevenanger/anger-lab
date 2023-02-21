@@ -11,8 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LaunderAwsExceptions {
 
-    private LaunderAwsExceptions() {
-    }
+    private LaunderAwsExceptions() {}
 
     public static void launder(Throwable e) {
         if (e instanceof AmazonServiceException) {

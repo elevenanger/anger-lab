@@ -5,6 +5,12 @@ package osscli.services.model;
  * 遍历对象请求
  */
 public class ListObjectRequest extends CliRequest {
+
+    public ListObjectRequest(String bucketName, String prefix) {
+        this.bucketName = bucketName;
+        this.prefix = prefix;
+    }
+
     // 桶名
     private String bucketName;
     // 前缀

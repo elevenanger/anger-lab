@@ -41,8 +41,17 @@ public abstract class AbstractOss implements Oss {
     }
 
     @Override
+    public void downloadObject(String bucket, String key, String downloadPath) {
+        throw new UnsupportedOperationException("继承 AbstractOss 实现方法");
+    }
+
+    @Override
     public ListObjectResponse listObjects(ListObjectRequest request) {
         throw new UnsupportedOperationException("继承 AbstractOss 实现方法");
     }
 
+    @Override
+    public ListObjectResponse listObjects(String bucket, String prefix) {
+        throw new UnsupportedOperationException("继承 AbstractOss 实现方法");
+    }
 }

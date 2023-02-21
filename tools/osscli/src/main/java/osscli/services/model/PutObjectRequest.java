@@ -6,6 +6,13 @@ import java.io.File;
  * @author : anger
  */
 public class PutObjectRequest extends CliRequest {
+
+    public PutObjectRequest(String bucketName, String key, File file) {
+        this.bucketName = bucketName;
+        this.key = key;
+        this.file = file;
+    }
+
     private String bucketName;
     private String key;
     private File file;

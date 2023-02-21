@@ -52,5 +52,5 @@ public abstract class Beverage {
         this.size = size;
     }
 
-    public  Size {TALL, GRANDE, VENTI }
+    public  enum Size {TALL, GRANDE, VENTI }
 }

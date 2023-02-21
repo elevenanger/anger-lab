@@ -41,10 +41,14 @@ public interface Oss {
 
     OssObject<?> getObject(String bucket, String key);
 
+    void downloadObject(String bucket, String key, String downloadPath);
+
     /**
      * 获取 bucket 中的对象
      */
     ListObjectResponse listObjects(ListObjectRequest request);
+
+    ListObjectResponse listObjects(String bucket, String prefix);
 
     enum OSSType {
         AWS,

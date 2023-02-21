@@ -5,6 +5,12 @@ package osscli.services.model;
  * 获取对象请求
  */
 public class GetObjectRequest extends CliRequest {
+
+    public GetObjectRequest(String bucketName, String key) {
+        this.bucketName = bucketName;
+        this.key = key;
+    }
+
     private String bucketName;
     private String key;
     private String versionId;
