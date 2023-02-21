@@ -1,4 +1,4 @@
-package osscli.services.model.object;
+package osscli.services.model;
 
 import java.util.Date;
 

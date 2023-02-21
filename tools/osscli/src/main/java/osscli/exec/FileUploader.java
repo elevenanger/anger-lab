@@ -3,9 +3,9 @@ package osscli.exec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import osscli.object.ObjectBase;
-import osscli.services.aws.SeqAwsBucketService;
-import osscli.services.aws.SeqAwsObjectService;
-import osscli.services.model.object.PutObjectRequest;
+import osscli.services.Oss;
+import osscli.services.aws.SeqAws;
+import osscli.services.model.PutObjectRequest;
 
 import java.io.File;
 import java.util.Arrays;
@@ -27,6 +27,8 @@ public class FileUploader {
     @Autowired
     ObjectBase objectBase;
 
+    private final Oss aws = new SeqAws();
+
     public void batchUpload(String bucket, String filePath) {
 
         List<Future<?>> files = Arrays.stream(Objects.requireNonNull(new File(filePath).listFiles()))
@@ -37,7 +39,7 @@ public class FileUploader {
                 request.setBucketName(bucket);
                 return request;
             })
-            .map(request -> exec.submit(() -> new SeqAwsObjectService().putObject(request)))
+            .map(request -> exec.submit(() -> aws.putObject(request)))
             .collect(Collectors.toList());
 
         files.forEach(future -> {

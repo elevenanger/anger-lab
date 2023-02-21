@@ -1,9 +1,9 @@
 package osscli.services.model.transform;
 
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import osscli.services.model.bucket.ListObjectRequest;
-import osscli.services.model.object.GetObjectRequest;
-import osscli.services.model.object.PutObjectRequest;
+import osscli.services.model.ListObjectRequest;
+import osscli.services.model.GetObjectRequest;
+import osscli.services.model.PutObjectRequest;
 
 /**
  * @author : anger

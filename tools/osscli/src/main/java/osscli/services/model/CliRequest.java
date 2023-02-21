@@ -1,6 +1,6 @@
 package osscli.services.model;
 
-import osscli.base.OSSType;
+import osscli.services.Oss;
 
 import java.util.Date;
 
@@ -11,13 +11,13 @@ import java.util.Date;
 public class CliRequest {
 
     private final Date requestTime = new Date();
-    private OSSType ossType;
+    private Oss.OSSType ossType;
 
-    public OSSType getOssProtocol() {
+    public Oss.OSSType getOssType() {
         return ossType;
     }
 
-    public void setOssProtocol(OSSType ossType) {
+    public void setOssType(Oss.OSSType ossType) {
         this.ossType = ossType;
     }
 

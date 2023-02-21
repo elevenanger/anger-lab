@@ -2,9 +2,9 @@ package osscli.services.model.transform;
 
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import osscli.services.model.bucket.ListObjectResponse;
-import osscli.services.model.object.ObjectSummary;
-import osscli.services.model.object.PutObjectResponse;
+import osscli.services.model.ListObjectResponse;
+import osscli.services.model.ObjectSummary;
+import osscli.services.model.PutObjectResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;

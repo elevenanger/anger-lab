@@ -1,6 +1,4 @@
-package osscli.services.model.object;
-
-import osscli.services.model.CliResponse;
+package osscli.services.model;
 
 /**
  * @author : anger

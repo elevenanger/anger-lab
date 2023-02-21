@@ -1,6 +1,4 @@
-package osscli.services.model.bucket;
-
-import osscli.services.model.CliRequest;
+package osscli.services.model;
 
 /**
  * @author : anger

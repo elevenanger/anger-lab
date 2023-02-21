@@ -1,16 +1,13 @@
-package osscli.services.model.object;
-
-import osscli.services.model.CliRequest;
-
-import java.io.File;
+package osscli.services.model;
 
 /**
  * @author : anger
+ * 获取对象请求
  */
-public class PutObjectRequest extends CliRequest {
+public class GetObjectRequest extends CliRequest {
     private String bucketName;
     private String key;
-    private File file;
+    private String versionId;
 
     public String getBucketName() {
         return bucketName;
@@ -28,11 +25,11 @@ public class PutObjectRequest extends CliRequest {
         this.key = key;
     }
 
-    public File getFile() {
-        return file;
+    public String getVersionId() {
+        return versionId;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setVersionId(String versionId) {
+        this.versionId = versionId;
     }
 }
