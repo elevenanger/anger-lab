@@ -6,13 +6,8 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import osscli.exception.LaunderAwsExceptions;
 import osscli.services.AbstractOss;
-import osscli.services.ClientFactory;
-import osscli.services.model.ListObjectRequest;
-import osscli.services.model.ListObjectResponse;
-import osscli.services.model.GetObjectRequest;
-import osscli.services.model.OssObject;
-import osscli.services.model.PutObjectRequest;
-import osscli.services.model.PutObjectResponse;
+import osscli.services.client.ClientFactory;
+import osscli.services.model.*;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -65,21 +60,34 @@ public class SeqAws extends AbstractOss {
     }
 
     @Override
-    public void downloadObject(String bucket, String key, String downloadPath) {
-        S3Object result = s3.getObject(bucket, key);
+    public DownloadObjectResponse downloadObject(final DownloadObjectRequest request) {
+        System.out.println(Thread.currentThread() + " downloading file " + request.getKey());
+
+        S3Object result = s3.getObject(request.getBucket(), request.getKey());
+        File localFile = Paths.get(request.getDownloadPath(), request.getKey()).toFile();
+
+        long size = 0;
 
         try (BufferedInputStream s3is = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
-                FileOutputStream fos = new FileOutputStream(Paths.get(downloadPath, key).toFile())) {
+                FileOutputStream fos = new FileOutputStream(localFile)) {
             FileChannel fc = fos.getChannel();
             byte[] readBuf = new byte[BUFFER_SIZE];
             ByteBuffer buffer;
             while (s3is.read(readBuf) > 0) {
                 buffer = ByteBuffer.wrap(readBuf);
                 fc.write(buffer);
+                size += readBuf.length;
             }
         } catch (Exception e) {
             LaunderAwsExceptions.launder(e);
         }
+
+        return new DownloadObjectResponse(request.getBucket(), request.getKey(), localFile.getAbsolutePath(), size);
+    }
+
+    @Override
+    public DownloadObjectResponse downloadObject(String bucket, String key, String downloadPath) {
+        return downloadObject(new DownloadObjectRequest(bucket, key, downloadPath));
     }
 
     @Override
@@ -91,10 +99,10 @@ public class SeqAws extends AbstractOss {
 
     @Override
     public ListObjectResponse listObjects(ListObjectRequest request) {
+        request.setMaxKeys(KEY_SIZE);
         ListObjectsV2Result result =
             s3.listObjectsV2(seqAwsListObjectRequestTransformer.transform(request));
         return seqAwsListObjectResponseTransformer.transform(result);
-
     }
 
     @Override

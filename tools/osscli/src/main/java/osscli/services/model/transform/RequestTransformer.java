@@ -8,5 +8,5 @@ import osscli.services.model.CliRequest;
  */
 @FunctionalInterface
 public interface RequestTransformer<T extends CliRequest, R> {
-    public R transform(T t);
+    R transform(T t);
 }

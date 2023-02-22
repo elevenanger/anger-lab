@@ -1,7 +1,5 @@
 package osscli.services.model;
 
-import osscli.services.model.object.ObjectSummary;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -19,6 +19,6 @@ public class LaunderAwsExceptions {
             log.error("status code : {} error code : {} error message : {}",
                 ex.getStatusCode(), ex.getErrorCode(), ex.getErrorMessage());
         } else
-            throw new RuntimeException(e);
+            throw new OssBaseException(e);
     }
 }

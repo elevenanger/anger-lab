@@ -21,10 +21,10 @@ public class ResponseTransformers {
             ListObjectResponse response = new ListObjectResponse();
 
             List<ObjectSummary> objectSummaries =
-                response.getObjectSummaries().stream()
+                listObjectsV2Result.getObjectSummaries().stream()
                     .map(objectSummary -> {
                         ObjectSummary summary = new ObjectSummary();
-                        summary.setBucket(objectSummary.getBucket());
+                        summary.setBucket(objectSummary.getBucketName());
                         summary.setETag(objectSummary.getETag());
                         summary.setKey(objectSummary.getKey());
                         summary.setSize(objectSummary.getSize());

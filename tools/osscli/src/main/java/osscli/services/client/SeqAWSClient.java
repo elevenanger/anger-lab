@@ -1,4 +1,4 @@
-package osscli.services.aws;
+package osscli.services.client;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -6,7 +6,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import osscli.services.Client;
 import osscli.services.model.ClientConfiguration;
 
 /**
@@ -19,8 +18,7 @@ public class SeqAWSClient implements Client<AmazonS3> {
     private static class AmazonS3Holder {
         private static AmazonS3 s3 = s3Initializer();
 
-        public static AmazonS3 s3Initializer() {
-            System.out.println("initialize s3 client");
+        private static AmazonS3 s3Initializer() {
             String endPoint = "https://fldev.dgcb.com.cn:8080";
             String accessKey = "ABCDEFGHIJKLMNOPQRST";
             String secreteKey = "abcdefghijklmnopqrstuvwxyz0123456789ABCD";

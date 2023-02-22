@@ -1,4 +1,4 @@
-package osscli.services;
+package osscli.services.client;
 
 import osscli.services.model.ClientConfiguration;
 

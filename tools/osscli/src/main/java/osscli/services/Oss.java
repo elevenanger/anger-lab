@@ -1,11 +1,6 @@
 package osscli.services;
 
-import osscli.services.model.ListObjectRequest;
-import osscli.services.model.ListObjectResponse;
-import osscli.services.model.GetObjectRequest;
-import osscli.services.model.OssObject;
-import osscli.services.model.PutObjectRequest;
-import osscli.services.model.PutObjectResponse;
+import osscli.services.model.*;
 
 import java.io.File;
 
@@ -41,7 +36,14 @@ public interface Oss {
 
     OssObject<?> getObject(String bucket, String key);
 
-    void downloadObject(String bucket, String key, String downloadPath);
+    /**
+     * 下载对象到本地
+     * @param request 对象下载请求
+     * @return 下载信息
+     */
+    DownloadObjectResponse downloadObject(DownloadObjectRequest request);
+
+    DownloadObjectResponse downloadObject(String bucket, String key, String downloadPath);
 
     /**
      * 获取 bucket 中的对象
