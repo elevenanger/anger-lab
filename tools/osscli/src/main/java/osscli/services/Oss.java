@@ -48,9 +48,13 @@ public interface Oss {
     /**
      * 获取 bucket 中的对象
      */
-    ListObjectResponse listObjects(ListObjectRequest request);
+    ListObjectsResponse listObjects(ListObjectsRequest request);
 
-    ListObjectResponse listObjects(String bucket, String prefix);
+    ListObjectsResponse listObjects(String bucket, String prefix);
+
+    ListAllObjectsResponse listAllObjects(ListAllObjectRequest request);
+
+    ListAllObjectsResponse listAllObjects(String bucket, String prefix);
 
     enum OSSType {
         AWS,

@@ -4,9 +4,9 @@ package osscli.services.model;
  * @author : anger
  * 遍历对象请求
  */
-public class ListObjectRequest extends CliRequest {
+public class ListObjectsRequest extends CliRequest {
 
-    public ListObjectRequest(String bucketName, String prefix) {
+    public ListObjectsRequest(String bucketName, String prefix) {
         this.bucketName = bucketName;
         this.prefix = prefix;
     }
@@ -17,8 +17,8 @@ public class ListObjectRequest extends CliRequest {
     private String prefix;
     // 从指定的 key 后面开始检索
     private String startAfter;
-    // 最多返回的 key 的数量
-    private int maxKeys;
+    // 最多返回的 key 的数量, 默认1000
+    private int maxKeys = 1000;
 
     public void setBucketName(String bucketName) {
         this.bucketName = bucketName;

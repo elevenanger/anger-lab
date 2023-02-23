@@ -15,6 +15,9 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
 import static osscli.services.model.transform.RequestTransformers.seqAwsPutObjectRequestTransformer;
 import static osscli.services.model.transform.RequestTransformers.seqAwsListObjectRequestTransformer;
@@ -98,15 +101,40 @@ public class SeqAws extends AbstractOss {
 
 
     @Override
-    public ListObjectResponse listObjects(ListObjectRequest request) {
-        request.setMaxKeys(KEY_SIZE);
+    public ListObjectsResponse listObjects(ListObjectsRequest request) {
         ListObjectsV2Result result =
             s3.listObjectsV2(seqAwsListObjectRequestTransformer.transform(request));
         return seqAwsListObjectResponseTransformer.transform(result);
     }
 
     @Override
-    public ListObjectResponse listObjects(String bucket, String prefix) {
-        return listObjects(new ListObjectRequest(bucket, prefix));
+    public ListObjectsResponse listObjects(String bucket, String prefix) {
+        return listObjects(new ListObjectsRequest(bucket, prefix));
+    }
+
+    @Override
+    public ListAllObjectsResponse listAllObjects(ListAllObjectRequest request) {
+        List<ObjectSummary> objectSummaryList = new ArrayList<>();
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest(request.getBucket(), request.getPrefix());
+
+        final Supplier<List<ObjectSummary>> supplier = () ->
+            listObjects(listObjectsRequest).getObjectSummaries();
+
+        List<ObjectSummary> summaries;
+
+        while (objectSummaryList.addAll(summaries = supplier.get())) {
+            listObjectsRequest
+                .setStartAfter(summaries.get(summaries.size() - 1).getKey());
+        }
+
+        ListAllObjectsResponse response = new ListAllObjectsResponse();
+        response.setObjectSummaryList(objectSummaryList);
+
+        return response;
+    }
+
+    @Override
+    public ListAllObjectsResponse listAllObjects(String bucket, String prefix) {
+        return listAllObjects(new ListAllObjectRequest(bucket, prefix));
     }
 }

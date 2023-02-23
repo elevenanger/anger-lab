@@ -2,7 +2,7 @@ package osscli.services.model.transform;
 
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import osscli.services.model.ListObjectResponse;
+import osscli.services.model.ListObjectsResponse;
 import osscli.services.model.ObjectSummary;
 import osscli.services.model.PutObjectResponse;
 
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class ResponseTransformers {
     private ResponseTransformers() {}
 
-    public static final ResponseTransformer<ListObjectsV2Result, ListObjectResponse> seqAwsListObjectResponseTransformer =
+    public static final ResponseTransformer<ListObjectsV2Result, ListObjectsResponse> seqAwsListObjectResponseTransformer =
         listObjectsV2Result -> {
-            ListObjectResponse response = new ListObjectResponse();
+            ListObjectsResponse response = new ListObjectsResponse();
 
             List<ObjectSummary> objectSummaries =
                 listObjectsV2Result.getObjectSummaries().stream()

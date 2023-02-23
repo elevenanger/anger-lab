@@ -47,12 +47,22 @@ public abstract class AbstractOss implements Oss {
     }
 
     @Override
-    public ListObjectResponse listObjects(ListObjectRequest request) {
+    public ListObjectsResponse listObjects(ListObjectsRequest request) {
         throw new UnsupportedOssOperationException();
     }
 
     @Override
-    public ListObjectResponse listObjects(String bucket, String prefix) {
+    public ListObjectsResponse listObjects(String bucket, String prefix) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public ListAllObjectsResponse listAllObjects(ListAllObjectRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public ListAllObjectsResponse listAllObjects(String bucket, String prefix) {
         throw new UnsupportedOssOperationException();
     }
 }

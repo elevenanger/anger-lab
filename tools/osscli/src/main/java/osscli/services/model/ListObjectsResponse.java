@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author : anger
  */
-public class ListObjectResponse extends CliResponse {
+public class ListObjectsResponse extends CliResponse {
     private final List<ObjectSummary> objectSummaries = new ArrayList<>();
     private String startAfter;
     private int count;

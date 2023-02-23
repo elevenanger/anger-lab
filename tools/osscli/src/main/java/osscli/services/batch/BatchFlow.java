@@ -30,7 +30,7 @@ public class BatchFlow {
 
     public List<CompletableFuture<DownloadObjectResponse>> batchDownload(String bucket, String prefix, String downloadPath) {
         List<ObjectSummary> objectSummaryList =
-                aws.listObjects(new ListObjectRequest(bucket, prefix))
+                aws.listObjects(new ListObjectsRequest(bucket, prefix))
                     .getObjectSummaries();
 
         return objectSummaryList.stream()

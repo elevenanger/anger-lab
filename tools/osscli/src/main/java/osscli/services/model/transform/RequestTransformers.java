@@ -1,7 +1,7 @@
 package osscli.services.model.transform;
 
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import osscli.services.model.ListObjectRequest;
+import osscli.services.model.ListObjectsRequest;
 import osscli.services.model.GetObjectRequest;
 import osscli.services.model.PutObjectRequest;
 
@@ -16,7 +16,7 @@ public class RequestTransformers {
     /**
      * 巨杉 AWS list Object 请求转换器
      */
-    public static final RequestTransformer<ListObjectRequest, ListObjectsV2Request> seqAwsListObjectRequestTransformer =
+    public static final RequestTransformer<ListObjectsRequest, ListObjectsV2Request> seqAwsListObjectRequestTransformer =
         originRequest -> {
             ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request();
             listObjectsV2Request.setBucketName(originRequest.getBucketName());
