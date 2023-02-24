@@ -1,6 +1,7 @@
 package osscli.services;
 
 import osscli.exception.UnsupportedOssOperationException;
+import osscli.services.client.Client;
 import osscli.services.model.*;
 
 import java.io.File;
@@ -9,11 +10,12 @@ import java.io.File;
  * @author : anger
  * OSS 抽象类，提供方法的默认实现
  */
-public abstract class AbstractOss implements Oss {
+public abstract class AbstractOss<T> implements Oss, Client<T> {
 
-    @Override
-    public void setEndpoint(String endpoint) {
-        throw new UnsupportedOssOperationException();
+    protected final T client;
+
+    protected AbstractOss(ClientConfiguration configuration) {
+        this.client = createClient(configuration);
     }
 
     @Override
@@ -22,7 +24,7 @@ public abstract class AbstractOss implements Oss {
     }
 
     @Override
-    public PutObjectResponse putObject(String bucket, String fileName, File file) {
+    public PutObjectResponse putObject(String bucket, File file) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -63,6 +65,21 @@ public abstract class AbstractOss implements Oss {
 
     @Override
     public ListAllObjectsResponse listAllObjects(String bucket, String prefix) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public BatchUploadResponse batchUpload(BatchUploadRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public BatchUploadResponse batchUpload(String bucket, String localPath) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public T createClient(ClientConfiguration configuration) {
         throw new UnsupportedOssOperationException();
     }
 }

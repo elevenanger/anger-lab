@@ -19,10 +19,10 @@
     </properties>
 
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.shell</groupId>-->
-        <!--            <artifactId>spring-shell-starter</artifactId>-->
-        <!--        </dependency>-->
+                <dependency>
+                    <groupId>org.springframework.shell</groupId>
+                    <artifactId>spring-shell-starter</artifactId>
+                </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
@@ -32,17 +32,12 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.shell</groupId>-->
-            <!--                <artifactId>spring-shell-dependencies</artifactId>-->
-            <!--                <version>${spring-shell.version}</version>-->
-            <!--                <type>pom</type>-->
-            <!--                <scope>import</scope>-->
-            <!--            </dependency>-->
             <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-bom</artifactId>
-                <version>1.11.343</version>
+                <groupId>org.springframework.shell</groupId>
+                <artifactId>spring-shell-dependencies</artifactId>
+                <version>${spring-shell.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

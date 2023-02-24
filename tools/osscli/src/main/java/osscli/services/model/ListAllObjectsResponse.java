@@ -26,4 +26,15 @@ public class ListAllObjectsResponse extends CliResponse {
     private void setCount(int count) {
         this.count = count;
     }
+
+    @Override
+    public String toString() {
+        return "ListAllObjectsResponse : \n" +
+            "\tobjectSummaryList : \n" +
+            objectSummaryList.stream()
+                .map(ObjectSummary::toString)
+                .map(s -> String.format("\t\t%s%n", s))
+                .reduce("", String::concat) +
+            "total count : " + count ;
+    }
 }

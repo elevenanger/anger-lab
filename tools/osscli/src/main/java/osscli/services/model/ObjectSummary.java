@@ -7,11 +7,11 @@ import java.util.Date;
  * 对象信息
  */
 public class ObjectSummary {
-    private String key;
     private String bucket;
-    private String eTag;
+    private String key;
     private Date lastModified;
     private long size;
+    private String eTag;
 
     public String getKey() {
         return key;
@@ -51,5 +51,15 @@ public class ObjectSummary {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectSummary{" +
+            "bucket='" + bucket + '\'' +
+            ", key='" + key + '\'' +
+            ", lastModified=" + lastModified +
+            ", size=" + size / 1024 + "kb" +
+            '}';
     }
 }

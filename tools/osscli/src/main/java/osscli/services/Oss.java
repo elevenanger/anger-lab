@@ -17,17 +17,11 @@ public interface Oss {
     int KEY_SIZE = 1_000;
 
     /**
-     * 设置 endPoint 地址
-     * @param endpoint endPoint 地址
-     */
-    void setEndpoint(String endpoint);
-
-    /**
      * 上传对象
      */
     PutObjectResponse putObject(PutObjectRequest request);
 
-    PutObjectResponse putObject(String bucket, String fileName, File file);
+    PutObjectResponse putObject(String bucket, File file);
 
     /**
      * 获取对象
@@ -56,10 +50,11 @@ public interface Oss {
 
     ListAllObjectsResponse listAllObjects(String bucket, String prefix);
 
-    enum OSSType {
+    BatchUploadResponse batchUpload(BatchUploadRequest request);
+    BatchUploadResponse batchUpload(String bucket, String localPath);
+
+    enum Type {
         AWS,
-        OSS,
-        COS;
     }
 
 }

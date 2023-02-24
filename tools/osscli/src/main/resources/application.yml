@@ -1,0 +1,5 @@
+spring:
+  main:
+    lazy-initialization: true
+  jmx:
+    enabled: false

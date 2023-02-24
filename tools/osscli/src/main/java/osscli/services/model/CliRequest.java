@@ -11,14 +11,14 @@ import java.util.Date;
 public class CliRequest {
 
     private final Date requestTime = new Date();
-    private Oss.OSSType ossType;
+    private Oss.Type type;
 
-    public Oss.OSSType getOssType() {
-        return ossType;
+    public Oss.Type getOssType() {
+        return type;
     }
 
-    public void setOssType(Oss.OSSType ossType) {
-        this.ossType = ossType;
+    public void setOssType(Oss.Type type) {
+        this.type = type;
     }
 
     public Date getRequestTime() {
