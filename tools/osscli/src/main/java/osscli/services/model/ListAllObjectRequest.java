@@ -13,6 +13,11 @@ public class ListAllObjectRequest extends CliRequest {
         this.prefix = prefix;
     }
 
+    public ListAllObjectRequest(String bucket) {
+        this.bucket = bucket;
+        this.prefix = "";
+    }
+
     public String getBucket() {
         return bucket;
     }

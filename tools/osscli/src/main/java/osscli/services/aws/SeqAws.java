@@ -10,7 +10,6 @@ import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import osscli.exception.LaunderAwsExceptions;
-import osscli.exception.OssBaseException;
 import osscli.services.AbstractOss;
 import osscli.services.model.*;
 
@@ -20,10 +19,7 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
@@ -38,11 +34,11 @@ import static osscli.services.model.transform.ResponseTransformers.seqAwsPutObje
 
 /**
  * @author : anger
- * Oss 服务巨杉数据库实现
+ * Oss 服务巨杉 AWS 协议实现
  */
 public class SeqAws extends AbstractOss<AmazonS3> {
 
-    protected SeqAws(ClientConfiguration configuration) {
+    public SeqAws(OssConfiguration configuration) {
         super(configuration);
     }
 
@@ -51,7 +47,11 @@ public class SeqAws extends AbstractOss<AmazonS3> {
         com.amazonaws.services.s3.model.PutObjectRequest putObjectRequest =
             seqAwsPutObjectRequestTransformer.transform(request);
         PutObjectResult result = client.putObject(putObjectRequest);
-        return seqAwsPutObjectResponseTransformer.transform(result);
+
+        PutObjectResponse response =
+            seqAwsPutObjectResponseTransformer.transform(result);
+        response.setKey(request.getKey());
+        return response;
     }
 
     @Override
@@ -71,7 +71,6 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public DownloadObjectResponse downloadObject(final DownloadObjectRequest request) {
-        System.out.println(Thread.currentThread() + " downloading file " + request.getKey());
 
         S3Object result = client.getObject(request.getBucket(), request.getKey());
         File localFile = Paths.get(request.getDownloadPath(), request.getKey()).toFile();
@@ -146,37 +145,88 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public BatchUploadResponse batchUpload(BatchUploadRequest request) {
-        List<CompletableFuture<PutObjectResponse>> futures =
-            Arrays.stream(Objects.requireNonNull(new File(request.getLocalPath()).listFiles()))
-                .map(file -> new PutObjectRequest(request.getBucket(), file.getName(), file))
-                .map(putObjectRequest -> supplyAsync(() -> putObject(putObjectRequest)))
-                .collect(Collectors.toList());
-
-
-        return super.batchUpload(request);
+    public ListAllObjectsResponse listAllObjects(String bucket) {
+        return listAllObjects(new ListAllObjectRequest(bucket));
     }
 
     @Override
-    public BatchUploadResponse batchUpload(String bucket, String localPath) {
+    public BatchOperationResponse batchUpload(BatchUploadRequest request) {
+        Map<String, CompletableFuture<PutObjectResponse>> futuresMap =
+            Arrays.stream(Objects.requireNonNull(new File(request.getLocalPath()).listFiles()))
+                .filter(File::isFile)
+                .map(file -> new PutObjectRequest(request.getBucket(), file.getName(), file))
+                .collect(Collectors.toMap(PutObjectRequest::getKey,
+                    putObjectRequest -> supplyAsync(() -> putObject(putObjectRequest))));
+
+        final BatchOperationResponse response = new BatchUploadResponse();
+
+        futuresMap.forEach((key, future) -> {
+            try {
+                future.get();
+                response.addSuccessResult(key);
+            } catch (ExecutionException e) {
+                response.addErrorResult(key, e.getMessage());
+                LaunderAwsExceptions.launder(e);
+            } catch (InterruptedException e) {
+                response.addErrorResult(key, e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        return response;
+    }
+
+    @Override
+    public BatchOperationResponse batchUpload(String bucket, String localPath) {
         return batchUpload(new BatchUploadRequest(bucket, localPath));
     }
 
     @Override
-    public AmazonS3 createClient(ClientConfiguration configuration) {
-        return new AmazonS3Holder(configuration).s3;
+    public BatchOperationResponse batchDownload(BatchDownloadRequest request) {
+        Map<String, CompletableFuture<DownloadObjectResponse>> futureMap =
+            listAllObjects(request.getBucket()).getObjectSummaryList().stream()
+                .collect(Collectors.toMap(
+                    ObjectSummary::getKey,
+                    objectSummary -> supplyAsync(() ->
+                        downloadObject(objectSummary.getBucket(), objectSummary.getKey(), request.getDownloadPath()))));
+
+        BatchOperationResponse response = new BatchDownloadResponse();
+
+        futureMap.forEach((key, future) -> {
+            try {
+                future.get();
+                response.addSuccessResult(key);
+            } catch (ExecutionException e) {
+                response.addErrorResult(key, e.getMessage());
+            } catch (InterruptedException e) {
+                response.addErrorResult(key, e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        return response;
     }
 
-    private static final class AmazonS3Holder {
-        final AmazonS3 s3;
-        final ClientConfiguration configuration;
+    @Override
+    public BatchOperationResponse batchDownload(String bucket, String downloadPath) {
+        return batchDownload(new BatchDownloadRequest(bucket, downloadPath));
+    }
 
-        AmazonS3Holder(ClientConfiguration configuration) {
+    @Override
+    public AmazonS3 createClient(OssConfiguration configuration) {
+        return new AmazonS3Initializer(configuration).s3;
+    }
+
+    private static final class AmazonS3Initializer {
+        final AmazonS3 s3;
+        final OssConfiguration configuration;
+
+        AmazonS3Initializer(OssConfiguration configuration) {
             this.configuration = configuration;
-            s3 = s3Initializer();
+            s3 = initialize();
         }
 
-        AmazonS3 s3Initializer() {
+        AmazonS3 initialize() {
             String endPoint = configuration.getEndPoint();
             String accessKey = "ABCDEFGHIJKLMNOPQRST";
             String secreteKey = "abcdefghijklmnopqrstuvwxyz0123456789ABCD";

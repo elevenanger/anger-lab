@@ -32,6 +32,7 @@ public interface Oss {
 
     /**
      * 下载对象到本地
+     *
      * @param request 对象下载请求
      * @return 下载信息
      */
@@ -50,8 +51,15 @@ public interface Oss {
 
     ListAllObjectsResponse listAllObjects(String bucket, String prefix);
 
-    BatchUploadResponse batchUpload(BatchUploadRequest request);
-    BatchUploadResponse batchUpload(String bucket, String localPath);
+    ListAllObjectsResponse listAllObjects(String bucket);
+
+    BatchOperationResponse batchUpload(BatchUploadRequest request);
+
+    BatchOperationResponse batchUpload(String bucket, String localPath);
+
+    BatchOperationResponse batchDownload(BatchDownloadRequest request);
+
+    BatchOperationResponse batchDownload(String bucket, String downloadPath);
 
     enum Type {
         AWS,

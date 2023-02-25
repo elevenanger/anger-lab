@@ -1,7 +1,6 @@
 package osscli.services;
 
 import osscli.exception.UnsupportedOssOperationException;
-import osscli.services.client.Client;
 import osscli.services.model.*;
 
 import java.io.File;
@@ -14,7 +13,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     protected final T client;
 
-    protected AbstractOss(ClientConfiguration configuration) {
+    protected AbstractOss(OssConfiguration configuration) {
         this.client = createClient(configuration);
     }
 
@@ -69,17 +68,32 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
-    public BatchUploadResponse batchUpload(BatchUploadRequest request) {
+    public ListAllObjectsResponse listAllObjects(String bucket) {
         throw new UnsupportedOssOperationException();
     }
 
     @Override
-    public BatchUploadResponse batchUpload(String bucket, String localPath) {
+    public BatchOperationResponse batchUpload(BatchUploadRequest request) {
         throw new UnsupportedOssOperationException();
     }
 
     @Override
-    public T createClient(ClientConfiguration configuration) {
+    public BatchOperationResponse batchUpload(String bucket, String localPath) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public BatchOperationResponse batchDownload(BatchDownloadRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public BatchOperationResponse batchDownload(String bucket, String downloadPath) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public T createClient(OssConfiguration configuration) {
         throw new UnsupportedOssOperationException();
     }
 }
