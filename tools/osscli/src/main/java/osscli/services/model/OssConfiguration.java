@@ -8,12 +8,14 @@ import osscli.services.Oss;
  */
 public class OssConfiguration {
 
-    Oss.Type type;
+    private Oss.Type type;
 
     /**
      * 地址
      */
     private String endPoint;
+    private String accessKey;
+    private String secreteKey;
 
     public Oss.Type getType() {
         return type;
@@ -31,5 +33,33 @@ public class OssConfiguration {
     public OssConfiguration withEndPoint(String endPoint) {
         this.endPoint = endPoint;
         return this;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public OssConfiguration withAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+        return this;
+    }
+
+    public String getSecreteKey() {
+        return secreteKey;
+    }
+
+    public OssConfiguration withSecreteKey(String secreteKey) {
+        this.secreteKey = secreteKey;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "OssConfiguration{" +
+                "type=" + type +
+                ", endPoint='" + endPoint + '\'' +
+                ", accessKey='" + accessKey + '\'' +
+                ", secreteKey='" + secreteKey + '\'' +
+                '}';
     }
 }

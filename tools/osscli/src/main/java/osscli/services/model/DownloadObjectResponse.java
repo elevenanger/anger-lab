@@ -4,7 +4,7 @@ package osscli.services.model;
  * @author : anger
  * 对象下载返回数据
  */
-public class DownloadObjectResponse {
+public class DownloadObjectResponse extends CliResponse {
     private String bucket;
     private String key;
     private String localPath;
@@ -49,5 +49,15 @@ public class DownloadObjectResponse {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    @Override
+    public String toString() {
+        return "DownloadObjectResponse{" +
+                "bucket='" + bucket + '\'' +
+                ", key='" + key + '\'' +
+                ", localPath='" + localPath + '\'' +
+                ", size=" + size +
+                '}';
     }
 }

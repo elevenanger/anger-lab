@@ -1,9 +1,8 @@
 package osscli.services.model.transform;
 
+import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import osscli.services.model.ListObjectsRequest;
-import osscli.services.model.GetObjectRequest;
-import osscli.services.model.PutObjectRequest;
+import osscli.services.model.*;
 
 /**
  * @author : anger
@@ -12,6 +11,13 @@ import osscli.services.model.PutObjectRequest;
 public class RequestTransformers {
 
     private RequestTransformers() {}
+
+    public static final RequestTransformer<ListBucketsRequest, com.amazonaws.services.s3.model.ListBucketsRequest>
+        seqAwsListBucketRequestTransformer =
+            request -> new com.amazonaws.services.s3.model.ListBucketsRequest();
+
+    public static final RequestTransformer<PutBucketRequest, CreateBucketRequest> seqAwsCreateBucketRequestTransformer =
+            request -> new CreateBucketRequest(request.getBucketName());
 
     /**
      * 巨杉 AWS list Object 请求转换器

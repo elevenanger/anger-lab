@@ -14,10 +14,9 @@ import osscli.services.AbstractOss;
 import osscli.services.model.*;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -26,11 +25,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static osscli.services.model.transform.RequestTransformers.seqAwsPutObjectRequestTransformer;
-import static osscli.services.model.transform.RequestTransformers.seqAwsListObjectRequestTransformer;
-import static osscli.services.model.transform.RequestTransformers.seqAwsGetObjectRequestTransformer;
-import static osscli.services.model.transform.ResponseTransformers.seqAwsListObjectResponseTransformer;
-import static osscli.services.model.transform.ResponseTransformers.seqAwsPutObjectResponseTransformer;
+import static osscli.services.model.transform.RequestTransformers.*;
+import static osscli.services.model.transform.ResponseTransformers.*;
 
 /**
  * @author : anger
@@ -40,6 +36,30 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     public SeqAws(OssConfiguration configuration) {
         super(configuration);
+    }
+
+    @Override
+    public ListBucketsResponse listBuckets(ListBucketsRequest request) {
+        List<com.amazonaws.services.s3.model.Bucket> buckets =
+            client.listBuckets(seqAwsListBucketRequestTransformer.transform(request));
+        return seqAwsListBucketsResponseTransformer.transform(buckets);
+    }
+
+    @Override
+    public ListBucketsResponse listBuckets() {
+        return listBuckets(new ListBucketsRequest());
+    }
+
+    @Override
+    public PutBucketResponse createBucket(PutBucketRequest request) {
+        com.amazonaws.services.s3.model.Bucket bucket =
+                client.createBucket(seqAwsCreateBucketRequestTransformer.transform(request));
+        return seqAwsCreateBucketResponseTransformer.transform(bucket);
+    }
+
+    @Override
+    public PutBucketResponse createBucket(String bucketName) {
+        return createBucket(new PutBucketRequest(bucketName));
     }
 
     @Override
@@ -70,22 +90,20 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public DownloadObjectResponse downloadObject(final DownloadObjectRequest request) {
+    public DownloadObjectResponse downloadObject(DownloadObjectRequest request) {
 
         S3Object result = client.getObject(request.getBucket(), request.getKey());
         File localFile = Paths.get(request.getDownloadPath(), request.getKey()).toFile();
 
         long size = 0;
-
         try (BufferedInputStream s3is = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
-                FileOutputStream fos = new FileOutputStream(localFile)) {
-            FileChannel fc = fos.getChannel();
+                BufferedOutputStream fos = new BufferedOutputStream(
+                    Files.newOutputStream(Paths.get(request.getDownloadPath(), request.getKey())), BUFFER_SIZE)) {
+            int len;
             byte[] readBuf = new byte[BUFFER_SIZE];
-            ByteBuffer buffer;
-            while (s3is.read(readBuf) > 0) {
-                buffer = ByteBuffer.wrap(readBuf);
-                fc.write(buffer);
-                size += readBuf.length;
+            while ((len = s3is.read(readBuf)) != -1) {
+                fos.write(readBuf, 0, len);
+                size += len;
             }
         } catch (Exception e) {
             LaunderAwsExceptions.launder(e);
@@ -95,16 +113,14 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public DownloadObjectResponse downloadObject(String bucket, String key, String downloadPath) {
-        return downloadObject(new DownloadObjectRequest(bucket, key, downloadPath));
+    public DownloadObjectResponse downloadObject(String bucket, String key, String path) {
+        return downloadObject(new DownloadObjectRequest(bucket, key, path));
     }
 
     @Override
     public OssObject<S3Object> getObject(String bucket, String key) {
         return getObject(new GetObjectRequest(bucket, key));
     }
-
-
 
     @Override
     public ListObjectsResponse listObjects(ListObjectsRequest request) {
@@ -122,9 +138,9 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     public ListAllObjectsResponse listAllObjects(ListAllObjectRequest request) {
         List<ObjectSummary> objectSummaryList = new ArrayList<>();
 
-        final ListObjectsRequest listObjectsRequest =
+        ListObjectsRequest listObjectsRequest =
             new ListObjectsRequest(request.getBucket(), request.getPrefix());
-        final Supplier<List<ObjectSummary>> supplier = () ->
+        Supplier<List<ObjectSummary>> supplier = () ->
             listObjects(listObjectsRequest).getObjectSummaries();
 
         List<ObjectSummary> summaries;
@@ -155,8 +171,11 @@ public class SeqAws extends AbstractOss<AmazonS3> {
             Arrays.stream(Objects.requireNonNull(new File(request.getLocalPath()).listFiles()))
                 .filter(File::isFile)
                 .map(file -> new PutObjectRequest(request.getBucket(), file.getName(), file))
-                .collect(Collectors.toMap(PutObjectRequest::getKey,
-                    putObjectRequest -> supplyAsync(() -> putObject(putObjectRequest))));
+                .collect(Collectors.toMap(
+                    PutObjectRequest::getKey,
+                    putObjectRequest ->
+                        supplyAsync(() ->
+                            putObject(putObjectRequest))));
 
         final BatchOperationResponse response = new BatchUploadResponse();
 
@@ -177,8 +196,8 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public BatchOperationResponse batchUpload(String bucket, String localPath) {
-        return batchUpload(new BatchUploadRequest(bucket, localPath));
+    public BatchOperationResponse batchUpload(String bucket, String path) {
+        return batchUpload(new BatchUploadRequest(bucket, path));
     }
 
     @Override
@@ -187,8 +206,12 @@ public class SeqAws extends AbstractOss<AmazonS3> {
             listAllObjects(request.getBucket()).getObjectSummaryList().stream()
                 .collect(Collectors.toMap(
                     ObjectSummary::getKey,
-                    objectSummary -> supplyAsync(() ->
-                        downloadObject(objectSummary.getBucket(), objectSummary.getKey(), request.getDownloadPath()))));
+                    objectSummary ->
+                        supplyAsync(() ->
+                            downloadObject(
+                                objectSummary.getBucket(),
+                                objectSummary.getKey(),
+                                request.getDownloadPath()))));
 
         BatchOperationResponse response = new BatchDownloadResponse();
 
@@ -208,8 +231,8 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public BatchOperationResponse batchDownload(String bucket, String downloadPath) {
-        return batchDownload(new BatchDownloadRequest(bucket, downloadPath));
+    public BatchOperationResponse batchDownload(String bucket, String path) {
+        return batchDownload(new BatchDownloadRequest(bucket, path));
     }
 
     @Override
@@ -228,8 +251,8 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
         AmazonS3 initialize() {
             String endPoint = configuration.getEndPoint();
-            String accessKey = "ABCDEFGHIJKLMNOPQRST";
-            String secreteKey = "abcdefghijklmnopqrstuvwxyz0123456789ABCD";
+            String accessKey = configuration.getAccessKey();
+            String secreteKey = configuration.getSecreteKey();
 
             AWSCredentials credentials = new BasicAWSCredentials(accessKey, secreteKey);
             AWSStaticCredentialsProvider provider = new AWSStaticCredentialsProvider(credentials);

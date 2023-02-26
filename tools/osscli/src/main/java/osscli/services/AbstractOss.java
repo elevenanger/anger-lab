@@ -18,6 +18,26 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
+    public ListBucketsResponse listBuckets(ListBucketsRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public ListBucketsResponse listBuckets() {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public PutBucketResponse createBucket(PutBucketRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public PutBucketResponse createBucket(String bucketName) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
     public PutObjectResponse putObject(PutObjectRequest request) {
         throw new UnsupportedOssOperationException();
     }
@@ -38,7 +58,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
-    public DownloadObjectResponse downloadObject(String bucket, String key, String downloadPath) {
+    public DownloadObjectResponse downloadObject(String bucket, String key, String path) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -78,7 +98,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
-    public BatchOperationResponse batchUpload(String bucket, String localPath) {
+    public BatchOperationResponse batchUpload(String bucket, String path) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -88,7 +108,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
-    public BatchOperationResponse batchDownload(String bucket, String downloadPath) {
+    public BatchOperationResponse batchDownload(String bucket, String path) {
         throw new UnsupportedOssOperationException();
     }
 

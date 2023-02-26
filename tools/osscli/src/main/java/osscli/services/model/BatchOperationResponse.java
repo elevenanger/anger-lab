@@ -29,6 +29,14 @@ public abstract class BatchOperationResponse extends CliResponse {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String toString() {
+        return "Batch " + getOperationName() + " Results : \n" +
+                operationResults.stream()
+                        .map(operationResult -> operationResult.toString().concat("\n"))
+                        .reduce("", String::concat);
+    }
+
     private final class OperationResult {
         private final String key;
         private final boolean success;

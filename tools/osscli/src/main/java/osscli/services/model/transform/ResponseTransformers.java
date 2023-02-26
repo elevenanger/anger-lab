@@ -1,10 +1,10 @@
 package osscli.services.model.transform;
 
+import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import osscli.services.model.ListObjectsResponse;
-import osscli.services.model.ObjectSummary;
-import osscli.services.model.PutObjectResponse;
+import osscli.services.Oss;
+import osscli.services.model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +16,31 @@ import java.util.stream.Collectors;
 public class ResponseTransformers {
     private ResponseTransformers() {}
 
+    public static final ResponseTransformer<List<Bucket>, ListBucketsResponse>
+        seqAwsListBucketsResponseTransformer =
+            buckets -> {
+                List<osscli.services.model.Bucket> bs =
+                    buckets.stream()
+                        .map(bucket -> {
+                            osscli.services.model.Bucket b = new osscli.services.model.Bucket();
+                            b.setType(Oss.Type.AWS);
+                            b.setName(bucket.getName());
+                            b.setCreateDate(bucket.getCreationDate());
+                            return b;})
+                        .collect(Collectors.toList());
+                return new ListBucketsResponse(bs);
+            };
+
+    /**
+     * 创建桶请求转换器
+     */
+    public static final ResponseTransformer<Bucket, PutBucketResponse> seqAwsCreateBucketResponseTransformer =
+            bucket -> {
+                osscli.services.model.Bucket b = new osscli.services.model.Bucket();
+                b.setName(bucket.getName());
+                b.setCreateDate(bucket.getCreationDate());
+                return new PutBucketResponse(b);
+            };
     public static final ResponseTransformer<ListObjectsV2Result, ListObjectsResponse> seqAwsListObjectResponseTransformer =
         listObjectsV2Result -> {
             ListObjectsResponse response = new ListObjectsResponse();

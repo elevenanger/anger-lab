@@ -14,7 +14,16 @@ public interface Oss {
 
     int BUFFER_SIZE = 128 * 1024;
 
-    int KEY_SIZE = 1_000;
+    ListBucketsResponse listBuckets(ListBucketsRequest request);
+    ListBucketsResponse listBuckets();
+
+    /**
+     * 创建桶
+     * @param request 请求实体
+     * @return 创建桶结果
+     */
+    PutBucketResponse createBucket(PutBucketRequest request);
+    PutBucketResponse createBucket(String bucketName);
 
     /**
      * 上传对象
@@ -38,7 +47,14 @@ public interface Oss {
      */
     DownloadObjectResponse downloadObject(DownloadObjectRequest request);
 
-    DownloadObjectResponse downloadObject(String bucket, String key, String downloadPath);
+    /**
+     * 下载文件
+     * @param bucket 桶名
+     * @param key key
+     * @param path 本地路径
+     * @return 下载结果
+     */
+    DownloadObjectResponse downloadObject(String bucket, String key, String path);
 
     /**
      * 获取 bucket 中的对象
@@ -55,14 +71,30 @@ public interface Oss {
 
     BatchOperationResponse batchUpload(BatchUploadRequest request);
 
-    BatchOperationResponse batchUpload(String bucket, String localPath);
+    BatchOperationResponse batchUpload(String bucket, String path);
 
     BatchOperationResponse batchDownload(BatchDownloadRequest request);
 
-    BatchOperationResponse batchDownload(String bucket, String downloadPath);
+    BatchOperationResponse batchDownload(String bucket, String path);
 
     enum Type {
-        AWS,
+        AWS;
+
+        public static Type fromValue(String value) {
+            if (value == null || value.isEmpty()) {
+                return null;
+            }
+
+            final String upperValue = value.toUpperCase();
+
+            for (Type type : Type.values()) {
+                if (type.name().equals(upperValue))
+                    return type;
+            }
+
+            throw new IllegalArgumentException("不支持的 OSS 类型 ".concat(value));
+        }
+
     }
 
 }

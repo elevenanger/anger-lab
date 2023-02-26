@@ -21,8 +21,18 @@ public class OssCliCommands {
     @ShellMethod("初始化 oss 实例")
     public void ossInit(String type, String endPoint) {
         oss = OssFactory.getInstance(new OssConfiguration()
-                                        .withEndPoint(endPoint)
-                                        .withType(Oss.Type.valueOf(type.toUpperCase())));
+                                            .withEndPoint(endPoint)
+                                            .withType(Oss.Type.fromValue(type)));
+    }
+
+    @ShellMethod("获取所有的桶")
+    public String listBuckets() {
+        return oss.listBuckets().toString();
+    }
+
+    @ShellMethod("创建桶")
+    public String createBucket(String bucketName) {
+        return oss.createBucket(bucketName).getBucket().getName();
     }
 
     @ShellMethod("获取一个桶中所有的对象的 key ")
@@ -31,8 +41,18 @@ public class OssCliCommands {
     }
 
     @ShellMethod("上传文件到指定桶")
-    public String uploadFile(String bucket, String localFilePath) {
-        return oss.putObject(bucket, new File(localFilePath)).getETag();
+    public String uploadFile(String bucket, String path) {
+        return oss.putObject(bucket, new File(path)).getETag();
+    }
+
+    @ShellMethod("批量上传文件")
+    public String batchUpload(String bucket, String path) {
+        return oss.batchUpload(bucket, path).toString();
+    }
+
+    @ShellMethod("批量下载文件")
+    public String batchDownload(String bucket, String path) {
+        return oss.batchDownload(bucket, path).toString();
     }
 
     public Availability ossInstanceCheck() {
