@@ -17,6 +17,22 @@ public class OssConfiguration {
     private String accessKey;
     private String secreteKey;
 
+    public void setType(Oss.Type type) {
+        this.type = type;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public void setSecreteKey(String secreteKey) {
+        this.secreteKey = secreteKey;
+    }
+
     public Oss.Type getType() {
         return type;
     }

@@ -3,7 +3,9 @@ package osscli.services.config;
 import osscli.services.Oss;
 import osscli.services.model.OssConfiguration;
 
+import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -58,6 +60,12 @@ public enum PresetConfiguration {
                 PresetConfiguration::ordinal,
                 PresetConfiguration::getConfiguration
             ));
+    }
+
+    public static List<OssConfiguration> presetConfigurations() {
+        return EnumSet.allOf(PresetConfiguration.class).stream()
+                .map(PresetConfiguration::getConfiguration)
+                .collect(Collectors.toList());
     }
 
 }

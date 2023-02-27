@@ -1,0 +1,13 @@
+configurations:
+  - type: AWS
+    accessKey: ABCDEFGHIJKLMNOPQRST
+    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD
+    endPoint: http://192.168.48.129:8002/
+  - type: AWS
+    accessKey: ABCDEFGHIJKLMNOPQRST
+    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD
+    endPoint: http://192.168.48.129:8003/
+  - type: AWS
+    accessKey: ABCDEFGHIJKLMNOPQRST
+    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD
+    endPoint: http://192.168.48.129:8004/

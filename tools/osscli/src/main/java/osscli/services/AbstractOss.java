@@ -1,6 +1,5 @@
 package osscli.services;
 
-import osscli.exception.OssBaseException;
 import osscli.exception.UnsupportedOssOperationException;
 import osscli.services.model.*;
 
@@ -12,6 +11,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 /**
  * @author : anger
@@ -125,6 +126,17 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
         throw new UnsupportedOssOperationException();
     }
 
+    /**
+     * 批量任务执行函数
+     * 将需要处理的元素集合转换为 元素类型 E 和 {@link CompletableFuture<V>} 键值对的 {@link Map} 对象
+     * @param collection 需要处理的元素集合
+     * @param eleToKeyFunc 将集合中的元素转换为 map 的 key 的函数
+     * @param eleToValSupFunc 将集合中的元素转换为 map 中的 value {@link Supplier} 的函数
+     * @param response {@link BatchOperationResponse}
+     * @return 组装好返回结果的 {@link BatchOperationResponse}
+     * @param <E> 集合元素类型
+     * @param <V> 异步执行的结果
+     */
     protected <E, V> BatchOperationResponse batchProcess(final Collection<E> collection,
                                                          final Function<E, String> eleToKeyFunc,
                                                          final Function<E, Supplier<V>> eleToValSupFunc,
@@ -134,7 +146,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
                 .collect(
                     Collectors.toMap(
                         eleToKeyFunc,
-                        e -> CompletableFuture.supplyAsync(eleToValSupFunc.apply(e))));
+                        e -> supplyAsync(eleToValSupFunc.apply(e))));
 
         futureMap.forEach(
             (k, future) -> {
@@ -143,7 +155,6 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
                     response.addSuccessResult(k);
                 } catch (ExecutionException e) {
                     response.addErrorResult(k, e.getMessage());
-                    throw new OssBaseException(e);
                 } catch (InterruptedException e) {
                     response.addErrorResult(k, e.getMessage());
                     Thread.currentThread().interrupt();
