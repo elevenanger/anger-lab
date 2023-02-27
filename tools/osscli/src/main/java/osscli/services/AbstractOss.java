@@ -1,9 +1,17 @@
 package osscli.services;
 
+import osscli.exception.OssBaseException;
 import osscli.exception.UnsupportedOssOperationException;
 import osscli.services.model.*;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * @author : anger
@@ -115,5 +123,34 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     @Override
     public T createClient(OssConfiguration configuration) {
         throw new UnsupportedOssOperationException();
+    }
+
+    protected <E, V> BatchOperationResponse batchProcess(final Collection<E> collection,
+                                                         final Function<E, String> eleToKeyFunc,
+                                                         final Function<E, Supplier<V>> eleToValSupFunc,
+                                                         final BatchOperationResponse response) {
+        Map<String, CompletableFuture<V>> futureMap =
+            collection.stream()
+                .collect(
+                    Collectors.toMap(
+                        eleToKeyFunc,
+                        e -> CompletableFuture.supplyAsync(eleToValSupFunc.apply(e))));
+
+        futureMap.forEach(
+            (k, future) -> {
+                try {
+                    future.get();
+                    response.addSuccessResult(k);
+                } catch (ExecutionException e) {
+                    response.addErrorResult(k, e.getMessage());
+                    throw new OssBaseException(e);
+                } catch (InterruptedException e) {
+                    response.addErrorResult(k, e.getMessage());
+                    Thread.currentThread().interrupt();
+                }
+            }
+        );
+
+        return response;
     }
 }

@@ -1,6 +1,10 @@
 package osscli.services.config;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import osscli.services.model.OssConfiguration;
+
+import java.util.Map;
 
 /**
  * @author Anger
@@ -9,8 +13,10 @@ import org.junit.jupiter.api.Test;
 class PresetConfigurationTest {
 
     @Test
-    void testConfig() {
-        System.out.println(PresetConfiguration.MAC_15_LOCAL.getConfiguration());
+    void testAll() {
+        Map<Integer, OssConfiguration> map = PresetConfiguration.all();
+        Assertions.assertNotNull(map);
+        System.out.println(map);
     }
 
 }

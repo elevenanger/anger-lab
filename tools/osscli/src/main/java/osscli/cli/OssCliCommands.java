@@ -5,6 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import osscli.services.Oss;
 import osscli.services.OssFactory;
+import osscli.services.config.PresetConfiguration;
 import osscli.services.model.OssConfiguration;
 
 import java.io.File;
@@ -19,10 +20,23 @@ public class OssCliCommands {
     private Oss oss;
 
     @ShellMethod("初始化 oss 实例")
-    public void ossInit(String type, String endPoint) {
-        oss = OssFactory.getInstance(new OssConfiguration()
-                                            .withEndPoint(endPoint)
-                                            .withType(Oss.Type.fromValue(type)));
+    public void ossInit(String type, String endPoint, String accessKey, String secreteKey) {
+        oss = OssFactory.getInstance(
+                new OssConfiguration()
+                        .withAccessKey(accessKey)
+                        .withSecreteKey(secreteKey)
+                        .withEndPoint(endPoint)
+                        .withType(Oss.Type.fromValue(type)));
+    }
+
+    @ShellMethod("通过预置的配置初始化 oss 实例")
+    public void initFromPreset(int index) {
+        oss = OssFactory.getInstance(PresetConfiguration.all().get(index));
+    }
+
+    @ShellMethod("获取所有预置的配置信息")
+    public String allConf() {
+        return PresetConfiguration.allStringForm();
     }
 
     @ShellMethod("获取所有的桶")
@@ -37,7 +51,7 @@ public class OssCliCommands {
 
     @ShellMethod("获取一个桶中所有的对象的 key ")
     public String listAll(String bucket) {
-        return oss.listAllObjects(bucket, "").toString();
+        return oss.listAllObjects(bucket).toString();
     }
 
     @ShellMethod("上传文件到指定桶")

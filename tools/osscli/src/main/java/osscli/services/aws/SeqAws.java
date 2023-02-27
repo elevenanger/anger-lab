@@ -18,13 +18,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static osscli.services.model.transform.RequestTransformers.*;
 import static osscli.services.model.transform.ResponseTransformers.*;
 
@@ -109,7 +109,10 @@ public class SeqAws extends AbstractOss<AmazonS3> {
             LaunderAwsExceptions.launder(e);
         }
 
-        return new DownloadObjectResponse(request.getBucket(), request.getKey(), localFile.getAbsolutePath(), size);
+        return new DownloadObjectResponse(request.getBucket(),
+                                          request.getKey(),
+                                          localFile.getAbsolutePath(),
+                                          size);
     }
 
     @Override
@@ -167,32 +170,18 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public BatchOperationResponse batchUpload(BatchUploadRequest request) {
-        Map<String, CompletableFuture<PutObjectResponse>> futuresMap =
-            Arrays.stream(Objects.requireNonNull(new File(request.getLocalPath()).listFiles()))
-                .filter(File::isFile)
-                .map(file -> new PutObjectRequest(request.getBucket(), file.getName(), file))
-                .collect(Collectors.toMap(
-                    PutObjectRequest::getKey,
-                    putObjectRequest ->
-                        supplyAsync(() ->
-                            putObject(putObjectRequest))));
+        final List<PutObjectRequest> requests =
+                Arrays.stream(Objects.requireNonNull(new File(request.getLocalPath()).listFiles()))
+                        .filter(File::isFile)
+                        .map(file -> new PutObjectRequest(request.getBucket(), file.getName(), file))
+                        .collect(Collectors.toList());
 
-        final BatchOperationResponse response = new BatchUploadResponse();
+        BatchOperationResponse response = new BatchUploadResponse();
 
-        futuresMap.forEach((key, future) -> {
-            try {
-                future.get();
-                response.addSuccessResult(key);
-            } catch (ExecutionException e) {
-                response.addErrorResult(key, e.getMessage());
-                LaunderAwsExceptions.launder(e);
-            } catch (InterruptedException e) {
-                response.addErrorResult(key, e.getMessage());
-                Thread.currentThread().interrupt();
-            }
-        });
-
-        return response;
+        return batchProcess(requests,
+                            PutObjectRequest::getKey,
+                            putObjectRequest -> () -> putObject(putObjectRequest),
+                            response);
     }
 
     @Override
@@ -202,32 +191,14 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public BatchOperationResponse batchDownload(BatchDownloadRequest request) {
-        Map<String, CompletableFuture<DownloadObjectResponse>> futureMap =
-            listAllObjects(request.getBucket()).getObjectSummaryList().stream()
-                .collect(Collectors.toMap(
-                    ObjectSummary::getKey,
-                    objectSummary ->
-                        supplyAsync(() ->
-                            downloadObject(
-                                objectSummary.getBucket(),
-                                objectSummary.getKey(),
-                                request.getDownloadPath()))));
-
         BatchOperationResponse response = new BatchDownloadResponse();
 
-        futureMap.forEach((key, future) -> {
-            try {
-                future.get();
-                response.addSuccessResult(key);
-            } catch (ExecutionException e) {
-                response.addErrorResult(key, e.getMessage());
-            } catch (InterruptedException e) {
-                response.addErrorResult(key, e.getMessage());
-                Thread.currentThread().interrupt();
-            }
-        });
-
-        return response;
+        return batchProcess(listAllObjects(request.getBucket()).getObjectSummaryList(),
+                            ObjectSummary::getKey,
+                            objectSummary -> () -> downloadObject(objectSummary.getBucket(),
+                                                                  objectSummary.getKey(),
+                                                                  request.getDownloadPath()),
+                            response);
     }
 
     @Override
