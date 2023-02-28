@@ -3,10 +3,8 @@ package osscli.services.config;
 import osscli.services.Oss;
 import osscli.services.model.OssConfiguration;
 
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -46,20 +44,6 @@ public enum PresetConfiguration {
             .withType(Oss.Type.AWS)
             .withAccessKey("ABCDEFGHIJKLMNOPQRST")
             .withSecreteKey("abcdefghijklmnopqrstuvwxyz0123456789ABCD");
-    }
-
-    public static String allStringForm() {
-        return all().entrySet().stream()
-            .map(entry -> entry.getKey() + " => " + entry.getValue().toString() + "\n")
-            .reduce("", String::concat);
-    }
-
-    public static Map<Integer, OssConfiguration> all() {
-        return EnumSet.allOf(PresetConfiguration.class).stream()
-            .collect(Collectors.toMap(
-                PresetConfiguration::ordinal,
-                PresetConfiguration::getConfiguration
-            ));
     }
 
     public static List<OssConfiguration> presetConfigurations() {

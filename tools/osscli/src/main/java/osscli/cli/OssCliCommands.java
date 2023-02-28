@@ -5,7 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import osscli.services.Oss;
 import osscli.services.OssFactory;
-import osscli.services.config.PresetConfiguration;
+import osscli.services.config.OssConfigurationStore;
 import osscli.services.model.OssConfiguration;
 
 import java.io.File;
@@ -21,22 +21,36 @@ public class OssCliCommands {
 
     @ShellMethod("初始化 oss 实例")
     public void ossInit(String type, String endPoint, String accessKey, String secreteKey) {
-        oss = OssFactory.getInstance(
-                new OssConfiguration()
-                        .withAccessKey(accessKey)
-                        .withSecreteKey(secreteKey)
-                        .withEndPoint(endPoint)
-                        .withType(Oss.Type.fromValue(type)));
+        OssConfiguration configuration =
+            new OssConfiguration()
+                .withAccessKey(accessKey)
+                .withSecreteKey(secreteKey)
+                .withEndPoint(endPoint)
+                .withType(Oss.Type.fromValue(type));
+
+        oss = OssFactory.getInstance(configuration);
+
+        OssConfigurationStore.addOne(configuration);
     }
 
     @ShellMethod("通过预置的配置初始化 oss 实例")
     public void initFromPreset(int index) {
-        oss = OssFactory.getInstance(PresetConfiguration.all().get(index));
+        oss = OssFactory.getInstance(OssConfigurationStore.getOne(index));
     }
 
     @ShellMethod("获取所有预置的配置信息")
     public String allConf() {
-        return PresetConfiguration.allStringForm();
+        return OssConfigurationStore.getAllAsString();
+    }
+
+    @ShellMethod("加载配置")
+    public void loadConf(String path) {
+        OssConfigurationStore.loadConfig(path);
+    }
+
+    @ShellMethod("将配置信息 dump 到本地指定文件")
+    public void dumpConfig(String path) {
+        OssConfigurationStore.dumpConfig(path);
     }
 
     @ShellMethod("获取所有的桶")
