@@ -1,10 +1,14 @@
 package osscli.services.config;
 
 import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 import osscli.services.model.OssConfiguration;
 
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -16,9 +20,9 @@ class OssConfigurationStoreTest {
 
     @Test
     void testInitialize() throws IOException {
-        List<OssConfiguration> configurations = OssConfigurationStore.getAll();
+        Map<String, OssConfiguration> configurations = OssConfigurationStore.getAll();
         assertNotNull(configurations);
-        configurations.forEach(System.out::println);
+        configurations.entrySet().forEach(System.out::println);
     }
 
     @Test
@@ -30,9 +34,25 @@ class OssConfigurationStoreTest {
 
     @Test
     void testGetOne() {
-        OssConfiguration configuration = OssConfigurationStore.getOne(1);
+        OssConfiguration configuration = OssConfigurationStore.getOne("fl_dev");
         assertNotNull(configuration);
         System.out.println(configuration);
+    }
+
+    @Test
+    void dumpTest() throws IOException {
+        Yaml yaml = new Yaml(new Constructor(Map.class));
+
+        Map<String, OssConfiguration> ossConfigurationMap = new HashMap<>();
+        ossConfigurationMap.put("fl_dev", PresetConfiguration.FL_DEV.getConfiguration());
+        ossConfigurationMap.put("mac_15", PresetConfiguration.MAC_15_LOCAL.getConfiguration());
+
+        yaml.dump(ossConfigurationMap, new FileWriter("/Users/liuanglin/Desktop/dump.yml"));
+    }
+
+    @Test
+    void dumpConfTest() {
+        OssConfigurationStore.dumpConfig("/Users/liuanglin/Desktop/dump.yml");
     }
 
 }

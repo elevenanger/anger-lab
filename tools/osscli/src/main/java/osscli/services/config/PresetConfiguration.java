@@ -5,6 +5,7 @@ import osscli.services.model.OssConfiguration;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -46,10 +47,11 @@ public enum PresetConfiguration {
             .withSecreteKey("abcdefghijklmnopqrstuvwxyz0123456789ABCD");
     }
 
-    public static List<OssConfiguration> presetConfigurations() {
+    public static Map<String, OssConfiguration> presetConfigurations() {
         return EnumSet.allOf(PresetConfiguration.class).stream()
-                .map(PresetConfiguration::getConfiguration)
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(
+                        PresetConfiguration::name,
+                        PresetConfiguration::getConfiguration));
     }
 
 }

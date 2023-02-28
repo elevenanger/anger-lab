@@ -9,7 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
-import osscli.exception.LaunderAwsExceptions;
+import osscli.exception.LaunderOssExceptions;
 import osscli.services.AbstractOss;
 import osscli.services.model.*;
 
@@ -106,7 +106,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
                 size += len;
             }
         } catch (Exception e) {
-            LaunderAwsExceptions.launder(e);
+            LaunderOssExceptions.launder(e);
         }
 
         return new DownloadObjectResponse(request.getBucket(),

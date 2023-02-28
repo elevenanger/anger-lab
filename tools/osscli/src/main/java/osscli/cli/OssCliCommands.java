@@ -1,6 +1,7 @@
 package osscli.cli;
 
 import org.springframework.shell.Availability;
+import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import osscli.services.Oss;
@@ -19,7 +20,7 @@ public class OssCliCommands {
 
     private Oss oss;
 
-    @ShellMethod("初始化 oss 实例")
+    @ShellMethod(value = "初始化 oss 实例", group = "init", key = "--init")
     public void ossInit(String type, String endPoint, String accessKey, String secreteKey) {
         OssConfiguration configuration =
             new OssConfiguration()
@@ -33,54 +34,71 @@ public class OssCliCommands {
         OssConfigurationStore.addOne(configuration);
     }
 
-    @ShellMethod("通过预置的配置初始化 oss 实例")
-    public void initFromPreset(int index) {
-        oss = OssFactory.getInstance(OssConfigurationStore.getOne(index));
+    @ShellMethod(value = "通过已保存的配置信息初始化 oss 实例", group = "init", key = "--init-conf")
+    public void initFromPreset(String key) {
+        oss = OssFactory.getInstance(OssConfigurationStore.getOne(key));
     }
 
-    @ShellMethod("获取所有预置的配置信息")
-    public String allConf() {
-        return OssConfigurationStore.getAllAsString();
+    @ShellComponent
+    @ShellCommandGroup("conf")
+    public static class ConfCommand {
+        @ShellMethod(value = "获取所有配置信息", key = "--conf-all")
+        public String all() {
+            return OssConfigurationStore.getAllAsString();
+        }
+
+        @ShellMethod(value = "从本地文件加载配置", key = "--conf-load")
+        public void load(String path) {
+            OssConfigurationStore.loadConfig(path);
+        }
+
+        @ShellMethod(value = "将配置信息 dump 到本地文件", key = "--conf-dump")
+        public void dump(String path) {
+            OssConfigurationStore.dumpConfig(path);
+        }
     }
 
-    @ShellMethod("加载配置")
-    public void loadConf(String path) {
-        OssConfigurationStore.loadConfig(path);
+
+    @ShellComponent
+    @ShellCommandGroup("bucket")
+    public class BucketCommands {
+        @ShellMethod(value = "获取所有的桶", key = "--bucket-list")
+        public String listBuckets() {
+            return oss.listBuckets().toString();
+        }
+
+        @ShellMethod(value = "创建桶", key = "--bucket-create")
+        public String createBucket(String bucketName) {
+            return oss.createBucket(bucketName).getBucket().getName();
+        }
+
+        @ShellMethod(value = "获取一个桶中所有的对象的 key ", key = "--bucket-keys")
+        public String listAll(String bucket) {
+            return oss.listAllObjects(bucket).toString();
+        }
     }
 
-    @ShellMethod("将配置信息 dump 到本地指定文件")
-    public void dumpConfig(String path) {
-        OssConfigurationStore.dumpConfig(path);
+    @ShellComponent
+    @ShellCommandGroup("object")
+    public class ObjectCommands {
+        @ShellMethod(value = "上传文件到指定桶", key = "--object-upload")
+        public String uploadFile(String bucket, String path) {
+            return oss.putObject(bucket, new File(path)).getETag();
+        }
     }
 
-    @ShellMethod("获取所有的桶")
-    public String listBuckets() {
-        return oss.listBuckets().toString();
-    }
+    @ShellComponent
+    @ShellCommandGroup("batch")
+    public class BatchCommands {
+        @ShellMethod(value = "批量上传文件", key = "--batch-upload")
+        public String batchUpload(String bucket, String path) {
+            return oss.batchUpload(bucket, path).toString();
+        }
 
-    @ShellMethod("创建桶")
-    public String createBucket(String bucketName) {
-        return oss.createBucket(bucketName).getBucket().getName();
-    }
-
-    @ShellMethod("获取一个桶中所有的对象的 key ")
-    public String listAll(String bucket) {
-        return oss.listAllObjects(bucket).toString();
-    }
-
-    @ShellMethod("上传文件到指定桶")
-    public String uploadFile(String bucket, String path) {
-        return oss.putObject(bucket, new File(path)).getETag();
-    }
-
-    @ShellMethod("批量上传文件")
-    public String batchUpload(String bucket, String path) {
-        return oss.batchUpload(bucket, path).toString();
-    }
-
-    @ShellMethod("批量下载文件")
-    public String batchDownload(String bucket, String path) {
-        return oss.batchDownload(bucket, path).toString();
+        @ShellMethod(value = "批量下载文件", key = "--batch-download")
+        public String batchDownload(String bucket, String path) {
+            return oss.batchDownload(bucket, path).toString();
+        }
     }
 
     public Availability ossInstanceCheck() {

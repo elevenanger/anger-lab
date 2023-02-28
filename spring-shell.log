@@ -1,48 +1,7 @@
-1677499624339:help
-1677499630350:all-conf
-1677499651154:oss-init 0\\
-1677499656945:oss-init 0
-1677499671649:init-from-preset
-1677499682192:init-from-preset 0
-1677499695213:quit
-1677499723960:init-from-preset 0
-1677499734542:quit
-1677499791569:init-from-preset 0
-1677499802979:help
-1677499809414:list-all local
-1677499813870:help
-1677499839867:batch-download ./tmp
-1677499855136:batch-download local ./tmp
-1677499889308:squit
-1677499951218:batch-download local /Users/liuanglin/data
-1677500003582:help
-1677500021450:batch-upload
-1677500032491:batch-upload local ./
-1677500042270:ls
-1677500044551:help
-1677500047399:exit
-1677580507030:help
-1677580512705:all-conf
-1677580539383:init-from-preset 2
-1677580559313:list-all
-1677580567205:list-all angersbucket
-1677580572742:quit
-1677580694165:all-conf
-1677580697648:quit
-1677581246091:conf
-1677581250698:help
-1677581253507:all-conf
-1677581296565:load-conf /Users/liuanglin/data/oss-config.yml
-1677581300314:all-conf
-1677581333801:oss-init aws http://1.1.1.1 abcd acd
-1677581339719:all-conf
-1677581344637:quit
-1677582725142:all-conf
-1677582728998:help
-1677582749697:dump-config /Users/liuanglin/Desktop/tmp.yml
-1677582752222:quit
-1677582836850:dump-config /Users/liuanglin/Desktop/tmp.yml
-1677582838232:quit
-1677582950028:load-conf /Users/liuanglin/Desktop/tmp.yml
-1677582955945:all-conf
-1677582968678:quit
+1677595250773:--conf-dump /Users/liuanglin/Desktop
+1677595263802:--conf-dump /Users/liuanglin/Desktop/tmp.yml
+1677595265915:quit
+1677597510726:--conf-allk
+1677597515102:--conf-all
+1677597537244:--init-conf fl_dev
+1677597552997:--bucket-keys angersbucket

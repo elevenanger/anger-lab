@@ -44,9 +44,9 @@ public class RequestTransformers {
         seqAwsGetObjectRequestTransformer =
         originRequest ->
             originRequest.getVersionId() == null ?
-               new com.amazonaws.services.s3.model.GetObjectRequest(
-                   originRequest.getBucketName(),
-                   originRequest.getKey()) :
+                new com.amazonaws.services.s3.model.GetObjectRequest(
+                    originRequest.getBucketName(),
+                    originRequest.getKey()) :
                 new com.amazonaws.services.s3.model.GetObjectRequest(
                     originRequest.getBucketName(),
                     originRequest.getKey(),

@@ -11,12 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * @author Anger
@@ -31,19 +26,17 @@ public class OssConfigurationStore {
     private static final ConfigStorage storage = new ConfigStorage().initialize();
 
     public static void addOne(OssConfiguration configuration) {
-        storage.setConfigurations(Collections.singletonList(configuration));
+        storage.setConfigurations(
+                Collections.singletonMap(
+                        "custom", configuration));
     }
 
-    public static OssConfiguration getOne(int index) {
-        return storage.getConfiguration(index);
+    public static OssConfiguration getOne(String key) {
+        return storage.getConfiguration(key);
     }
 
-    public static List<OssConfiguration> getAll() {
+    public static Map<String, OssConfiguration> getAll() {
         return storage.getConfigurations();
-    }
-
-    public static Map<Integer, OssConfiguration> getAllAsMap() {
-        return storage.toMap();
     }
 
     public static String getAllAsString() {
@@ -61,7 +54,7 @@ public class OssConfigurationStore {
     private static final class ConfigStorage {
         private static final String OSS_CONFIG = "oss-config.yml";
         private static final Yaml yaml = buildYaml();
-        private final List<OssConfiguration> configurations = new ArrayList<>();
+        private final Map<String, OssConfiguration> configurations = new HashMap<>();
 
         private static Yaml buildYaml() {
             Yaml yaml = new Yaml(new Constructor(ConfigStorage.class));
@@ -76,7 +69,7 @@ public class OssConfigurationStore {
         }
 
         private void loadFromPreset() {
-            configurations.addAll(PresetConfiguration.presetConfigurations());
+            configurations.putAll(PresetConfiguration.presetConfigurations());
         }
 
         private void loadFromSystem() {
@@ -93,7 +86,7 @@ public class OssConfigurationStore {
 
         public void loadConfig(InputStream stream) {
             ConfigStorage configStorage = yaml.load(stream);
-            this.configurations.addAll(configStorage.getConfigurations());
+            this.configurations.putAll(configStorage.getConfigurations());
         }
 
         public void dump(String path) {
@@ -104,30 +97,21 @@ public class OssConfigurationStore {
             }
         }
 
-        public List<OssConfiguration> getConfigurations() {
-            return Collections.unmodifiableList(configurations);
+        public Map<String, OssConfiguration> getConfigurations() {
+            return Collections.unmodifiableMap(configurations);
         }
 
-        public void setConfigurations(List<OssConfiguration> configurations) {
-            this.configurations.addAll(configurations);
+        public void setConfigurations(Map<String, OssConfiguration> configurations) {
+            this.configurations.putAll(configurations);
         }
-        public OssConfiguration getConfiguration(int index) {
-            return toMap().get(index);
-        }
-
-        public Map<Integer, OssConfiguration> toMap() {
-            final AtomicInteger index = new AtomicInteger(0);
-            return getConfigurations().stream()
-                .collect(Collectors.toMap(
-                    conf -> index.incrementAndGet(),
-                    conf -> conf
-                ));
+        public OssConfiguration getConfiguration(String key) {
+            return getConfigurations().get(key);
         }
 
         @Override
         public String toString() {
             return "ConfigStorage:\n" +
-                toMap().entrySet().stream()
+                getConfigurations().entrySet().stream()
                     .map(entry -> entry.getKey() + " => " + entry.getValue() + "\n")
                     .reduce("", String::concat);
         }

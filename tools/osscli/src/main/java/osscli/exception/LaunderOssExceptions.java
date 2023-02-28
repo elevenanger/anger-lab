@@ -1,16 +1,13 @@
 package osscli.exception;
 
-import com.amazonaws.AmazonServiceException;
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author Anger
  * created on 2023/2/15
- * 通用 aws 异常处理类
+ * 通用 oss 异常处理类
  */
-public class LaunderAwsExceptions {
+public class LaunderOssExceptions {
 
-    private LaunderAwsExceptions() {}
+    private LaunderOssExceptions() {}
 
     public static void launder(Throwable e) {
         if (e instanceof InterruptedException) {
