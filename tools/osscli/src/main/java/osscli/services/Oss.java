@@ -1,5 +1,6 @@
 package osscli.services;
 
+import osscli.exception.OssBaseException;
 import osscli.services.model.*;
 
 import java.io.File;
@@ -35,13 +36,12 @@ public interface Oss {
     /**
      * 获取对象
      */
-    OssObject<?> getObject(GetObjectRequest request);
+    <O> OssObject<O> getObject(GetObjectRequest request);
 
-    OssObject<?> getObject(String bucket, String key);
+    <O> OssObject<O> getObject(String bucket, String key);
 
     /**
      * 下载对象到本地
-     *
      * @param request 对象下载请求
      * @return 下载信息
      */
@@ -55,6 +55,14 @@ public interface Oss {
      * @return 下载结果
      */
     DownloadObjectResponse downloadObject(String bucket, String key, String path);
+
+    /**
+     * 删除对象
+     * @param request {@link DeleteObjectRequest}
+     * @return {@link DeleteObjectResponse}
+     */
+    DeleteObjectResponse deleteObject(DeleteObjectRequest request);
+    DeleteObjectResponse deleteObject(String bucket, String key);
 
     /**
      * 获取 bucket 中的对象
@@ -77,6 +85,9 @@ public interface Oss {
 
     BatchOperationResponse batchDownload(String bucket, String path);
 
+    BatchOperationResponse batchDelete(BatchDeleteRequest request);
+    BatchOperationResponse batchDelete(String bucket);
+
     enum Type {
         AWS;
 
@@ -92,7 +103,7 @@ public interface Oss {
                     return type;
             }
 
-            throw new IllegalArgumentException("不支持的 OSS 类型 ".concat(value));
+            throw new OssBaseException("不支持的 OSS 类型 ".concat(value));
         }
 
     }

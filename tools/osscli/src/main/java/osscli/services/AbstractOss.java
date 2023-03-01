@@ -57,12 +57,12 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
-    public OssObject<?> getObject(GetObjectRequest request) {
+    public <O> OssObject<O> getObject(GetObjectRequest request) {
         throw new UnsupportedOssOperationException();
     }
 
     @Override
-    public OssObject<?> getObject(String bucket, String key) {
+    public <O> OssObject<O> getObject(String bucket, String key) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -73,6 +73,16 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public DownloadObjectResponse downloadObject(DownloadObjectRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public DeleteObjectResponse deleteObject(DeleteObjectRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public DeleteObjectResponse deleteObject(String bucket, String key) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -137,10 +147,11 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
      * @param <E> 集合元素类型
      * @param <V> 异步执行的结果
      */
-    protected <E, V> BatchOperationResponse batchProcess(final Collection<E> collection,
-                                                         final Function<E, String> eleToKeyFunc,
-                                                         final Function<E, Supplier<V>> eleToValSupFunc,
-                                                         final BatchOperationResponse response) {
+    protected <E, V, R extends BatchOperationResponse> R batchProcess(final R response,
+                                                                      final Collection<E> collection,
+                                                                      final Function<E, String> eleToKeyFunc,
+                                                                      final Function<E, Supplier<V>> eleToValSupFunc)
+    {
         Map<String, CompletableFuture<V>> futureMap =
             collection.stream()
                 .collect(

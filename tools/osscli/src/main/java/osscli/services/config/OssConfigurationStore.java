@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Anger
@@ -112,8 +113,8 @@ public class OssConfigurationStore {
         public String toString() {
             return "ConfigStorage:\n" +
                 getConfigurations().entrySet().stream()
-                    .map(entry -> entry.getKey() + " => " + entry.getValue() + "\n")
-                    .reduce("", String::concat);
+                    .map(entry -> entry.getKey() + " => " + entry.getValue())
+                    .collect(Collectors.joining("\n"));
         }
     }
 }

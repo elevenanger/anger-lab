@@ -3,6 +3,7 @@ package osscli.services.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Anger
@@ -29,7 +30,7 @@ public class ListBucketsResponse extends CliResponse {
     public String toString() {
         return "ListBucketsResponse : " +
                 getBuckets().stream()
-                    .map(bucket -> bucket.toString().concat("\n"))
-                    .reduce("", String::concat);
+                    .map(Bucket::toString)
+                    .collect(Collectors.joining("\n"));
     }
 }

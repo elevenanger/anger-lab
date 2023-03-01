@@ -34,7 +34,7 @@ public class OssCliCommands {
         OssConfigurationStore.addOne(configuration);
     }
 
-    @ShellMethod(value = "通过已保存的配置信息初始化 oss 实例", group = "init", key = "--init-conf")
+    @ShellMethod(value = "通过已保存的配置信息初始化 oss 实例", group = "init", key = "--init-from")
     public void initFromPreset(String key) {
         oss = OssFactory.getInstance(OssConfigurationStore.getOne(key));
     }
@@ -62,7 +62,7 @@ public class OssCliCommands {
     @ShellComponent
     @ShellCommandGroup("bucket")
     public class BucketCommands {
-        @ShellMethod(value = "获取所有的桶", key = "--bucket-list")
+        @ShellMethod(value = "获取所有的桶", key = "--bucket-all")
         public String listBuckets() {
             return oss.listBuckets().toString();
         }
@@ -72,7 +72,7 @@ public class OssCliCommands {
             return oss.createBucket(bucketName).getBucket().getName();
         }
 
-        @ShellMethod(value = "获取一个桶中所有的对象的 key ", key = "--bucket-keys")
+        @ShellMethod(value = "获取一个桶中所有对象信息", key = "--bucket-objects")
         public String listAll(String bucket) {
             return oss.listAllObjects(bucket).toString();
         }
@@ -81,23 +81,38 @@ public class OssCliCommands {
     @ShellComponent
     @ShellCommandGroup("object")
     public class ObjectCommands {
-        @ShellMethod(value = "上传文件到指定桶", key = "--object-upload")
+        @ShellMethod(value = "上传对象", key = "--object-upload")
         public String uploadFile(String bucket, String path) {
             return oss.putObject(bucket, new File(path)).getETag();
+        }
+
+        @ShellMethod(value = "删除对象", key = "--object-delete")
+        public String deleteObject(String bucket, String key) {
+            return oss.deleteObject(bucket, key).toString();
+        }
+
+        @ShellMethod(value = "下载对象", key = "--object-download")
+        public String downloadObject(String bucket, String key, String path) {
+            return oss.downloadObject(bucket, key, path).toString();
         }
     }
 
     @ShellComponent
     @ShellCommandGroup("batch")
     public class BatchCommands {
-        @ShellMethod(value = "批量上传文件", key = "--batch-upload")
+        @ShellMethod(value = "批量上传对象", key = "--batch-upload")
         public String batchUpload(String bucket, String path) {
             return oss.batchUpload(bucket, path).toString();
         }
 
-        @ShellMethod(value = "批量下载文件", key = "--batch-download")
+        @ShellMethod(value = "批量下载对象", key = "--batch-download")
         public String batchDownload(String bucket, String path) {
             return oss.batchDownload(bucket, path).toString();
+        }
+
+        @ShellMethod(value = "批量删除对象", key = "--batch-delete")
+        public String batchDelete(String bucket) {
+            return oss.batchDelete(bucket).toString();
         }
     }
 

@@ -2,6 +2,7 @@ package osscli.services.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : anger
@@ -30,11 +31,10 @@ public class ListAllObjectsResponse extends CliResponse {
     @Override
     public String toString() {
         return "ListAllObjectsResponse : \n" +
-            "\tobjectSummaryList : \n" +
-            objectSummaryList.stream()
-                .map(ObjectSummary::toString)
-                .map(s -> String.format("\t\t%s%n", s))
-                .reduce("", String::concat) +
-            "total count : " + count ;
+                "objectSummaryList : \n" +
+                objectSummaryList.stream()
+                    .map(ObjectSummary::toString)
+                    .collect(Collectors.joining("\n")) +
+                "\ntotal count : " + count ;
     }
 }

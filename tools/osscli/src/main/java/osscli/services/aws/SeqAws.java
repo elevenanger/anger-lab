@@ -80,6 +80,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public OssObject<S3Object> getObject(GetObjectRequest request) {
         com.amazonaws.services.s3.model.GetObjectRequest getObjectRequest =
             seqAwsGetObjectRequestTransformer.transform(request);
@@ -87,6 +88,12 @@ public class SeqAws extends AbstractOss<AmazonS3> {
         OssObject<S3Object> ossObject = new OssObject<>();
         ossObject.setObject(object);
         return ossObject;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public OssObject<S3Object> getObject(String bucket, String key) {
+        return getObject(new GetObjectRequest(bucket, key));
     }
 
     @Override
@@ -121,8 +128,14 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public OssObject<S3Object> getObject(String bucket, String key) {
-        return getObject(new GetObjectRequest(bucket, key));
+    public DeleteObjectResponse deleteObject(DeleteObjectRequest request) {
+        client.deleteObject(seqAwsObjectDeleteRequestTransformer.transform(request));
+        return new DeleteObjectResponse(request.getBucket(), request.getKey());
+    }
+
+    @Override
+    public DeleteObjectResponse deleteObject(String bucket, String key) {
+        return deleteObject(new DeleteObjectRequest(bucket, key));
     }
 
     @Override
@@ -178,10 +191,10 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
         BatchOperationResponse response = new BatchUploadResponse();
 
-        return batchProcess(requests,
+        return batchProcess(response,
+                            requests,
                             PutObjectRequest::getKey,
-                            putObjectRequest -> () -> putObject(putObjectRequest),
-                            response);
+                            putObjectRequest -> () -> putObject(putObjectRequest));
     }
 
     @Override
@@ -191,19 +204,35 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public BatchOperationResponse batchDownload(BatchDownloadRequest request) {
-        BatchOperationResponse response = new BatchDownloadResponse();
+        BatchDownloadResponse response = new BatchDownloadResponse();
 
-        return batchProcess(listAllObjects(request.getBucket()).getObjectSummaryList(),
+        return batchProcess(response,
+                            listAllObjects(request.getBucket()).getObjectSummaryList(),
                             ObjectSummary::getKey,
                             objectSummary -> () -> downloadObject(objectSummary.getBucket(),
                                                                   objectSummary.getKey(),
-                                                                  request.getDownloadPath()),
-                            response);
+                                                                  request.getDownloadPath()));
     }
 
     @Override
     public BatchOperationResponse batchDownload(String bucket, String path) {
         return batchDownload(new BatchDownloadRequest(bucket, path));
+    }
+
+    @Override
+    public BatchOperationResponse batchDelete(BatchDeleteRequest request) {
+        BatchOperationResponse response = new BatchDeleteResponse();
+
+        return batchProcess(response,
+                            listAllObjects(request.getBucket(), request.getPrefix()).getObjectSummaryList(),
+                            ObjectSummary::getKey,
+                            objectSummary -> () -> deleteObject(objectSummary.getBucket(),
+                                                                objectSummary.getKey()));
+    }
+
+    @Override
+    public BatchOperationResponse batchDelete(String bucket) {
+        return batchDelete(new BatchDeleteRequest(bucket));
     }
 
     @Override

@@ -51,4 +51,11 @@ public class RequestTransformers {
                     originRequest.getBucketName(),
                     originRequest.getKey(),
                     originRequest.getVersionId());
+
+    public static final RequestTransformer<DeleteObjectRequest, com.amazonaws.services.s3.model.DeleteObjectRequest>
+        seqAwsObjectDeleteRequestTransformer =
+        originRequest ->
+            new com.amazonaws.services.s3.model.DeleteObjectRequest(
+                originRequest.getBucket(),
+                originRequest.getKey());
 }

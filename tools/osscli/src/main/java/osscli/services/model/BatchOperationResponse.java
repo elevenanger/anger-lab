@@ -33,8 +33,8 @@ public abstract class BatchOperationResponse extends CliResponse {
     public String toString() {
         return "Batch " + getOperationName() + " Results : \n" +
                 operationResults.stream()
-                        .map(operationResult -> operationResult.toString().concat("\n"))
-                        .reduce("", String::concat);
+                        .map(OperationResult::toString)
+                        .collect(Collectors.joining("\n"));
     }
 
     private final class OperationResult {

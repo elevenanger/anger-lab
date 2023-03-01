@@ -19,6 +19,16 @@ public class WordCountSpliterator implements Spliterator<Character> {
         this.string = string;
     }
 
+    public static void main(String[] args) {
+        String sentence = "hello darkness my old friend  extraordinary";
+        Spliterator<Character> spliterator = new WordCountSpliterator(sentence);
+        Stream<Character> stream = StreamSupport.stream(spliterator, true);
+        System.out.printf("found words:%s", stream.reduce(
+            new WordCounter(0, true),
+            WordCounter::accumulate,
+            WordCounter::combine).getCounter());
+    }
+
     @Override
     public boolean tryAdvance(Consumer<? super Character> action) {
         action.accept(string.charAt(currentChar++));
@@ -33,7 +43,7 @@ public class WordCountSpliterator implements Spliterator<Character> {
         if (currentSize < 10) return null;
         // 将试探拆分的位置设定为 string 的中间位置
         for (int splitPos = currentSize / 2 + currentChar;
-                splitPos < string.length(); splitPos ++) {
+             splitPos < string.length(); splitPos++) {
             // 将拆分位置前进至下一个空格的位置
             if (Character.isWhitespace(string.charAt(splitPos))) {
                 // 创建一个新的 Spliterator 来解析 string 从开始到拆分位置的部分
@@ -56,16 +66,6 @@ public class WordCountSpliterator implements Spliterator<Character> {
     public int characteristics() {
         return ORDERED + SIZED + SUBSIZED + NONNULL + IMMUTABLE;
     }
-
-    public static void main(String[] args) {
-        String sentence = "hello darkness my old friend  extraordinary";
-        Spliterator<Character> spliterator = new WordCountSpliterator(sentence);
-        Stream<Character> stream = StreamSupport.stream(spliterator, true);
-        System.out.printf("found words:%s", stream.reduce(
-                                            new WordCounter(0, true),
-                                            WordCounter::accumulate,
-                                            WordCounter::combine).getCounter());
-    }
 }
 
 class WordCounter {
@@ -86,7 +86,7 @@ class WordCounter {
 
     public WordCounter combine(WordCounter wordCounter) {
         return new WordCounter(counter + wordCounter.counter
-                                , wordCounter.lastSpace);
+            , wordCounter.lastSpace);
     }
 
     public int getCounter() {
