@@ -29,3 +29,29 @@
 1677653474810:quit
 1677670351395:help
 1677670380441:quit
+1677720312577:help
+1677720363625:--conf-list
+1677720370980:--conf-all
+1677720375762:quit
+1677720488636:help
+1677720503229:quit
+1677745002917:help
+1677745013697:--conf-all
+1677745023433:--init-from fl_dev
+1677745075911:--batch-upload angersbucket /Users/liuanglin/Projects/anger-lab/cloud/
+1677745092131:stacktrace
+1677745284561:init-from fl_dev
+1677745296473:--init-from fl_dev
+1677745306625:--batch-upload /Users/liuanglin/Projects/anger-lab/cloud
+1677745317634:--batch-upload angersbucket /Users/liuanglin/Projects/anger-lab/cloud/
+1677745379021:--init-from fl_dev
+1677745396962:--batch-upload angersbucket /Users/liuanglin/Projects/anger-lab/cloud/
+1677745542484:--batch-download angersbucket /Users/liuanglin/data/tmp/
+1677745604498:quit
+1677745767815:--init-from fl_dev
+1677745795374:--batch-download angersbucket /Users/liuanglin/data/tmp
+1677746362222:quit
+1677746478857:--init-from fl_dev
+1677746505615:--batch-download angersbucket /Users/liuanglin/data/tmp
+1677746872190:--init-from fl_dev
+1677746896648:--batch-download angersbucket /Users/liuanglin/data/tmp/

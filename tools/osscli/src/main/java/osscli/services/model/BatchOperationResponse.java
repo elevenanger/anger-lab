@@ -34,7 +34,8 @@ public abstract class BatchOperationResponse extends CliResponse {
         return "Batch " + getOperationName() + " Results : \n" +
                 operationResults.stream()
                         .map(OperationResult::toString)
-                        .collect(Collectors.joining("\n"));
+                        .collect(Collectors.joining("\n"))
+                + "\n total : " + operationResults.size();
     }
 
     private final class OperationResult {

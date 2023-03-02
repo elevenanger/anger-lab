@@ -10,20 +10,22 @@ import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import osscli.exception.LaunderOssExceptions;
+import osscli.exception.OssBaseException;
 import osscli.services.AbstractOss;
 import osscli.services.model.*;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static osscli.services.model.transform.RequestTransformers.*;
 import static osscli.services.model.transform.ResponseTransformers.*;
@@ -100,7 +102,16 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     public DownloadObjectResponse downloadObject(DownloadObjectRequest request) {
 
         S3Object result = client.getObject(request.getBucket(), request.getKey());
+
         File localFile = Paths.get(request.getDownloadPath(), request.getKey()).toFile();
+
+        if (!localFile.getParentFile().exists()) {
+            try {
+                Files.createDirectories(localFile.getParentFile().toPath());
+            } catch (IOException e) {
+                throw new OssBaseException(e);
+            }
+        }
 
         long size = 0;
         try (BufferedInputStream s3is = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
@@ -183,11 +194,18 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public BatchOperationResponse batchUpload(BatchUploadRequest request) {
-        final List<PutObjectRequest> requests =
-                Arrays.stream(Objects.requireNonNull(new File(request.getLocalPath()).listFiles()))
+        final List<PutObjectRequest> requests;
+        try (Stream<Path> pathStream = Files.walk(Paths.get(request.getLocalPath())) ) {
+            requests = pathStream
+                        .map(Path::toFile)
                         .filter(File::isFile)
-                        .map(file -> new PutObjectRequest(request.getBucket(), file.getName(), file))
+                        .map(file ->
+                            new PutObjectRequest(request.getBucket(),
+                                file.getPath().replace(request.getLocalPath(), ""), file))
                         .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new OssBaseException(e);
+        }
 
         BatchOperationResponse response = new BatchUploadResponse();
 
@@ -204,7 +222,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public BatchOperationResponse batchDownload(BatchDownloadRequest request) {
-        BatchDownloadResponse response = new BatchDownloadResponse();
+        BatchOperationResponse response = new BatchDownloadResponse();
 
         return batchProcess(response,
                             listAllObjects(request.getBucket()).getObjectSummaryList(),
@@ -241,15 +259,15 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     private static final class AmazonS3Initializer {
-        final AmazonS3 s3;
-        final OssConfiguration configuration;
+        private final AmazonS3 s3;
+        private final OssConfiguration configuration;
 
         AmazonS3Initializer(OssConfiguration configuration) {
             this.configuration = configuration;
             s3 = initialize();
         }
 
-        AmazonS3 initialize() {
+        private AmazonS3 initialize() {
             String endPoint = configuration.getEndPoint();
             String accessKey = configuration.getAccessKey();
             String secreteKey = configuration.getSecreteKey();

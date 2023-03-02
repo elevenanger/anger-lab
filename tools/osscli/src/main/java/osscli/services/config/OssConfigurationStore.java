@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -26,10 +27,12 @@ public class OssConfigurationStore {
     }
     private static final ConfigStorage storage = new ConfigStorage().initialize();
 
+    private static final AtomicInteger index = new AtomicInteger(0);
+
     public static void addOne(OssConfiguration configuration) {
         storage.setConfigurations(
                 Collections.singletonMap(
-                        "custom", configuration));
+                        "custom" + index.incrementAndGet(), configuration));
     }
 
     public static OssConfiguration getOne(String key) {

@@ -13,3 +13,10 @@ configurations:
       secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD,
       type: AWS,
     }
+    inner_dev:
+      {
+        accessKey: ABCDEFGHIJKLMNOPQRST,
+        endPoint: "http://172.100.5.55:8002/",
+        secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD,
+        type: AWS,
+      }
