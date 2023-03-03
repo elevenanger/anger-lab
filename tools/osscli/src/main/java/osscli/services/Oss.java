@@ -83,10 +83,10 @@ public interface Oss {
 
     BatchOperationResponse batchDownload(BatchDownloadRequest request);
 
-    BatchOperationResponse batchDownload(String bucket, String path);
+    BatchOperationResponse batchDownload(String bucket, String path, String prefix);
 
     BatchOperationResponse batchDelete(BatchDeleteRequest request);
-    BatchOperationResponse batchDelete(String bucket);
+    BatchOperationResponse batchDelete(String bucket, String prefix);
 
     enum Type {
         AWS;

@@ -127,7 +127,17 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     @Override
-    public BatchOperationResponse batchDownload(String bucket, String path) {
+    public BatchOperationResponse batchDownload(String bucket, String path, String prefix) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public BatchOperationResponse batchDelete(BatchDeleteRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public BatchOperationResponse batchDelete(String bucket, String prefix) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -152,6 +162,9 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
                                                                       final Function<E, String> eleToKeyFunc,
                                                                       final Function<E, Supplier<V>> eleToValSupFunc)
     {
+
+        response.setBatchSize(collection.size());
+
         Map<String, CompletableFuture<V>> futureMap =
             collection.stream()
                 .collect(

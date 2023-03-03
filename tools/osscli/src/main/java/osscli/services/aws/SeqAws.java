@@ -233,8 +233,8 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public BatchOperationResponse batchDownload(String bucket, String path) {
-        return batchDownload(new BatchDownloadRequest(bucket, path));
+    public BatchOperationResponse batchDownload(String bucket, String path, String prefix) {
+        return batchDownload(new BatchDownloadRequest(bucket, path, prefix));
     }
 
     @Override
@@ -249,8 +249,8 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public BatchOperationResponse batchDelete(String bucket) {
-        return batchDelete(new BatchDeleteRequest(bucket));
+    public BatchOperationResponse batchDelete(String bucket, String prefix) {
+        return batchDelete(new BatchDeleteRequest(bucket, prefix));
     }
 
     @Override

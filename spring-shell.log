@@ -55,3 +55,61 @@
 1677746505615:--batch-download angersbucket /Users/liuanglin/data/tmp
 1677746872190:--init-from fl_dev
 1677746896648:--batch-download angersbucket /Users/liuanglin/data/tmp/
+1677802797537:quit
+1677802833810:--init-from fl_dev
+1677802852327:--bucket-objects angersbucket
+1677802899158:--batch-upload /Users/liuanglin/data/test/
+1677802908389:--batch-upload angersbucket /Users/liuanglin/data/test/
+1677802922205:quit
+1677803602011:--init-from fl_dev
+1677803641112:--batch-download angersbucket /Users/liuanglin/data/test/
+1677803856734:--init-from fl_dev
+1677803889691:--batch-download angersbucket /Users/liuanglin/data/test/
+1677806830216:--init-from fl_dev
+1677806846285:--batch-download angersbucket /Users/liuanglin/data/test/
+1677807193490:--init-from fl_dev
+1677807225922:help
+1677807251407:--object-delete caozuo.docx
+1677807266740:--object-delete angersbucket caozuo.docx
+1677807291006:--batch-download angersbucket /Users/liuanglin/data/test/
+1677807319638:quit
+1677819595308:--conf-all
+1677819607378:--init-from minio
+1677819611668:quit
+1677819629773:--init-from minio
+1677819645446:--bucket-all
+1677819655347:--bucket-create local
+1677819661419:--bucket-all
+1677819671204:quit
+1677819836479:--init-from minio
+1677819841572:quit
+1677819863456:--init-from minio
+1677819877723:--bucket-objects
+1677819886627:--bucket-objects local
+1677819994746:--batch-upload local /Users/liuanglin/Projects/anger-lab/cloud/
+1677820022971:--batch-delete local
+1677820137539:--init-from minio
+1677820161717:--batch-upload local /Users/liuanglin/Projects/anger-lab/spring
+1677820184442:--bucket-objects local
+1677820204019:--batch-delete local
+1677826012449:help
+1677826041631:quit
+1677826087985:help
+1677826978063:quit
+1677827554546:--init-from minio
+1677827609481:--batch-upload angersbucket /Users/liuanglin/Projects/anger-lab/
+1677827649761:--batch-upload local /Users/liuanglin/Projects/anger-lab/patterns/
+1677827667887:help
+1677827686348:--bucket-objects local proxy
+1677827719577:--batch-delete local proxy
+1677827741682:--bucket-objects
+1677827751109:--bucket-objects local
+1677827806243:quit
+1677827823944:--init-from minio
+1677827835067:--bucket-objects local
+1677828030076:--init-from minio
+1677828041833:--bucket-objects local
+1677828119365:quit
+1677830781325:--init-from minio
+1677830786230:pc
+1677830788572:quit

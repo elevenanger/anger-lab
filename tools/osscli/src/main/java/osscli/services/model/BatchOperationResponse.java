@@ -3,6 +3,9 @@ package osscli.services.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -15,12 +18,26 @@ public abstract class BatchOperationResponse extends CliResponse {
 
     private final List<OperationResult> operationResults = new ArrayList<>();
 
+    private final BatchOperationStatistics statistics = new BatchOperationStatistics();
+
+    private int batchSize;
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
+    }
+
     public void addSuccessResult(String key) {
-        operationResults.add(new OperationResult(key, true));
+        addResult(key, true, "");
     }
 
     public void addErrorResult(String key, String errorMsg) {
-        operationResults.add(new OperationResult(key, false, errorMsg));
+        addResult(key, false, errorMsg);
+    }
+
+    private void addResult(String key, boolean success, String msg) {
+        OperationResult result = new OperationResult(key, success, msg);
+        operationResults.add(result);
+
     }
 
     public List<String> getUploadResults() {
@@ -31,11 +48,7 @@ public abstract class BatchOperationResponse extends CliResponse {
 
     @Override
     public String toString() {
-        return "Batch " + getOperationName() + " Results : \n" +
-                operationResults.stream()
-                        .map(OperationResult::toString)
-                        .collect(Collectors.joining("\n"))
-                + "\n total : " + operationResults.size();
+        return statistics.toString();
     }
 
     private final class OperationResult {
@@ -43,16 +56,11 @@ public abstract class BatchOperationResponse extends CliResponse {
         private final boolean success;
         private final String errorMsg;
 
-        public OperationResult(String key, boolean success) {
-            this.key = key;
-            this.success = success;
-            this.errorMsg = "";
-        }
-
         public OperationResult(String key, boolean success, String errorMsg) {
             this.key = key;
             this.success = success;
             this.errorMsg = errorMsg;
+            statistics.updateStatistics(this);
         }
 
         @Override
@@ -61,6 +69,34 @@ public abstract class BatchOperationResponse extends CliResponse {
                 getOperationName() + " " + key +
                     (success ? " success" :
                                 " failed, error msg " + errorMsg);
+        }
+    }
+
+    private final class BatchOperationStatistics {
+        private final AtomicInteger successCount = new AtomicInteger(0);
+        private final AtomicInteger currentCount = new AtomicInteger(0);
+        private final AtomicLong time = new AtomicLong(0);
+
+        public void updateStatistics(final OperationResult result) {
+            time.compareAndSet(0, System.nanoTime());
+
+            int cur;
+            if ((cur = currentCount.incrementAndGet()) == batchSize)
+                time.set(System.nanoTime() - time.get());
+            if (result.success)
+                successCount.incrementAndGet();
+
+            System.out.println(cur + " / " + batchSize + " " + result);
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", BatchOperationStatistics.class.getSimpleName() + "[", "]")
+                .add("totalCount=" + batchSize)
+                .add("successCount=" + successCount)
+                .add("failedCount=" + (batchSize - successCount.get()))
+                .add("time cost=" + (time.get() / 1_000_000) + " ms")
+                .toString();
         }
     }
 
