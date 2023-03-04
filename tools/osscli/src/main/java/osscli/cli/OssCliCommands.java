@@ -79,6 +79,12 @@ public class OssCliCommands {
             return oss.createBucket(bucketName).getBucket().getName();
         }
 
+        @ShellMethod(value = "删除桶\n" +
+            "\t 用法 : --bucket-delete", key = "--bucket-delete")
+        public String deleteBucket(String bucket) {
+            return oss.deleteBucket(bucket).getBucket();
+        }
+
         @ShellMethod(value = "获取一个桶中所有对象信息\n" +
             "\t用法 : --bucket-objects bucket prefix(默认值\"\")", key = "--bucket-objects")
         public String listAll(String bucket,
@@ -123,7 +129,7 @@ public class OssCliCommands {
         public String batchDownload(String bucket,
                                     String path,
                                     @ShellOption(defaultValue = ShellOption.NULL) String prefix) {
-            return oss.batchDownload(bucket, path, prefix).toString();
+            return oss.batchDownload(bucket, prefix, path).toString();
         }
 
         @ShellMethod(value = "批量删除对象\n" +

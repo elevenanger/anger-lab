@@ -6,8 +6,7 @@ import osscli.services.model.*;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -33,6 +32,16 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public ListBucketsResponse listBuckets() {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public DeleteBucketResponse deleteBucket(DeleteBucketRequest request) {
+        throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public DeleteBucketResponse deleteBucket(String bucket) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -162,8 +171,8 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
                                                                       final Function<E, String> eleToKeyFunc,
                                                                       final Function<E, Supplier<V>> eleToValSupFunc)
     {
-
         response.setBatchSize(collection.size());
+        response.processStart();
 
         Map<String, CompletableFuture<V>> futureMap =
             collection.stream()

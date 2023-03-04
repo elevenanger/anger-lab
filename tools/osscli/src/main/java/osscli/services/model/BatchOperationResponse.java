@@ -51,6 +51,10 @@ public abstract class BatchOperationResponse extends CliResponse {
         return statistics.toString();
     }
 
+    public void processStart() {
+        this.statistics.start();
+    }
+
     private final class OperationResult {
         private final String key;
         private final boolean success;
@@ -77,9 +81,11 @@ public abstract class BatchOperationResponse extends CliResponse {
         private final AtomicInteger currentCount = new AtomicInteger(0);
         private final AtomicLong time = new AtomicLong(0);
 
-        public void updateStatistics(final OperationResult result) {
+        public void start() {
             time.compareAndSet(0, System.nanoTime());
+        }
 
+        public void updateStatistics(final OperationResult result) {
             int cur;
             if ((cur = currentCount.incrementAndGet()) == batchSize)
                 time.set(System.nanoTime() - time.get());
@@ -91,7 +97,7 @@ public abstract class BatchOperationResponse extends CliResponse {
 
         @Override
         public String toString() {
-            return new StringJoiner(", ", BatchOperationStatistics.class.getSimpleName() + "[", "]")
+            return new StringJoiner(", ", "batch " + getOperationName() + " result" +  "[", "]")
                 .add("totalCount=" + batchSize)
                 .add("successCount=" + successCount)
                 .add("failedCount=" + (batchSize - successCount.get()))

@@ -18,7 +18,7 @@ public class ListObjectsRequest extends CliRequest {
     // 从指定的 key 后面开始检索
     private String startAfter;
     // 最多返回的 key 的数量, 默认1000
-    private int maxKeys = 1000;
+    private int maxKeys;
 
     public void setBucketName(String bucketName) {
         this.bucketName = bucketName;

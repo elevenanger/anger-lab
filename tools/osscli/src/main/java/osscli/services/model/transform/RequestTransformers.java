@@ -1,8 +1,13 @@
 package osscli.services.model.transform;
 
-import com.amazonaws.services.s3.model.CreateBucketRequest;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.*;
 import osscli.services.model.*;
+import osscli.services.model.DeleteBucketRequest;
+import osscli.services.model.DeleteObjectRequest;
+import osscli.services.model.GetObjectRequest;
+import osscli.services.model.ListBucketsRequest;
+import osscli.services.model.ListObjectsRequest;
+import osscli.services.model.PutObjectRequest;
 
 /**
  * @author : anger
@@ -34,11 +39,23 @@ public class RequestTransformers {
 
     public static final RequestTransformer<PutObjectRequest, com.amazonaws.services.s3.model.PutObjectRequest>
         seqAwsPutObjectRequestTransformer =
-        originRequest -> new com.amazonaws.services.s3.model.PutObjectRequest(
-            originRequest.getBucketName(),
-            originRequest.getKey(),
-            originRequest.getFile()
-        );
+        originRequest -> {
+            if (originRequest.getInputStream() == null) {
+                return new com.amazonaws.services.s3.model.PutObjectRequest(
+                            originRequest.getBucketName(),
+                            originRequest.getKey(),
+                            originRequest.getFile());
+            } else {
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(originRequest.getFile().length());
+                return new com.amazonaws.services.s3.model.PutObjectRequest(
+                            originRequest.getBucketName(),
+                            originRequest.getKey(),
+                            originRequest.getInputStream(),
+                            objectMetadata
+                );
+            }
+        };
 
     public static final RequestTransformer<GetObjectRequest, com.amazonaws.services.s3.model.GetObjectRequest>
         seqAwsGetObjectRequestTransformer =
@@ -58,4 +75,9 @@ public class RequestTransformers {
             new com.amazonaws.services.s3.model.DeleteObjectRequest(
                 originRequest.getBucket(),
                 originRequest.getKey());
+
+    public static final RequestTransformer<DeleteBucketRequest, com.amazonaws.services.s3.model.DeleteBucketRequest>
+        awsDeleteBucketRequestTransformer =
+        deleteBucketRequest ->
+            new com.amazonaws.services.s3.model.DeleteBucketRequest(deleteBucketRequest.getBucket());
 }

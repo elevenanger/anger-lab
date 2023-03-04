@@ -2,9 +2,13 @@ package osscli.services.aws;
 
 import org.junit.jupiter.api.Test;
 import osscli.services.Oss;
+import osscli.services.config.OssConfigurationStore;
 import osscli.services.model.*;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class SeqAwsTest {
 
-    private final Oss aws = new SeqAws(new OssConfiguration().withEndPoint("http://192.168.48.129:8002/"));
+    private final Oss aws = new SeqAws(OssConfigurationStore.getOne("minio"));
 
     private static final String BUCKET = "local";
 
@@ -29,7 +33,22 @@ class SeqAwsTest {
     @Test
     void putObject() {
         PutObjectResponse response =
-            aws.putObject(BUCKET, new File("/Users/liuanglin/Desktop/2023.01.25-2023.02.23.csv"));
+            aws.putObject(BUCKET, new File("/Users/liuanglin/Desktop/soft.zip"));
+        assertNotNull(response.getETag());
+    }
+
+    @Test
+    void putObjectWithInputStream() throws IOException {
+        PutObjectRequest request = new PutObjectRequest();
+        request.setBucketName(BUCKET);
+        File file = new File("/Users/liuanglin/Desktop/soft.zip");
+        request.setFile(file);
+        System.out.println(file.length());
+        request.setKey(file.getName());
+        request.setInputStream(new BufferedInputStream(Files.newInputStream(file.toPath()), Oss.BUFFER_SIZE));
+//        request.setInputStream(Files.newInputStream(file.toPath()));
+
+        PutObjectResponse response = aws.putObject(request);
         assertNotNull(response.getETag());
     }
 
@@ -37,7 +56,7 @@ class SeqAwsTest {
     @Test
     void downloadObject() {
         DownloadObjectResponse response =
-                aws.downloadObject(BUCKET, "BREAKING_CHANGES.md", "/Users/liuanglin/data");
+                aws.downloadObject(BUCKET, "local.csv", "/Users/liuanglin/data");
         assertNotNull(response.getBucket());
         System.out.println(response);
     }
@@ -46,8 +65,6 @@ class SeqAwsTest {
     void batchUpload() {
         BatchOperationResponse response = aws.batchUpload(BUCKET, "/Users/liuanglin/helm-charts");
         assertNotNull(response.getUploadResults());
-
-        System.out.println(response);
     }
 
     @Test

@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,6 +61,17 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     @Override
     public PutBucketResponse createBucket(String bucketName) {
         return createBucket(new PutBucketRequest(bucketName));
+    }
+
+    @Override
+    public DeleteBucketResponse deleteBucket(DeleteBucketRequest request) {
+        client.deleteBucket(awsDeleteBucketRequestTransformer.transform(request));
+        return new DeleteBucketResponse(request.getBucket());
+    }
+
+    @Override
+    public DeleteBucketResponse deleteBucket(String bucket) {
+        return deleteBucket(new DeleteBucketRequest(bucket));
     }
 
     @Override
@@ -151,6 +161,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public ListObjectsResponse listObjects(ListObjectsRequest request) {
+        request.setMaxKeys(MAX_KEYS);
         ListObjectsV2Result result =
             client.listObjectsV2(seqAwsListObjectRequestTransformer.transform(request));
         return seqAwsListObjectResponseTransformer.transform(result);
@@ -167,14 +178,10 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
         ListObjectsRequest listObjectsRequest =
             new ListObjectsRequest(request.getBucket(), request.getPrefix());
-        Supplier<List<ObjectSummary>> supplier = () ->
-            listObjects(listObjectsRequest).getObjectSummaries();
 
-        List<ObjectSummary> summaries;
-
-        while (objectSummaryList.addAll(summaries = supplier.get()))
-            listObjectsRequest
-                .setStartAfter(summaries.get(summaries.size() - 1).getKey());
+        while (objectSummaryList.addAll(listObjects(listObjectsRequest).getObjectSummaries()))
+                listObjectsRequest
+                    .setStartAfter(objectSummaryList.get(objectSummaryList.size() - 1).getKey());
 
         ListAllObjectsResponse response = new ListAllObjectsResponse();
         response.setObjectSummaryList(objectSummaryList);

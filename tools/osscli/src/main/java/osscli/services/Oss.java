@@ -13,9 +13,18 @@ import java.io.File;
  */
 public interface Oss {
 
-    int BUFFER_SIZE = 128 * 1024;
+    int BUFFER_SIZE = 4 * 1024;
+
+    int MAX_KEYS = 1000;
+
+    /**
+     * 列出所有的桶
+     * @param request {@link ListBucketsRequest}
+     * @return {@link ListBucketsResponse}
+     */
 
     ListBucketsResponse listBuckets(ListBucketsRequest request);
+
     ListBucketsResponse listBuckets();
 
     /**
@@ -24,7 +33,17 @@ public interface Oss {
      * @return 创建桶结果
      */
     PutBucketResponse createBucket(PutBucketRequest request);
+
     PutBucketResponse createBucket(String bucketName);
+
+    /**
+     * 删除桶
+     * @param request {@link DeleteBucketRequest}
+     * @return {@link DeleteBucketResponse}
+     */
+    DeleteBucketResponse deleteBucket(DeleteBucketRequest request);
+
+    DeleteBucketResponse deleteBucket(String bucket);
 
     /**
      * 上传对象

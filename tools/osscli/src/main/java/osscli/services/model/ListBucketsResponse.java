@@ -28,7 +28,7 @@ public class ListBucketsResponse extends CliResponse {
 
     @Override
     public String toString() {
-        return "ListBucketsResponse : " +
+        return "ListBucketsResponse :\n" +
                 getBuckets().stream()
                     .map(Bucket::toString)
                     .collect(Collectors.joining("\n"));

@@ -113,3 +113,85 @@
 1677830781325:--init-from minio
 1677830786230:pc
 1677830788572:quit
+1677849430894:--init-from minio
+1677849434622:quit
+1677849461820:--init-from minio
+1677849464470:ls
+1677849470699:--batch-delete local
+1677849490682:quit
+1677849614167:--init-from minio
+1677849772859:--bacth-upload local /Users/liuanglin/Projects/anger-lab/
+1677849786165:help
+1677849803317:--batch-upload local /Users/liuanglin/Projects/anger-lab/
+1677849940087:--bucket-objects local
+1677849953978:clear
+1677849955887:ls
+1677849958790:quit
+1677915673863:--init-from minio
+1677915818743:--bucket-all
+1677917455917:--bucket-objects
+1677917464164:--bucket-objects local
+1677917545871:--batch-download local /Users/liuanglin/data/
+1677918062426:--init-from minio
+1677918084665:--batch-download local /Users/liuanglin/data/
+1677918713117:--init-from minio
+1677918730096:--batch-download local /Users/liuanglin/data/
+1677918939526:--init-from minio
+1677918952623:--batch-download local /Users/liuanglin/data
+1677918988251:--batch-delete local
+1677919006296:--batch-upload local /Users/liuanglin/data
+1677919045267:ll
+1677919057044:--bucket-objects local
+1677919517324:--init-from minio
+1677919523642:--batch-delete local
+1677919557293:quit
+1677919608289:--init-from minio
+1677919624783:--batch-upload local /Users/liuanglin/data
+1677919746373:quit
+1677919916507:--init-from minio
+1677919931371:--batch-delete local
+1677919954580:--batch-upload local /Users/liuanglin/data
+1677922409741:--init-from minio
+1677922419571:--batch-delete local
+1677922440199:--bacth-upload local /Users/liuanglin/data
+1677922459510:--batch-upload local /Users/liuanglin/data
+1677922498298:--init-from minio
+1677922512511:--batch-upload local /Users/liuanglin/data
+1677922582507:--init-from minio
+1677922592300:--batch-upload local /Users/liuanglin/data
+1677922634681:--init-from minio
+1677922643587:--batch-upload local /Users/liuanglin/data
+1677922663093:quit
+1677922700119:--init-from minio
+1677922714779:--batch-upload local /Users/liuanglin/data
+1677922741226:--bacth-upload /Users/liuanglin/data
+1677922750522:--batch-upload local /Users/liuanglin/data
+1677922782894:quit
+1677922802864:--init-from minio
+1677922820609:--batch-upload local /Users/liuanglin/data
+1677922866792:quit
+1677922896916:--init-from minio
+1677922903312:--batch=upload local /Users/liuanglin/data
+1677922909854:--batch-upload local /Users/liuanglin/data
+1677922954568:quit
+1677928031852:--init-from minio
+1677928055688:--batch-upload local /Users/liuanglin/data
+1677928092486:--batch-download local /Users/liuanglin/data
+1677928167826:--bucket-objects
+1677928184072:--bucket-objects local
+1677928188574:quit
+1677928421905:--init-from minio
+1677928436579:--bucket-objects local
+1677928491011:quit
+1677928508346:--init-from minio
+1677928521778:--bucket-objects local
+1677928536964:quit
+1677932319914:--init-from minio
+1677932334269:--bucket-objects local
+1677932357203:quit
+1677933397115:--init-from minio
+1677933418836:--bucket-create test
+1677933423822:--bucket-all
+1677933496410:--bucket-delete test
+1677933504248:--bucket-all
+1677933506728:quit
