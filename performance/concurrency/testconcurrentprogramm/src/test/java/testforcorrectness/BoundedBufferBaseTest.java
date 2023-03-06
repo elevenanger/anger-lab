@@ -2,10 +2,10 @@ package testforcorrectness;
 
 import cn.anger.concurrency.ThreadUtil;
 import cn.anger.dump.DumpUtil;
-import cn.anger.file.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -101,12 +101,12 @@ class BoundedBufferBaseTest {
     class Big { double[] data = new double[100_000]; }
 
     @Test
-    void testLeak() throws InterruptedException, IOException {
+    void testLeak() throws InterruptedException{
         BoundedBuffer<Big> buffer = new BoundedBuffer<>(CAPACITY);
         final Function<String, Long> dumpAndGetSize = filename -> {
             try {
                 DumpUtil.dumpHeap(filename, true);
-                return FileUtil.getFileSizeBytes(FileUtil.COMMON_DIR + "dump/" + filename);
+                return Paths.get(DumpUtil.COMMON_DIR, filename).toFile().length();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

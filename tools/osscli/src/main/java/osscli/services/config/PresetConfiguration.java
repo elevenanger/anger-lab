@@ -4,7 +4,6 @@ import osscli.services.Oss;
 import osscli.services.model.OssConfiguration;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,25 +25,12 @@ public enum PresetConfiguration {
         return configuration;
     }
 
-    static PresetConfiguration fromValue(String value) {
-        if (value == null || value.isEmpty())
-            return null;
-
-        String upperValue = value.toUpperCase();
-
-        for (PresetConfiguration ossConfiguration : values()) {
-            if (ossConfiguration.name().equals(upperValue))
-                return ossConfiguration;
-        }
-
-        throw new IllegalArgumentException("没有对应的预置配置信息 ：" + value);
-    }
 
     private static OssConfiguration defaultSeqAwsCredentials() {
         return new OssConfiguration()
-            .withType(Oss.Type.AWS)
-            .withAccessKey("ABCDEFGHIJKLMNOPQRST")
-            .withSecreteKey("abcdefghijklmnopqrstuvwxyz0123456789ABCD");
+                    .withType(Oss.Type.AWS)
+                    .withAccessKey("ABCDEFGHIJKLMNOPQRST")
+                    .withSecreteKey("abcdefghijklmnopqrstuvwxyz0123456789ABCD");
     }
 
     public static Map<String, OssConfiguration> presetConfigurations() {

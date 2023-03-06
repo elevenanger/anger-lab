@@ -85,20 +85,21 @@ public class ThreadUtil {
         // endGate count 设置为线程数
         CountDownLatch endGate = new CountDownLatch(threads.size());
 
-        // Thread.start 表示执行开始
         // 计时，startGate countDown
-        threads.forEach(Thread::start);
-        long start = System.nanoTime();
         startGate.countDown();
+        long start = System.nanoTime();
+        // Thread.start 表示执行开始
+        threads.forEach(Thread::start);
 
         for (Thread thread : threads) {
             try {
                 // 每一个线程完成 join
-                // endGate countDown
                 thread.join();
-                endGate.countDown();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+            } finally {
+                // endGate countDown
+                endGate.countDown();
             }
         }
 

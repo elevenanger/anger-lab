@@ -98,11 +98,11 @@ public abstract class BatchOperationResponse extends CliResponse {
         @Override
         public String toString() {
             return new StringJoiner(", ", "batch " + getOperationName() + " result" +  "[", "]")
-                .add("totalCount=" + batchSize)
-                .add("successCount=" + successCount)
-                .add("failedCount=" + (batchSize - successCount.get()))
-                .add("time cost=" + (time.get() / 1_000_000) + " ms")
-                .toString();
+                        .add("totalCount=" + batchSize)
+                        .add("successCount=" + successCount)
+                        .add("failedCount=" + (batchSize - successCount.get()))
+                        .add("time cost=" + (time.get() / 1_000_000) + " ms")
+                        .toString();
         }
     }
 

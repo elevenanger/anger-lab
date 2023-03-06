@@ -1,6 +1,6 @@
 package cn.anger.dump;
 
-import cn.anger.file.FileUtil;
+import cn.anger.file.FileSize;
 import com.sun.management.HotSpotDiagnosticMXBean;
 
 import javax.management.MBeanServer;
@@ -15,8 +15,10 @@ import java.nio.file.Paths;
 public class DumpUtil {
     private DumpUtil() {}
 
+    public static final String COMMON_DIR = "/Users/" + System.getProperty("user.name") + "/data/";
+
     public static void dumpHeap(final String fileName, boolean live) throws IOException {
-        final String filePath = FileUtil.COMMON_DIR + "dump/" + fileName;
+        final String filePath = COMMON_DIR + "dump/" + fileName;
         Files.deleteIfExists(Paths.get(filePath));
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
         HotSpotDiagnosticMXBean mxBean = ManagementFactory.newPlatformMXBeanProxy(

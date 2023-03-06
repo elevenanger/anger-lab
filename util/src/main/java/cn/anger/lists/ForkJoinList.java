@@ -2,14 +2,12 @@ package cn.anger.lists;
 
 
 import cn.anger.base.BaseResult;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-@Slf4j
 public class ForkJoinList<T> extends RecursiveTask<List<BaseResult>> {
     private final List<T> originList;
     private final int start;
