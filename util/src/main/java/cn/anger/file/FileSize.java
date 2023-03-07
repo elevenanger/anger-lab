@@ -9,7 +9,7 @@ import java.text.NumberFormat;
  */
 public enum FileSize {
 
-    BYTE(0, "B"),
+    BYTE(0, "B" ),
     KILO_BYTE(10, "KB"),
     MEGA_BYTE(20, "MB"),
     GIGA_BYTE(30, "GB"),
@@ -17,26 +17,38 @@ public enum FileSize {
 
     private final int shiftBit;
     private final String abbr;
+    private final long unit;
 
     FileSize(int shiftBit, String abbr) {
         this.shiftBit = shiftBit;
         this.abbr = abbr;
+        this.unit = 1L << shiftBit;
     }
 
-    private static final NumberFormat formatter = new DecimalFormat(".00");
+    private static final NumberFormat formatter = new DecimalFormat("#.##");
 
     public double toSize(long byteSize) {
-        return (double) byteSize / (1 << shiftBit);
+        return (double) byteSize / unit;
     }
 
-    public static String toFixedString(long byteSize) {
+    public double toSize(double size, FileSize target) {
+        return size * unit / target.unit;
+    }
+
+    public static String toFixed(long byteSize) {
+        if (byteSize < 0)
+            throw new IllegalArgumentException("byte size must > 0");
+
+        FileSize fixedSize = FileSize.TERA_BYTE;
+
         for (int i = 1; i < values().length; i++) {
-            if (byteSize >> values()[i].shiftBit == 0)
-                return formatter.format((double) byteSize / (1 << values()[i - 1].shiftBit))
-                            .concat(values()[i - 1].abbr);
+            if (byteSize >> values()[i].shiftBit == 0) {
+                fixedSize = values()[i - 1];
+                break;
+            }
         }
 
-        return byteSize + " B";
+        return formatter.format((double) byteSize / fixedSize.unit).concat(fixedSize.abbr);
     }
 
 }

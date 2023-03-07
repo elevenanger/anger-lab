@@ -195,3 +195,7 @@
 1677933496410:--bucket-delete test
 1677933504248:--bucket-all
 1677933506728:quit
+1678177490176:--init-from minio
+1678177495254:--bucket-all
+1678177503409:--bucket-objects local
+1678177533192:quit

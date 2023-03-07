@@ -1,5 +1,7 @@
 package osscli.services.model;
 
+import cn.anger.file.FileSize;
+
 import java.util.Date;
 
 /**
@@ -59,7 +61,7 @@ public class ObjectSummary {
             "bucket='" + bucket + '\'' +
             ", key='" + key + '\'' +
             ", lastModified=" + lastModified +
-            ", size=" + size / 1024 + "kb" +
+            ", size=" + FileSize.toFixed(size) +
             '}';
     }
 }
