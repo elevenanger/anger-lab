@@ -21,7 +21,10 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     protected final T client;
 
+    private final OssConfiguration ossConfiguration;
+
     protected AbstractOss(OssConfiguration configuration) {
+        this.ossConfiguration = configuration;
         this.client = createClient(configuration);
     }
 
@@ -148,6 +151,11 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     @Override
     public BatchOperationResponse batchDelete(String bucket, String prefix) {
         throw new UnsupportedOssOperationException();
+    }
+
+    @Override
+    public OssConfiguration getCurrentConfiguration() {
+        return ossConfiguration;
     }
 
     @Override

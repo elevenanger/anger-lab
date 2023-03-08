@@ -107,6 +107,8 @@ public interface Oss {
     BatchOperationResponse batchDelete(BatchDeleteRequest request);
     BatchOperationResponse batchDelete(String bucket, String prefix);
 
+    OssConfiguration getCurrentConfiguration();
+
     enum Type {
         AWS;
 

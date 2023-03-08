@@ -199,3 +199,17 @@
 1678177495254:--bucket-all
 1678177503409:--bucket-objects local
 1678177533192:quit
+1678272911094:--init-from minio
+1678272918630:--conf-current
+1678272925303:quit
+1678283099432:--init-current
+1678283107241:--conf-current
+1678283114997:--bucket-list
+1678283120379:--bucket-all
+1678283124318:quit
+1678283166586:--init-from fl_dev
+1678283176552:--conf-current
+1678283184238:--conf-load
+1678283281007:--conf-load /Users/liuanglin/Desktop/dump.yml
+1678283292723:--conf-all
+1678283305584:quit

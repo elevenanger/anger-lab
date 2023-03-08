@@ -1,6 +1,5 @@
 package osscli.cli;
 
-import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -19,7 +18,7 @@ import java.io.File;
 @ShellComponent
 public class OssCliCommands {
 
-    private Oss oss;
+    private Oss oss = OssFactory.getInstance(OssConfigurationStore.defaultConfiguration());
 
     @ShellMethod(value = "初始化 oss 实例\n" +
         "\t用法 : --init type endPoint accessKey secreteKey", group = "init", key = "--init")
@@ -44,7 +43,7 @@ public class OssCliCommands {
 
     @ShellComponent
     @ShellCommandGroup("conf")
-    public static class ConfCommand {
+    public class ConfCommand {
         @ShellMethod(value = "获取所有配置信息", key = "--conf-all")
         public String all() {
             return OssConfigurationStore.getAllAsString();
@@ -60,6 +59,12 @@ public class OssCliCommands {
             "\t用法 : --conf-dump 本地路径", key = "--conf-dump")
         public void dump(String path) {
             OssConfigurationStore.dumpConfig(path);
+        }
+
+        @ShellMethod(value = "获取当前的配置信息\n" +
+            "\t用法 : --conf-current", key = "--conf-current")
+        public String currentConfiguration() {
+            return oss.getCurrentConfiguration().toString();
         }
     }
 
@@ -138,12 +143,6 @@ public class OssCliCommands {
                                   @ShellOption(defaultValue = ShellOption.NULL) String prefix) {
             return oss.batchDelete(bucket, prefix).toString();
         }
-    }
-
-    public Availability ossInstanceCheck() {
-        return oss != null ?
-            Availability.available() :
-            Availability.unavailable("必须初始化 oss 实例");
     }
 
 }

@@ -7,6 +7,10 @@ import osscli.services.model.OssConfiguration;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class OssConfigurationStoreTest {
 
     @Test
-    void testInitialize() throws IOException {
+    void testInitialize() {
         Map<String, OssConfiguration> configurations = OssConfigurationStore.getAll();
         assertNotNull(configurations);
         configurations.entrySet().forEach(System.out::println);
@@ -53,6 +57,13 @@ class OssConfigurationStoreTest {
     @Test
     void dumpConfTest() {
         OssConfigurationStore.dumpConfig("/Users/liuanglin/Desktop/dump.yml");
+    }
+
+    @Test
+    void defaultTest() {
+
+        System.out.println(OssConfigurationStore.getAll());
+        System.out.println(OssConfigurationStore.defaultConfiguration());
     }
 
 }

@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -55,12 +57,17 @@ public class OssConfigurationStore {
         storage.dump(path);
     }
 
+    public static OssConfiguration defaultConfiguration() {
+        return storage.getConfiguration(storage.getDefaultConfiguration());
+    }
+
     private static final class ConfigStorage {
         private static final String OSS_CONFIG = "oss-config.yml";
-        private static final Yaml yaml = buildYaml();
+        private static final Yaml yaml = getYaml();
         private final Map<String, OssConfiguration> configurations = new HashMap<>();
+        private String defaultConfiguration;
 
-        private static Yaml buildYaml() {
+        private static Yaml getYaml() {
             Yaml yaml = new Yaml(new Constructor(ConfigStorage.class));
             yaml.setBeanAccess(BeanAccess.FIELD);
             return yaml;
@@ -91,6 +98,8 @@ public class OssConfigurationStore {
         public void loadConfig(InputStream stream) {
             ConfigStorage configStorage = yaml.load(stream);
             this.configurations.putAll(configStorage.getConfigurations());
+            if (configStorage.getDefaultConfiguration() != null)
+                setDefaultConfiguration(configStorage.getDefaultConfiguration());
         }
 
         public void dump(String path) {
@@ -112,12 +121,20 @@ public class OssConfigurationStore {
             return getConfigurations().get(key);
         }
 
+        public String getDefaultConfiguration() {
+            return defaultConfiguration;
+        }
+
+        public void setDefaultConfiguration(String defaultConfiguration) {
+            this.defaultConfiguration = defaultConfiguration;
+        }
+
         @Override
         public String toString() {
             return "ConfigStorage:\n" +
-                getConfigurations().entrySet().stream()
-                    .map(entry -> entry.getKey() + " => " + entry.getValue())
-                    .collect(Collectors.joining("\n"));
+                        getConfigurations().entrySet().stream()
+                            .map(entry -> entry.getKey() + " => " + entry.getValue())
+                            .collect(Collectors.joining("\n"));
         }
     }
 }

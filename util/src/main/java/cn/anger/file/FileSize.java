@@ -37,7 +37,7 @@ public enum FileSize {
 
     public static String toFixed(long byteSize) {
         if (byteSize < 0)
-            throw new IllegalArgumentException("byte size must > 0");
+            throw new IllegalArgumentException("byte size must >= 0");
 
         FileSize fixedSize = FileSize.TERA_BYTE;
 
