@@ -3,10 +3,13 @@ package osscli.services.model.transform;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import osscli.exception.OssBaseException;
 import osscli.services.Oss;
 import osscli.services.model.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -72,5 +75,24 @@ public class ResponseTransformers {
             response.setETag(putObjectResult.getETag());
             return response;
         };
+
+    public static <T, R extends CliResponse> R doTransform(T t) {
+        Optional<R> response = Optional.empty();
+        try {
+            Field[] fields = ResponseTransformers.class.getFields();
+            for (Field field : fields) {
+                if (field.getGenericType().getTypeName().contains(t.getClass().getTypeName())) {
+                    @SuppressWarnings("unchecked")
+                    ResponseTransformer<T, R> responseTransformer =
+                        (ResponseTransformer<T, R>) field.get(ResponseTransformer.class);
+                    response = Optional.ofNullable(responseTransformer.transform(t));
+                    break;
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new OssBaseException(e);
+        }
+        return response.orElseThrow(() -> new OssBaseException("无法转换的响应 : " + t.getClass()));
+    }
 
 }

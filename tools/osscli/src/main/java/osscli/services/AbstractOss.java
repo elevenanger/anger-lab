@@ -1,9 +1,14 @@
 package osscli.services;
 
+import osscli.exception.OssBaseException;
 import osscli.exception.UnsupportedOssOperationException;
 import osscli.services.model.*;
+import osscli.services.model.transform.RequestTransformers;
+import osscli.services.model.transform.ResponseTransformers;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -204,5 +209,33 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
         );
 
         return response;
+    }
+
+    /**
+     * 调用 oss 实例的通用处理框架
+     * @param req cli 项目 oss 服务源请求，继承 {@link CliRequest}
+     * @return cli 项目 oss 服务响应，继承 {@link CliResponse}
+     * @param <R> 源请求类型
+     * @param <I> oss client 请求类型，经过 {@link RequestTransformers} 转换后的结果
+     * @param <O> 执行 oss client 响应方法后的响应类型
+     * @param <E> 通过 {@link ResponseTransformers} 将响应类型转换为 cli 服务的响应类型
+     */
+    @SuppressWarnings("unchecked")
+    protected <R extends CliRequest, I, O, E extends CliResponse> E execute(R req) {
+        I request = RequestTransformers.doTransform(req);
+        O response = null;
+        for (Method method : client.getClass().getMethods()) {
+            for (Class<?> parameterType : method.getParameterTypes()) {
+                if (parameterType == request.getClass()) {
+                    try {
+                        response = (O) method.invoke(client, request);
+                        break;
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        throw new OssBaseException(e);
+                    }
+                }
+            }
+        }
+        return ResponseTransformers.doTransform(response);
     }
 }

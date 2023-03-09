@@ -1,13 +1,13 @@
 package osscli.services.model.transform;
 
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import osscli.exception.OssBaseException;
 import osscli.services.model.*;
-import osscli.services.model.DeleteBucketRequest;
-import osscli.services.model.DeleteObjectRequest;
-import osscli.services.model.GetObjectRequest;
-import osscli.services.model.ListBucketsRequest;
-import osscli.services.model.ListObjectsRequest;
-import osscli.services.model.PutObjectRequest;
+
+import java.lang.reflect.Field;
+import java.util.Optional;
 
 /**
  * @author : anger
@@ -80,4 +80,30 @@ public class RequestTransformers {
         awsDeleteBucketRequestTransformer =
         deleteBucketRequest ->
             new com.amazonaws.services.s3.model.DeleteBucketRequest(deleteBucketRequest.getBucket());
+
+    public static class TransCreateBucket implements RequestTransformer<PutBucketRequest, CreateBucketRequest> {
+        @Override
+        public CreateBucketRequest transform(PutBucketRequest putBucketRequest) {
+            return new CreateBucketRequest(putBucketRequest.getBucketName());
+        }
+    }
+
+    public static <T extends CliRequest, R> R doTransform(T t) {
+        Optional<R> request = Optional.empty();
+        try {
+            Field[] fields = RequestTransformers.class.getFields();
+            for (Field field : fields) {
+                if (field.getGenericType().getTypeName().contains(t.getClass().getTypeName())) {
+                    @SuppressWarnings("unchecked")
+                    RequestTransformer<T, R> requestTransformer = (RequestTransformer<T, R>) field.get(RequestTransformers.class);
+                    request = Optional.ofNullable(requestTransformer.transform(t));
+                    break;
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new OssBaseException(e);
+        }
+        return request.orElseThrow(() -> new OssBaseException("无法转换的请求 : " + t.getClass()));
+    }
+
 }

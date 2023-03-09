@@ -7,7 +7,6 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import osscli.exception.LaunderOssExceptions;
 import osscli.exception.OssBaseException;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static osscli.services.model.transform.RequestTransformers.*;
-import static osscli.services.model.transform.ResponseTransformers.*;
+import static osscli.services.model.transform.ResponseTransformers.seqAwsListObjectResponseTransformer;
 
 /**
  * @author : anger
@@ -41,9 +40,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public ListBucketsResponse listBuckets(ListBucketsRequest request) {
-        List<com.amazonaws.services.s3.model.Bucket> buckets =
-            client.listBuckets(seqAwsListBucketRequestTransformer.transform(request));
-        return seqAwsListBucketsResponseTransformer.transform(buckets);
+        return execute(request);
     }
 
     @Override
@@ -53,9 +50,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public PutBucketResponse createBucket(PutBucketRequest request) {
-        com.amazonaws.services.s3.model.Bucket bucket =
-                client.createBucket(seqAwsCreateBucketRequestTransformer.transform(request));
-        return seqAwsCreateBucketResponseTransformer.transform(bucket);
+        return execute(request);
     }
 
     @Override
@@ -76,12 +71,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     @Override
     public PutObjectResponse putObject(PutObjectRequest request) {
-        com.amazonaws.services.s3.model.PutObjectRequest putObjectRequest =
-            seqAwsPutObjectRequestTransformer.transform(request);
-        PutObjectResult result = client.putObject(putObjectRequest);
-
-        PutObjectResponse response =
-            seqAwsPutObjectResponseTransformer.transform(result);
+        PutObjectResponse response = execute(request);
         response.setKey(request.getKey());
         return response;
     }

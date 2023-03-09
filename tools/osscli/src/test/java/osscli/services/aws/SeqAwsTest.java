@@ -8,6 +8,7 @@ import osscli.services.model.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -73,5 +74,21 @@ class SeqAwsTest {
         assertNotNull(response);
 
         System.out.println(response);
+    }
+
+    @Test
+    void methodListTest() {
+        for (Method method : SeqAws.class.getMethods()) {
+            System.out.println(method.getName());
+            for (Class<?> parameterType : method.getParameterTypes()) {
+                System.out.println(parameterType.getCanonicalName());
+            }
+            System.out.println("---------");
+        }
+    }
+
+    @Test
+    void listBucketTest() {
+        aws.listBuckets();
     }
 }
