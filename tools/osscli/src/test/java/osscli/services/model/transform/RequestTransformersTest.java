@@ -100,13 +100,4 @@ class RequestTransformersTest {
         assertNotNull(request);
     }
 
-    @Test
-    void doTransformTest() {
-        CreateBucketRequest request = RequestTransformers.doTransform(new PutBucketRequest("test"));
-
-        assertNotNull(request);
-
-        System.out.println(request.getBucketName());
-    }
-
 }

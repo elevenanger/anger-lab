@@ -1,5 +1,6 @@
 package osscli.services.model.transform;
 
+import cn.anger.reflection.ReflectionUtil;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -7,6 +8,7 @@ import osscli.exception.OssBaseException;
 import osscli.services.model.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Optional;
 
 /**
@@ -88,12 +90,12 @@ public class RequestTransformers {
         }
     }
 
-    public static <T extends CliRequest, R> R doTransform(T t) {
+    public static <T extends CliRequest, R> R doTransform(T t, Type requestType) {
         Optional<R> request = Optional.empty();
         try {
             Field[] fields = RequestTransformers.class.getFields();
             for (Field field : fields) {
-                if (field.getGenericType().getTypeName().contains(t.getClass().getTypeName())) {
+                if (ReflectionUtil.genericTypes(field).contains(requestType.getTypeName())) {
                     @SuppressWarnings("unchecked")
                     RequestTransformer<T, R> requestTransformer = (RequestTransformer<T, R>) field.get(RequestTransformers.class);
                     request = Optional.ofNullable(requestTransformer.transform(t));

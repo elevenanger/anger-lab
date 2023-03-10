@@ -1,5 +1,6 @@
 package osscli.services.model.transform;
 
+import cn.anger.reflection.ReflectionUtil;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
@@ -8,6 +9,7 @@ import osscli.services.Oss;
 import osscli.services.model.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,12 +78,12 @@ public class ResponseTransformers {
             return response;
         };
 
-    public static <T, R extends CliResponse> R doTransform(T t) {
+    public static <T, R extends CliResponse> R doTransform(T t, Type type) {
         Optional<R> response = Optional.empty();
         try {
             Field[] fields = ResponseTransformers.class.getFields();
             for (Field field : fields) {
-                if (field.getGenericType().getTypeName().contains(t.getClass().getTypeName())) {
+                if (ReflectionUtil.genericTypes(field).contains(type.getTypeName())) {
                     @SuppressWarnings("unchecked")
                     ResponseTransformer<T, R> responseTransformer =
                         (ResponseTransformer<T, R>) field.get(ResponseTransformer.class);

@@ -6,7 +6,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3Object;
 import osscli.exception.LaunderOssExceptions;
 import osscli.exception.OssBaseException;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static osscli.services.model.transform.RequestTransformers.*;
-import static osscli.services.model.transform.ResponseTransformers.seqAwsListObjectResponseTransformer;
 
 /**
  * @author : anger
@@ -152,9 +150,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     @Override
     public ListObjectsResponse listObjects(ListObjectsRequest request) {
         request.setMaxKeys(MAX_KEYS);
-        ListObjectsV2Result result =
-            client.listObjectsV2(seqAwsListObjectRequestTransformer.transform(request));
-        return seqAwsListObjectResponseTransformer.transform(result);
+        return execute(request);
     }
 
     @Override

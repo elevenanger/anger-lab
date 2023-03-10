@@ -8,11 +8,9 @@ import osscli.services.model.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author : anger
@@ -47,7 +45,6 @@ class SeqAwsTest {
         System.out.println(file.length());
         request.setKey(file.getName());
         request.setInputStream(new BufferedInputStream(Files.newInputStream(file.toPath()), Oss.BUFFER_SIZE));
-//        request.setInputStream(Files.newInputStream(file.toPath()));
 
         PutObjectResponse response = aws.putObject(request);
         assertNotNull(response.getETag());
@@ -69,7 +66,7 @@ class SeqAwsTest {
     }
 
     @Test
-    void listBuckets() {
+    void listBucketTest() {
         ListBucketsResponse response = aws.listBuckets();
         assertNotNull(response);
 
@@ -77,18 +74,37 @@ class SeqAwsTest {
     }
 
     @Test
-    void methodListTest() {
-        for (Method method : SeqAws.class.getMethods()) {
-            System.out.println(method.getName());
-            for (Class<?> parameterType : method.getParameterTypes()) {
-                System.out.println(parameterType.getCanonicalName());
-            }
-            System.out.println("---------");
-        }
+    void createBucketTest() {
+        String bucket = "test";
+
+        PutBucketRequest request = new PutBucketRequest(bucket);
+        PutBucketResponse response = aws.createBucket(request);
+        assertNotNull(response);
+
+        System.out.println(response);
+
+        aws.deleteBucket(bucket);
     }
 
     @Test
-    void listBucketTest() {
-        aws.listBuckets();
+    void putObjectTest() {
+        PutObjectRequest request = new PutObjectRequest();
+        request.setBucketName("local");
+        request.setKey("test.file");
+        request.setFile(new File("/Users/liuanglin/data/test.file"));
+
+        PutObjectResponse response = aws.putObject(request);
+        assertNotNull(response);
+
+        System.out.println(response.getKey());
     }
+
+    @Test
+    void listObjects() {
+        ListObjectsRequest request = new ListObjectsRequest("local", "");
+        ListObjectsResponse response = aws.listObjects(request);
+        assertNotNull(response);
+        assertEquals(response.getObjectSummaries().size(), 1000);
+    }
+
 }

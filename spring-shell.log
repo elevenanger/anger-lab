@@ -217,3 +217,20 @@
 1678342922487:stacktrace
 1678372615726:--bucket-all
 1678372626997:stacktrace
+1678441862997:--bucket-list
+1678441870081:--bucket-all
+1678441880712:stacktrace
+1678455504445:--bucket-list
+1678455509650:--bucket-all
+1678455516422:--bucket-delete test
+1678455522287:--bucket-delete test1
+1678455528917:--bucket-create d
+1678455539075:stacktrace
+1678455555791:help
+1678455641080:--bucket-create and1
+1678455648720:--bucket-delete and1
+1678455657427:--bucket-delete test2
+1678455692731:--bucket-objects
+1678455698242:--bucket-objects local
+1678455757511:help
+1678455783595:--object-upload local /Users/liuanglin/data/test.file

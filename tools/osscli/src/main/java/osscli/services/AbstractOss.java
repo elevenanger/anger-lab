@@ -9,9 +9,11 @@ import osscli.services.model.transform.ResponseTransformers;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -212,7 +214,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     }
 
     /**
-     * 调用 oss 实例的通用处理框架
+     * 调用 oss 接口的通用处理框架
      * @param req cli 项目 oss 服务源请求，继承 {@link CliRequest}
      * @return cli 项目 oss 服务响应，继承 {@link CliResponse}
      * @param <R> 源请求类型
@@ -222,20 +224,20 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
      */
     @SuppressWarnings("unchecked")
     protected <R extends CliRequest, I, O, E extends CliResponse> E execute(R req) {
-        I request = RequestTransformers.doTransform(req);
-        O response = null;
-        for (Method method : client.getClass().getMethods()) {
-            for (Class<?> parameterType : method.getParameterTypes()) {
-                if (parameterType == request.getClass()) {
-                    try {
-                        response = (O) method.invoke(client, request);
-                        break;
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        throw new OssBaseException(e);
-                    }
-                }
-            }
+        I request = RequestTransformers.doTransform(req, req.getClass());
+        O response;
+
+        Method m = Arrays.stream(client.getClass().getMethods())
+                    .filter(method -> Arrays.stream(method.getParameterTypes())
+                                            .anyMatch(type -> type == request.getClass()))
+                    .findFirst()
+                    .orElseThrow(() -> new OssBaseException("没有匹配请求类型的方法 : " + request.getClass()));
+        try {
+            response = (O) m.invoke(client, request);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new OssBaseException(e);
         }
-        return ResponseTransformers.doTransform(response);
+
+        return ResponseTransformers.doTransform(response, m.getGenericReturnType());
     }
 }
