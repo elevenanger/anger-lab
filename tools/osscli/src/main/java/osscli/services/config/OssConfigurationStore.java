@@ -58,7 +58,7 @@ public class OssConfigurationStore {
     }
 
     public static OssConfiguration defaultConfiguration() {
-        return storage.getConfiguration(storage.getDefaultConfiguration());
+        return storage.getDefaultConfiguration();
     }
 
     private static final class ConfigStorage {
@@ -98,8 +98,8 @@ public class OssConfigurationStore {
         public void loadConfig(InputStream stream) {
             ConfigStorage configStorage = yaml.load(stream);
             this.configurations.putAll(configStorage.getConfigurations());
-            if (configStorage.getDefaultConfiguration() != null)
-                setDefaultConfiguration(configStorage.getDefaultConfiguration());
+            if (configStorage.defaultConfiguration != null)
+                setDefaultConfiguration(configStorage.defaultConfiguration);
         }
 
         public void dump(String path) {
@@ -121,8 +121,8 @@ public class OssConfigurationStore {
             return getConfigurations().get(key);
         }
 
-        public String getDefaultConfiguration() {
-            return defaultConfiguration;
+        public OssConfiguration getDefaultConfiguration() {
+            return getConfiguration(defaultConfiguration);
         }
 
         public void setDefaultConfiguration(String defaultConfiguration) {

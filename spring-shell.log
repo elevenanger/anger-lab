@@ -234,3 +234,23 @@
 1678455698242:--bucket-objects local
 1678455757511:help
 1678455783595:--object-upload local /Users/liuanglin/data/test.file
+1678525572044:--batch-delete local
+1678525615189:--batch-upload local /Users/liuanglin/data
+1678525850098:--bucket-objects local
+1678525862002:--bucket-objects local .idea
+1678525873399:--batch-delete local .idea
+1678525884671:--batch-delete local spring
+1678525931350:--batch-delete local .git
+1678525965205:--batch-delete local spring
+1678526363325:--bucket-delete test
+1678526371920:--bucket-all
+1678526378612:--bucket-delete test3
+1678526386757:--bucket-delete test4
+1678526396579:--bucket-delete test5
+1678526399836:quit
+1678526565899:--conf-all
+1678526574036:--conf-current
+1678526619371:--conf-load /Users/liuanglin/Desktop/dump.yml
+1678526625814:--conf-all
+1678526631203:--conf-current
+1678527338635:quit

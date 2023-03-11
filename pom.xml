@@ -45,6 +45,7 @@
         <module>performance</module>
         <module>middleware</module>
         <module>util</module>
+        <module>util/cipher</module>
     </modules>
 
 	<build>

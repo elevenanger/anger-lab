@@ -187,7 +187,6 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
                                                                       final Function<E, Supplier<V>> eleToValSupFunc)
     {
         response.setBatchSize(collection.size());
-        response.processStart();
 
         Map<String, CompletableFuture<V>> futureMap =
             collection.stream()
@@ -226,7 +225,6 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
     protected <R extends CliRequest, I, O, E extends CliResponse> E execute(R req) {
         I request = RequestTransformers.doTransform(req, req.getClass());
         O response;
-
         Method m = Arrays.stream(client.getClass().getMethods())
                     .filter(method -> Arrays.stream(method.getParameterTypes())
                                             .anyMatch(type -> type == request.getClass()))

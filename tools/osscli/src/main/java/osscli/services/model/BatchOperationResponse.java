@@ -24,6 +24,8 @@ public abstract class BatchOperationResponse extends CliResponse {
 
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
+        if (batchSize > 0)
+            this.statistics.start();
     }
 
     public void addSuccessResult(String key) {
@@ -49,10 +51,6 @@ public abstract class BatchOperationResponse extends CliResponse {
     @Override
     public String toString() {
         return statistics.toString();
-    }
-
-    public void processStart() {
-        this.statistics.start();
     }
 
     private final class OperationResult {
