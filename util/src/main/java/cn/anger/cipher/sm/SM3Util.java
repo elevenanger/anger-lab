@@ -1,4 +1,4 @@
-package sm;
+package cn.anger.cipher.sm;
 
 import ch.qos.logback.core.encoder.ByteArrayUtil;
 import org.bouncycastle.crypto.digests.SM3Digest;

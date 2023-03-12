@@ -14,12 +14,4 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ReflectionUtilTest {
 
-    @Test
-    void parameterizedType() {
-        List<String> list = new ArrayList<>();
-        list.add("a");
-
-        Type type = ReflectionUtil.parameterizedType(list.getClass());
-        System.out.println(type);
-    }
 }

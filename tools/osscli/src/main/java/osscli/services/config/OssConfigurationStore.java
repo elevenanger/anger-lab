@@ -1,5 +1,6 @@
 package osscli.services.config;
 
+import cn.anger.cipher.sm.SM4Util;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.introspector.BeanAccess;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +65,7 @@ public class OssConfigurationStore {
 
     private static final class ConfigStorage {
         private static final String OSS_CONFIG = "oss-config.yml";
+        private static final String KEY = "fe6f915f273336a487548db7b364744c";
         private static final Yaml yaml = getYaml();
         private final Map<String, OssConfiguration> configurations = new HashMap<>();
         private String defaultConfiguration;
@@ -117,12 +120,34 @@ public class OssConfigurationStore {
         public void setConfigurations(Map<String, OssConfiguration> configurations) {
             this.configurations.putAll(configurations);
         }
-        public OssConfiguration getConfiguration(String key) {
-            return getConfigurations().get(key);
-        }
 
         public OssConfiguration getDefaultConfiguration() {
             return getConfiguration(defaultConfiguration);
+        }
+
+        public OssConfiguration getConfiguration(String key) {
+            return decryptConfiguration(getConfigurations().get(key));
+        }
+
+        private OssConfiguration decryptConfiguration(final OssConfiguration originConfiguration) {
+            OssConfiguration configuration = new OssConfiguration();
+            String accessKey;
+            String secreteKey;
+
+            try {
+                accessKey = SM4Util.decrypt(KEY, originConfiguration.getAccessKey());
+                secreteKey = SM4Util.decrypt(KEY, originConfiguration.getSecreteKey());
+            } catch (GeneralSecurityException e) {
+                accessKey = originConfiguration.getAccessKey();
+                secreteKey = originConfiguration.getSecreteKey();
+            }
+
+            configuration.setAccessKey(accessKey);
+            configuration.setSecreteKey(secreteKey);
+            configuration.setType(originConfiguration.getType());
+            configuration.setEndPoint(originConfiguration.getEndPoint());
+
+            return configuration;
         }
 
         public void setDefaultConfiguration(String defaultConfiguration) {

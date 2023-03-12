@@ -1,14 +1,14 @@
 configurations:
-  fl_dev: {accessKey: ABCDEFGHIJKLMNOPQRST, endPoint: 'https://fldev.dgcb.com.cn:8080/',
-    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD, type: AWS}
-  inner_dev: {accessKey: ABCDEFGHIJKLMNOPQRST, endPoint: 'http://172.100.5.55:8002/',
-    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD, type: AWS}
-  mac_15: {accessKey: ABCDEFGHIJKLMNOPQRST, endPoint: 'http://192.168.48.129:8002/',
-    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD, type: AWS}
-  minio: {accessKey: 2l9FJ0QDKRWb2CAp, endPoint: 'http://172.16.249.128:30090/', secreteKey: dkSGpQnTe5Yc9jJI38YBrTjpodIyNe5H,
-    type: AWS}
-  FL_DEV: {accessKey: ABCDEFGHIJKLMNOPQRST, endPoint: 'https://fldev.dgcb.com.cn:8080/',
-    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD, type: AWS}
-  MAC_15_LOCAL: {accessKey: ABCDEFGHIJKLMNOPQRST, endPoint: 'http://192.168.48.129:8002/',
-    secreteKey: abcdefghijklmnopqrstuvwxyz0123456789ABCD, type: AWS}
+  fl_dev: {accessKey: d6501349721c8adfcdbd2d150653fe0264352ff0144817cde7deebd898b1239a, endPoint: 'https://fldev.dgcb.com.cn:8080/',
+    secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
+  inner_dev: {accessKey: d6501349721c8adfcdbd2d150653fe0264352ff0144817cde7deebd898b1239a, endPoint: 'http://172.100.5.55:8002/',
+    secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
+  mac_15: {accessKey: d6501349721c8adfcdbd2d150653fe0264352ff0144817cde7deebd898b1239a, endPoint: 'http://192.168.48.129:8002/',
+    secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
+  minio: {accessKey: ce17f0a9768c9d472f14c8d1450b94d48d9e26f7af5feb1fd43182f060e4b275, endPoint: 'http://172.16.249.128:30090/',
+    secreteKey: e24242b86fcff898b8ae45b5699463c068456fd3a7a99accbc8e9887d2ecbe7a8d9e26f7af5feb1fd43182f060e4b275, type: AWS}
+  FL_DEV: {accessKey: d6501349721c8adfcdbd2d150653fe0264352ff0144817cde7deebd898b1239a, endPoint: 'https://fldev.dgcb.com.cn:8080/',
+    secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
+  MAC_15_LOCAL: {accessKey: d6501349721c8adfcdbd2d150653fe0264352ff0144817cde7deebd898b1239a, endPoint: 'http://192.168.48.129:8002/',
+    secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
 defaultConfiguration: minio

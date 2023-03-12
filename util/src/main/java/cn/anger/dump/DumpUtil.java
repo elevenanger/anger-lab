@@ -1,6 +1,5 @@
 package cn.anger.dump;
 
-import cn.anger.file.FileSize;
 import com.sun.management.HotSpotDiagnosticMXBean;
 
 import javax.management.MBeanServer;

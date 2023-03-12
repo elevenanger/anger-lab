@@ -9,12 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>cipher</module>
-    </modules>
-
     <artifactId>util</artifactId>
 
     <properties>
@@ -33,6 +27,11 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
             <version>1.35</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15to18</artifactId>
+            <version>1.72</version>
         </dependency>
     </dependencies>
 

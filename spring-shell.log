@@ -254,3 +254,16 @@
 1678526625814:--conf-all
 1678526631203:--conf-current
 1678527338635:quit
+1678605479156:--current-conf
+1678605484359:--conf-current
+1678605490210:--conf-all
+1678605502442:--bucket-all
+1678605506967:--bucket-list
+1678605515760:--conf-all
+1678605524960:--init-from FL_DEV
+1678605532901:--bucket-objects angersbucket
+1678605563340:--batch-delete angersbucket lo
+1678605579279:--conf-current
+1678605581366:quit
+1678606066447:--conf-current
+1678606069137:quit

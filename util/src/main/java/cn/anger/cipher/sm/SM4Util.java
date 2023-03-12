@@ -1,4 +1,4 @@
-package sm;
+package cn.anger.cipher.sm;
 
 import ch.qos.logback.core.encoder.ByteArrayUtil;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -53,13 +53,12 @@ public class SM4Util {
 
     /**
      * 生成 ECB 暗号
-     * @param algorithmName 算法名
      * @param mode 模式
      * @param key 秘钥
      * @return 暗号
      */
-    private static Cipher generateEcbCipher(String algorithmName, int mode, byte[] key) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance(algorithmName, BouncyCastleProvider.PROVIDER_NAME);
+    private static Cipher generateEcbCipher(int mode, byte[] key) throws GeneralSecurityException {
+        Cipher cipher = Cipher.getInstance(ALGORITHM_NAME_ECB_PADDING, BouncyCastleProvider.PROVIDER_NAME);
         Key sm4Key = new SecretKeySpec(key, ALGORITHM_NAME);
         cipher.init(mode, sm4Key);
         return cipher;
@@ -67,19 +66,15 @@ public class SM4Util {
 
     /**
      * 加密
-     * @param hexKey 秘钥
+     * @param key 秘钥
      * @param plainText 明文
      * @return 密文
      */
-    public static String encrypt(String hexKey, String plainText) {
-        try {
-            byte[] keyData = ByteArrayUtil.hexStringToByteArray(hexKey);
-            byte[] srcData = plainText.getBytes(StandardCharsets.UTF_8);
-            byte[] cipherArr = encryptEcbPadding(keyData, srcData);
-            return ByteArrayUtil.toHexString(cipherArr);
-        } catch (GeneralSecurityException e) {
-            return plainText;
-        }
+    public static String encrypt(String key, String plainText) throws GeneralSecurityException {
+        byte[] keyData = ByteArrayUtil.hexStringToByteArray(key);
+        byte[] srcData = plainText.getBytes(StandardCharsets.UTF_8);
+        byte[] cipherArr = encryptEcbPadding(keyData, srcData);
+        return ByteArrayUtil.toHexString(cipherArr);
     }
 
     /**
@@ -89,27 +84,23 @@ public class SM4Util {
      * @return 密文字节码
      */
     private static byte[] encryptEcbPadding(byte[] key, byte[] data) throws GeneralSecurityException {
-        Cipher cipher = generateEcbCipher(ALGORITHM_NAME_ECB_PADDING, Cipher.ENCRYPT_MODE, key);
+        Cipher cipher = generateEcbCipher(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(data);
     }
 
     /**
      * 解密
-     * @param hexKey 秘钥
+     * @param key 秘钥
      * @param cipherText 密文
      * @return 明文字符串
      */
-    public static String decrypt(String hexKey, String cipherText) {
-        String decryptStr = "";
-        byte[] keyData = ByteArrayUtil.hexStringToByteArray(hexKey);
+    public static String decrypt(String key, String cipherText) throws GeneralSecurityException {
+        String decryptStr;
+        byte[] keyData = ByteArrayUtil.hexStringToByteArray(key);
         byte[] cipherData = ByteArrayUtil.hexStringToByteArray(cipherText);
         byte[] srcData;
-        try {
-            srcData = decryptEcbPadding(keyData,cipherData);
-            decryptStr = new String(srcData, StandardCharsets.UTF_8);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
+        srcData = decryptEcbPadding(keyData,cipherData);
+        decryptStr = new String(srcData, StandardCharsets.UTF_8);
         return decryptStr;
     }
 
@@ -120,19 +111,19 @@ public class SM4Util {
      * @return 明文
      */
     private static byte[] decryptEcbPadding(byte[] key, byte[] cipherText) throws GeneralSecurityException {
-        Cipher cipher = generateEcbCipher(ALGORITHM_NAME_ECB_PADDING, Cipher.DECRYPT_MODE, key);
+        Cipher cipher = generateEcbCipher(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(cipherText);
     }
 
     /**
      * 校验算法加解密后的数据是否一致
-     * @param hexKey 秘钥
+     * @param key 秘钥
      * @param cipherText 密文
      * @param plainText 明文
      * @return 比较解密后的密文和明文是否一致
      */
-    public static boolean verify(String hexKey, String cipherText, String plainText) throws GeneralSecurityException {
-        byte[] keyData = ByteArrayUtil.hexStringToByteArray(hexKey);
+    public static boolean verify(String key, String cipherText, String plainText) throws GeneralSecurityException {
+        byte[] keyData = ByteArrayUtil.hexStringToByteArray(key);
         byte[] cipherData = ByteArrayUtil.hexStringToByteArray(cipherText);
         byte[] decryptData = decryptEcbPadding(keyData, cipherData);
         byte[] srcData = plainText.getBytes(StandardCharsets.UTF_8);

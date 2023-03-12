@@ -14,7 +14,7 @@ class ConcurrentWorkStreamTest {
     @Test
     void testCommonWorkStream() {
         AtomicInteger count = new AtomicInteger(0);
-        ConcurrentWorkStream.commonWorkStream(() -> count.getAndIncrement()).doWork();
+        ConcurrentWorkStream.commonWorkStream(count::getAndIncrement).doWork();
         assertEquals(1_000, count.get());
     }
 

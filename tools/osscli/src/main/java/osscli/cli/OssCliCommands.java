@@ -64,7 +64,7 @@ public class OssCliCommands {
         @ShellMethod(value = "获取当前的配置信息\n" +
             "\t用法 : --conf-current", key = "--conf-current")
         public String currentConfiguration() {
-            return oss.getCurrentConfiguration().toString();
+            return oss.getCurrentConfiguration().getEndPoint();
         }
     }
 
