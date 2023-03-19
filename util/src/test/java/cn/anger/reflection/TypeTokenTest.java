@@ -13,8 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class TypeTokenTest {
 
     @Test
-    void testArray() {
-        System.out.println(new TypeToken<List<String>>(){}.getType());
+    void testListType() {
+        assertEquals("java.util.List<java.lang.String>",
+                        new TypeToken<List<String>>() {}.getType().getTypeName());
     }
 
 

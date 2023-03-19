@@ -83,13 +83,6 @@ public class RequestTransformers {
         deleteBucketRequest ->
             new com.amazonaws.services.s3.model.DeleteBucketRequest(deleteBucketRequest.getBucket());
 
-    public static class TransCreateBucket implements RequestTransformer<PutBucketRequest, CreateBucketRequest> {
-        @Override
-        public CreateBucketRequest transform(PutBucketRequest putBucketRequest) {
-            return new CreateBucketRequest(putBucketRequest.getBucketName());
-        }
-    }
-
     public static <T extends CliRequest, R> R doTransform(T t, Type requestType) {
         Optional<R> request = Optional.empty();
         try {

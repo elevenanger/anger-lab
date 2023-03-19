@@ -7,7 +7,6 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
-import osscli.exception.LaunderOssExceptions;
 import osscli.exception.OssBaseException;
 import osscli.services.AbstractOss;
 import osscli.services.model.*;
@@ -122,7 +121,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
                 size += len;
             }
         } catch (Exception e) {
-            LaunderOssExceptions.launder(e);
+            throw new OssBaseException(e);
         }
 
         return new DownloadObjectResponse(request.getBucket(),
@@ -188,7 +187,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     @Override
     public BatchOperationResponse batchUpload(BatchUploadRequest request) {
         final List<PutObjectRequest> requests;
-        try (Stream<Path> pathStream = Files.walk(Paths.get(request.getLocalPath())) ) {
+        try (Stream<Path> pathStream = Files.walk(Paths.get(request.getLocalPath()))) {
             requests = pathStream
                         .map(Path::toFile)
                         .filter(File::isFile)

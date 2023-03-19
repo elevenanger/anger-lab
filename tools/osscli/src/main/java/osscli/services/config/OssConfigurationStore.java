@@ -66,7 +66,7 @@ public class OssConfigurationStore {
     private static final class ConfigStorage {
         private static final String OSS_CONFIG = "oss-config.yml";
         private static final String KEY = "fe6f915f273336a487548db7b364744c";
-        private static final Yaml yaml = getYaml();
+        private static final Yaml YAML = getYaml();
         private final Map<String, OssConfiguration> configurations = new HashMap<>();
         private String defaultConfiguration;
 
@@ -99,7 +99,7 @@ public class OssConfigurationStore {
         }
 
         public void loadConfig(InputStream stream) {
-            ConfigStorage configStorage = yaml.load(stream);
+            ConfigStorage configStorage = YAML.load(stream);
             this.configurations.putAll(configStorage.getConfigurations());
             if (configStorage.defaultConfiguration != null)
                 setDefaultConfiguration(configStorage.defaultConfiguration);
@@ -107,7 +107,7 @@ public class OssConfigurationStore {
 
         public void dump(String path) {
             try (FileWriter writer = new FileWriter(path)){
-                yaml.dump(this, writer);
+                YAML.dump(this, writer);
             } catch (IOException e) {
                 throw new OssBaseException(e);
             }

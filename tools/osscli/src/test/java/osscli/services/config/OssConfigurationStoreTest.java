@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -51,18 +52,19 @@ class OssConfigurationStoreTest {
         ossConfigurationMap.put("fl_dev", PresetConfiguration.FL_DEV.getConfiguration());
         ossConfigurationMap.put("mac_15", PresetConfiguration.MAC_15_LOCAL.getConfiguration());
 
-        yaml.dump(ossConfigurationMap, new FileWriter("/Users/liuanglin/Desktop/dump.yml"));
+        assertDoesNotThrow(() ->
+            yaml.dump(ossConfigurationMap, new FileWriter("/Users/liuanglin/Desktop/dump.yml")));
+
     }
 
     @Test
     void dumpConfTest() {
-        OssConfigurationStore.dumpConfig("/Users/liuanglin/Desktop/dump.yml");
+        assertDoesNotThrow(() -> OssConfigurationStore.dumpConfig("/Users/liuanglin/Desktop/dump.yml"));
     }
 
     @Test
     void defaultTest() {
-
-        System.out.println(OssConfigurationStore.getAll());
+        assertNotNull(OssConfigurationStore.defaultConfiguration());
         System.out.println(OssConfigurationStore.defaultConfiguration());
     }
 
