@@ -277,3 +277,21 @@
 1678928009517:--conf-current
 1678928091258:--object-upload angersbucket /Users/liuanglin/Desktop/intro.pptx
 1678928095789:quit
+1679281766964:--conf-current
+1679281773373:--bucket-all
+1679281779307:quit
+1679281820590:--bucket-objects
+1679281828659:help
+1679281839515:--batch-delete local
+1679281935217:--batch-upload local C:\\Users\\刘昂林\\IdeaProjects\\anger-lab\\util
+1679283024184:--object-upload local C:\\Users\\刘昂林\\IdeaProjects\\anger-lab\\spring-shell.log
+1679283036384:stacktrace
+1679283090597:--object-upload local "C:\\Users\\刘昂林\\IdeaProjects\\anger-lab\\spring-shell.log"
+1679283094226:stacktrace
+1679283126093:--object-upload local C:\\\\Users\\\\刘昂林\\\\IdeaProjects\\\\anger-lab\\\\spring-shell.log
+1679283160932:--batch-upload local C:\\\\Users\\\\刘昂林\\\\IdeaProjects\\\\anger-lab\\\\cloud
+1679283181898:--bucket-objects local
+1679283266511:quit
+1679296572742:--bucket-objects local
+1679296590366:--batch-delete local
+1679296594026:quit

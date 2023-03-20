@@ -9,6 +9,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +35,15 @@ class SeqAwsTest {
         PutObjectResponse response =
             aws.putObject(BUCKET, new File("/Users/liuanglin/Desktop/soft.zip"));
         assertNotNull(response.getETag());
+    }
+
+    @Test
+    void putObjectWithWindows() {
+        PutObjectResponse response =
+                aws.putObject(BUCKET,
+                        new File("C:\\files\\cloud\\conf\\global.yml"));
+        assertNotNull(response.getETag());
+        System.out.println(response.getKey());
     }
 
     @Test
@@ -105,6 +115,22 @@ class SeqAwsTest {
         ListObjectsResponse response = aws.listObjects(request);
         assertNotNull(response);
         assertEquals(response.getObjectSummaries().size(), 1000);
+    }
+
+    @Test
+    void windowsBatchUpload() {
+        BatchUploadRequest request = new BatchUploadRequest(BUCKET, "C:\\files");
+        AtomicReference<BatchOperationResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> aws.batchUpload(request));
+        System.out.println(response.get());
+    }
+
+    @Test
+    void windowsBatchDownload() {
+        BatchDownloadRequest request = new BatchDownloadRequest(BUCKET, "C:\\filed");
+        AtomicReference<BatchOperationResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(aws.batchDownload(request)));
+        System.out.println(response.get());
     }
 
 }

@@ -100,7 +100,7 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
         S3Object result = client.getObject(request.getBucket(), request.getKey());
 
-        File localFile = Paths.get(request.getDownloadPath(), request.getKey()).toFile();
+        File localFile = Paths.get(request.getDownloadPath(), request.getKey().split("/")).toFile();
 
         if (!localFile.getParentFile().exists()) {
             try {
