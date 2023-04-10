@@ -133,4 +133,22 @@ class SeqAwsTest {
         System.out.println(response.get());
     }
 
+    @Test
+    void unixBatchUpload() {
+        BatchUploadRequest request =
+            new BatchUploadRequest(BUCKET, "/Users/liuanglin/Projects/anger-lab/util");
+        AtomicReference<BatchOperationResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(aws.batchUpload(request)));
+        System.out.println(response);
+    }
+
+    @Test
+    void unixBatchDownload() {
+        BatchDownloadRequest request =
+            new BatchDownloadRequest(BUCKET, "/Users/liuanglin/data");
+        AtomicReference<BatchOperationResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(aws.batchDownload(request)));
+        System.out.println(response);
+    }
+
 }

@@ -15,6 +15,7 @@
         <module>excel</module>
         <module>fastjson</module>
         <module>osscli</module>
+        <module>mock</module>
     </modules>
 
     <artifactId>tools</artifactId>
