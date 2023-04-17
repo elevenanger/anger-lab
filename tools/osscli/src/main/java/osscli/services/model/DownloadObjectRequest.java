@@ -9,12 +9,21 @@ public class DownloadObjectRequest extends CliRequest {
     private String key;
     private String downloadPath;
 
+    private String rule;
+
     public DownloadObjectRequest() {}
 
     public DownloadObjectRequest(String bucket, String key, String downloadPath) {
         this.bucket = bucket;
         this.key = key;
         this.downloadPath = downloadPath;
+    }
+
+    public DownloadObjectRequest(String bucket, String key, String downloadPath, String rule) {
+        this.bucket = bucket;
+        this.key = key;
+        this.downloadPath = downloadPath;
+        this.rule = rule;
     }
 
     public String getBucket() {
@@ -39,5 +48,13 @@ public class DownloadObjectRequest extends CliRequest {
 
     public void setDownloadPath(String downloadPath) {
         this.downloadPath = downloadPath;
+    }
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
     }
 }

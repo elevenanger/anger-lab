@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -137,7 +136,7 @@ public class OssConfigurationStore {
             try {
                 accessKey = SM4Util.decrypt(KEY, originConfiguration.getAccessKey());
                 secreteKey = SM4Util.decrypt(KEY, originConfiguration.getSecreteKey());
-            } catch (GeneralSecurityException e) {
+            } catch (Exception e) {
                 accessKey = originConfiguration.getAccessKey();
                 secreteKey = originConfiguration.getSecreteKey();
             }

@@ -4,6 +4,8 @@ import cn.anger.reflection.ReflectionUtil;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+import com.qcloud.cos.model.COSObject;
 import osscli.exception.OssBaseException;
 import osscli.services.Oss;
 import osscli.services.model.*;
@@ -36,17 +38,29 @@ public class ResponseTransformers {
                 return new ListBucketsResponse(bs);
             };
 
+    public static final ResponseTransformer<S3Object, GetObjectResponse<S3Object>>
+        awsGetObjectResponseTransformer =
+        s3Object -> {
+            GetObjectResponse<S3Object> response = new GetObjectResponse<>();
+            response.setOssObject(s3Object);
+            response.setObjectContent(s3Object.getObjectContent());
+            return response;
+        };
+
     /**
      * 创建桶请求转换器
      */
-    public static final ResponseTransformer<Bucket, PutBucketResponse> seqAwsCreateBucketResponseTransformer =
-            bucket -> {
-                osscli.services.model.Bucket b = new osscli.services.model.Bucket();
-                b.setName(bucket.getName());
-                b.setCreateDate(bucket.getCreationDate());
-                return new PutBucketResponse(b);
-            };
-    public static final ResponseTransformer<ListObjectsV2Result, ListObjectsResponse> seqAwsListObjectResponseTransformer =
+    public static final ResponseTransformer<Bucket, PutBucketResponse>
+        seqAwsCreateBucketResponseTransformer =
+        bucket -> {
+            osscli.services.model.Bucket b = new osscli.services.model.Bucket();
+            b.setName(bucket.getName());
+            b.setCreateDate(bucket.getCreationDate());
+            return new PutBucketResponse(b);
+        };
+
+    public static final ResponseTransformer<ListObjectsV2Result, ListObjectsResponse>
+        seqAwsListObjectResponseTransformer =
         listObjectsV2Result -> {
             ListObjectsResponse response = new ListObjectsResponse();
 
@@ -71,10 +85,43 @@ public class ResponseTransformers {
             return response;
         };
 
-    public static final ResponseTransformer<PutObjectResult, PutObjectResponse> seqAwsPutObjectResponseTransformer =
+    public static final ResponseTransformer<PutObjectResult, PutObjectResponse>
+        seqAwsPutObjectResponseTransformer =
         putObjectResult -> {
             PutObjectResponse response = new PutObjectResponse();
             response.setETag(putObjectResult.getETag());
+            return response;
+        };
+
+    public static final ResponseTransformer<List<com.qcloud.cos.model.Bucket>, ListBucketsResponse>
+        cosListBucketResponseTransformer =
+        buckets -> {
+            List<osscli.services.model.Bucket> bs =
+                    buckets.stream()
+                            .map(bucket -> {
+                                osscli.services.model.Bucket b = new osscli.services.model.Bucket();
+                                b.setType(Oss.Type.COS);
+                                b.setName(bucket.getName());
+                                b.setCreateDate(bucket.getCreationDate());
+                                return b;})
+                            .collect(Collectors.toList());
+            return new ListBucketsResponse(bs);
+        };
+
+    public static final ResponseTransformer<com.qcloud.cos.model.PutObjectResult, PutObjectResponse>
+        cosPutObjectResponseTransformer =
+        putObjectResult -> {
+            PutObjectResponse response = new PutObjectResponse();
+            response.setETag(putObjectResult.getETag());
+            return response;
+        };
+
+    public static final ResponseTransformer<COSObject, GetObjectResponse<COSObject>>
+        cosGetObjectResponseTransformer =
+        cosObject -> {
+            GetObjectResponse<COSObject> response = new GetObjectResponse<>();
+            response.setOssObject(cosObject);
+            response.setObjectContent(cosObject.getObjectContent());
             return response;
         };
 

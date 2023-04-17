@@ -6,13 +6,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.S3Object;
 import osscli.exception.OssBaseException;
 import osscli.services.AbstractOss;
 import osscli.services.model.*;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static osscli.services.model.transform.RequestTransformers.*;
+import static osscli.services.model.transform.RequestTransformers.awsDeleteBucketRequestTransformer;
+import static osscli.services.model.transform.RequestTransformers.seqAwsObjectDeleteRequestTransformer;
 
 /**
  * @author : anger
@@ -33,16 +31,6 @@ public class SeqAws extends AbstractOss<AmazonS3> {
 
     public SeqAws(OssConfiguration configuration) {
         super(configuration);
-    }
-
-    @Override
-    public ListBucketsResponse listBuckets(ListBucketsRequest request) {
-        return execute(request);
-    }
-
-    @Override
-    public ListBucketsResponse listBuckets() {
-        return listBuckets(new ListBucketsRequest());
     }
 
     @Override
@@ -74,68 +62,6 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public PutObjectResponse putObject(String bucket, File file) {
-        return putObject(new PutObjectRequest(bucket, file.getName(), file));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public OssObject<S3Object> getObject(GetObjectRequest request) {
-        com.amazonaws.services.s3.model.GetObjectRequest getObjectRequest =
-            seqAwsGetObjectRequestTransformer.transform(request);
-        S3Object object = client.getObject(getObjectRequest);
-        OssObject<S3Object> ossObject = new OssObject<>();
-        ossObject.setObject(object);
-        return ossObject;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public OssObject<S3Object> getObject(String bucket, String key) {
-        return getObject(new GetObjectRequest(bucket, key));
-    }
-
-    @Override
-    public DownloadObjectResponse downloadObject(DownloadObjectRequest request) {
-
-        S3Object result = client.getObject(request.getBucket(), request.getKey());
-
-        File localFile = Paths.get(request.getDownloadPath(), request.getKey().split("/")).toFile();
-
-        if (!localFile.getParentFile().exists()) {
-            try {
-                Files.createDirectories(localFile.getParentFile().toPath());
-            } catch (IOException e) {
-                throw new OssBaseException(e);
-            }
-        }
-
-        long size = 0;
-        try (BufferedInputStream s3is = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
-                BufferedOutputStream fos = new BufferedOutputStream(
-                    Files.newOutputStream(Paths.get(request.getDownloadPath(), request.getKey())), BUFFER_SIZE)) {
-            int len;
-            byte[] readBuf = new byte[BUFFER_SIZE];
-            while ((len = s3is.read(readBuf)) != -1) {
-                fos.write(readBuf, 0, len);
-                size += len;
-            }
-        } catch (Exception e) {
-            throw new OssBaseException(e);
-        }
-
-        return new DownloadObjectResponse(request.getBucket(),
-                                          request.getKey(),
-                                          localFile.getAbsolutePath(),
-                                          size);
-    }
-
-    @Override
-    public DownloadObjectResponse downloadObject(String bucket, String key, String path) {
-        return downloadObject(new DownloadObjectRequest(bucket, key, path));
-    }
-
-    @Override
     public DeleteObjectResponse deleteObject(DeleteObjectRequest request) {
         client.deleteObject(seqAwsObjectDeleteRequestTransformer.transform(request));
         return new DeleteObjectResponse(request.getBucket(), request.getKey());
@@ -150,11 +76,6 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     public ListObjectsResponse listObjects(ListObjectsRequest request) {
         request.setMaxKeys(MAX_KEYS);
         return execute(request);
-    }
-
-    @Override
-    public ListObjectsResponse listObjects(String bucket, String prefix) {
-        return listObjects(new ListObjectsRequest(bucket, prefix));
     }
 
     @Override

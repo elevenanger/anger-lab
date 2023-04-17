@@ -6,9 +6,15 @@ import osscli.services.model.*;
 import osscli.services.model.transform.RequestTransformers;
 import osscli.services.model.transform.ResponseTransformers;
 
+import javax.annotation.Nullable;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -37,12 +43,12 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public ListBucketsResponse listBuckets(ListBucketsRequest request) {
-        throw new UnsupportedOssOperationException();
+        return execute(request);
     }
 
     @Override
     public ListBucketsResponse listBuckets() {
-        throw new UnsupportedOssOperationException();
+        return listBuckets(new ListBucketsRequest());
     }
 
     @Override
@@ -67,32 +73,72 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public PutObjectResponse putObject(PutObjectRequest request) {
-        throw new UnsupportedOssOperationException();
+        PutObjectResponse response = execute(request);
+        response.setKey(request.getKey());
+        return response;
     }
 
     @Override
     public PutObjectResponse putObject(String bucket, File file) {
-        throw new UnsupportedOssOperationException();
+        return putObject(new PutObjectRequest(bucket, file.getName(), file));
     }
 
     @Override
-    public <O> OssObject<O> getObject(GetObjectRequest request) {
-        throw new UnsupportedOssOperationException();
+    public <O> GetObjectResponse<O> getObject(GetObjectRequest request) {
+        return execute(request);
     }
 
     @Override
-    public <O> OssObject<O> getObject(String bucket, String key) {
-        throw new UnsupportedOssOperationException();
+    public <O> GetObjectResponse<O> getObject(String bucket, String key, String rule) {
+        GetObjectRequest request = new GetObjectRequest(bucket, key);
+        request.putCustomQueryParameter(rule, null);
+        return getObject(request);
     }
 
     @Override
     public DownloadObjectResponse downloadObject(String bucket, String key, String path) {
-        throw new UnsupportedOssOperationException();
+        return downloadObject(new DownloadObjectRequest(bucket, key, path));
+    }
+
+    @Override
+    public DownloadObjectResponse downloadObject(String bucket, String key, String path, String rule) {
+        return downloadObject(new DownloadObjectRequest(bucket, key, path, rule));
     }
 
     @Override
     public DownloadObjectResponse downloadObject(DownloadObjectRequest request) {
-        throw new UnsupportedOssOperationException();
+
+        GetObjectResponse<?> result =
+                getObject(request.getBucket(), request.getKey(), request.getRule());
+
+        File localFile = Paths.get(request.getDownloadPath(), request.getKey().split("/")).toFile();
+
+        if (!localFile.getParentFile().exists()) {
+            try {
+                Files.createDirectories(localFile.getParentFile().toPath());
+            } catch (IOException e) {
+                throw new OssBaseException(e);
+            }
+        }
+
+        long size = 0;
+        try (BufferedInputStream bis = new BufferedInputStream(result.getObjectContent(), BUFFER_SIZE);
+                BufferedOutputStream fos = new BufferedOutputStream(
+                    Files.newOutputStream(Paths.get(request.getDownloadPath(), request.getKey())), BUFFER_SIZE)) {
+            int len;
+            byte[] readBuf = new byte[BUFFER_SIZE];
+            while ((len = bis.read(readBuf)) != -1) {
+                fos.write(readBuf, 0, len);
+                size += len;
+            }
+        } catch (Exception e) {
+            throw new OssBaseException(e);
+        }
+
+        return new DownloadObjectResponse(request.getBucket(),
+                request.getKey(),
+                localFile.getAbsolutePath(),
+                size);
     }
 
     @Override
@@ -107,11 +153,6 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public ListObjectsResponse listObjects(ListObjectsRequest request) {
-        throw new UnsupportedOssOperationException();
-    }
-
-    @Override
-    public ListObjectsResponse listObjects(String bucket, String prefix) {
         throw new UnsupportedOssOperationException();
     }
 
@@ -212,6 +253,11 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
         return response;
     }
 
+
+    protected <R extends CliRequest, E extends CliResponse> E execute(R req) {
+        return execute(req, null);
+    }
+
     /**
      * 调用 oss 接口的通用处理框架
      * @param req cli 项目 oss 服务源请求，继承 {@link CliRequest}
@@ -222,10 +268,14 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
      * @param <E> 通过 {@link ResponseTransformers} 将响应类型转换为 cli 服务的响应类型
      */
     @SuppressWarnings("unchecked")
-    protected <R extends CliRequest, I, O, E extends CliResponse> E execute(R req) {
-        I request = RequestTransformers.doTransform(req, req.getClass());
+    protected <R extends CliRequest, I, O, E extends CliResponse> E execute(R req, Class<?> clientResponseType) {
+        I request = RequestTransformers.doTransform(req, req.getClass(), this.ossConfiguration.getType());
         O response;
         Method m = Arrays.stream(client.getClass().getMethods())
+                    .filter(method -> {
+                        if (clientResponseType != null)
+                            return method.getReturnType().equals(clientResponseType);
+                        return true;})
                     .filter(method -> Arrays.stream(method.getParameterTypes())
                                             .anyMatch(type -> type == request.getClass()))
                     .findFirst()

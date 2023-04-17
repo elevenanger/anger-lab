@@ -55,9 +55,9 @@ public interface Oss {
     /**
      * 获取对象
      */
-    <O> OssObject<O> getObject(GetObjectRequest request);
+    <O> GetObjectResponse<O> getObject(GetObjectRequest request);
 
-    <O> OssObject<O> getObject(String bucket, String key);
+    <O> GetObjectResponse<O> getObject(String bucket, String key, String rule);
 
     /**
      * 下载对象到本地
@@ -74,6 +74,7 @@ public interface Oss {
      * @return 下载结果
      */
     DownloadObjectResponse downloadObject(String bucket, String key, String path);
+    DownloadObjectResponse downloadObject(String bucket, String key, String path, String rule);
 
     /**
      * 删除对象
@@ -87,8 +88,6 @@ public interface Oss {
      * 获取 bucket 中的对象
      */
     ListObjectsResponse listObjects(ListObjectsRequest request);
-
-    ListObjectsResponse listObjects(String bucket, String prefix);
 
     ListAllObjectsResponse listAllObjects(ListAllObjectRequest request);
 
@@ -110,7 +109,19 @@ public interface Oss {
     OssConfiguration getCurrentConfiguration();
 
     enum Type {
-        AWS;
+        AWS("com.amazonaws.services.s3.model."),
+
+        /**
+         * 腾讯云对象存储
+         * @see <a href="腾讯云对象存储">https://cloud.tencent.com/document/product/436/6474</a>
+         */
+        COS("com.qcloud.cos.model.");
+
+        Type(String modelPath) {
+            this.modelPath = modelPath;
+        }
+
+        private final String modelPath;
 
         public static Type fromValue(String value) {
             if (value == null || value.isEmpty()) {
@@ -127,6 +138,9 @@ public interface Oss {
             throw new OssBaseException("不支持的 OSS 类型 ".concat(value));
         }
 
+        public String getModelPath() {
+            return modelPath;
+        }
     }
 
 }

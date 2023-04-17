@@ -11,4 +11,6 @@ configurations:
     secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
   MAC_15_LOCAL: {accessKey: d6501349721c8adfcdbd2d150653fe0264352ff0144817cde7deebd898b1239a, endPoint: 'http://192.168.48.129:8002/',
     secreteKey: 29a84b33182cc831d74aa3854cdf6905536497153097e879b914ab8cfe8b329d55a924932963d93388cc1855c5025753, type: AWS}
+  COS_ANGER: {accessKey: AKIDkstpgO0KcpvtlXBKID0gEgKAqQ5d3Qix, endPoint: 'https://anger-1317673019.cos.ap-guangzhou.myqcloud.com',
+    secreteKey: CPbBgBdzCERPQVf1FJNJPYbdeffZJzZE, type: COS}
 defaultConfiguration: minio
