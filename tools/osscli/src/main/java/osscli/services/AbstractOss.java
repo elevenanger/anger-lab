@@ -6,7 +6,6 @@ import osscli.services.model.*;
 import osscli.services.model.transform.RequestTransformers;
 import osscli.services.model.transform.ResponseTransformers;
 
-import javax.annotation.Nullable;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -58,7 +57,7 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public DeleteBucketResponse deleteBucket(String bucket) {
-        throw new UnsupportedOssOperationException();
+        return deleteBucket(new DeleteBucketRequest(bucket));
     }
 
     @Override
@@ -252,7 +251,6 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
         return response;
     }
-
 
     protected <R extends CliRequest, E extends CliResponse> E execute(R req) {
         return execute(req, null);

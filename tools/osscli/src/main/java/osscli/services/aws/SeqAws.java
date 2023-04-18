@@ -50,18 +50,6 @@ public class SeqAws extends AbstractOss<AmazonS3> {
     }
 
     @Override
-    public DeleteBucketResponse deleteBucket(String bucket) {
-        return deleteBucket(new DeleteBucketRequest(bucket));
-    }
-
-    @Override
-    public PutObjectResponse putObject(PutObjectRequest request) {
-        PutObjectResponse response = execute(request);
-        response.setKey(request.getKey());
-        return response;
-    }
-
-    @Override
     public DeleteObjectResponse deleteObject(DeleteObjectRequest request) {
         client.deleteObject(seqAwsObjectDeleteRequestTransformer.transform(request));
         return new DeleteObjectResponse(request.getBucket(), request.getKey());
