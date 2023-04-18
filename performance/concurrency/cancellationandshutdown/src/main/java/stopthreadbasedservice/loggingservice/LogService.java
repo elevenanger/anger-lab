@@ -1,6 +1,6 @@
 package stopthreadbasedservice.loggingservice;
 
-import cn.anger.annotation.GuardedBy;
+import labutils.annotation.GuardedBy;
 
 import java.io.PrintWriter;
 import java.io.Writer;

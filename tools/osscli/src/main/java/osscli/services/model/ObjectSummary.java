@@ -1,6 +1,6 @@
 package osscli.services.model;
 
-import cn.anger.file.FileSize;
+import cn.anger.util.file.FileSize;
 
 import java.util.Date;
 

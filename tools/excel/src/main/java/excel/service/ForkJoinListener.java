@@ -1,6 +1,6 @@
 package excel.service;
 
-import cn.anger.lists.ForkJoinList;
+import cn.anger.util.lists.ForkJoinList;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import org.apache.commons.collections4.CollectionUtils;

@@ -1,6 +1,6 @@
 package longrunningtasks;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 import singlethread.GuiExecutor;
 
 import javax.swing.*;

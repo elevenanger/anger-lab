@@ -1,6 +1,6 @@
 package taskcancellation.timedrun;
 
-import cn.anger.exception.LaunderThrowable;
+import cn.anger.util.exception.LaunderThrowable;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

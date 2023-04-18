@@ -1,7 +1,7 @@
 package stopthreadbasedservice.loggingservice;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ThreadUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

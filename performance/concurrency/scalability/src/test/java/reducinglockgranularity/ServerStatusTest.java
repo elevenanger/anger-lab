@@ -1,6 +1,6 @@
 package reducinglockgranularity;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,8 +8,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Supplier;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author : anger

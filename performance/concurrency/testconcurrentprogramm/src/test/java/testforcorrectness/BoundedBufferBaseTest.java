@@ -1,7 +1,7 @@
 package testforcorrectness;
 
-import cn.anger.concurrency.ThreadUtil;
-import cn.anger.dump.DumpUtil;
+import cn.anger.util.concurrency.ThreadUtil;
+import cn.anger.util.dump.DumpUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

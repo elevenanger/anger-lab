@@ -1,5 +1,6 @@
 package excel.service;
 
+import cn.anger.util.objects.ObjectTransformer;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static cn.anger.objects.ObjectTransformer.batchTrans;
 
 /**
  * author : anger
@@ -57,5 +57,5 @@ public class EasyExcelParseService {
      Consumer<List<ExcelDataBO>> excelProcessTask =
         excelData ->
             excelDataService.saveBatch(
-                batchTrans(excelData, ExcelDataPO::new), 100);
+                ObjectTransformer.batchTrans(excelData, ExcelDataPO::new), 100);
 }

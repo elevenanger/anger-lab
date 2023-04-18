@@ -1,7 +1,7 @@
 package atomics.comparisonwithlock;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
-import cn.anger.random.Random;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
+import cn.anger.util.random.Random;
 import org.junit.jupiter.api.Test;
 
 /**

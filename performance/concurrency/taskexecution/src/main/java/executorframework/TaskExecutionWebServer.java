@@ -1,6 +1,6 @@
 package executorframework;
 
-import cn.anger.net.SocketUtil;
+import cn.anger.util.net.SocketUtil;
 
 import java.io.IOException;
 import java.net.ServerSocket;

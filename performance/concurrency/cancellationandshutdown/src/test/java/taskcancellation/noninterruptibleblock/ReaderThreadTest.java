@@ -1,6 +1,6 @@
 package taskcancellation.noninterruptibleblock;
 
-import cn.anger.net.SocketUtil;
+import cn.anger.util.net.SocketUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

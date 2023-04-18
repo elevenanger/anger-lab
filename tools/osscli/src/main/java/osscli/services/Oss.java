@@ -13,7 +13,7 @@ import java.io.File;
  */
 public interface Oss {
 
-    int BUFFER_SIZE = 4 * 1024;
+    int BUFFER_SIZE = 10 * 1024;
 
     int MAX_KEYS = 1000;
 

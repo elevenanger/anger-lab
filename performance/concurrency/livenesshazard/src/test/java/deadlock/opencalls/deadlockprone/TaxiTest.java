@@ -1,6 +1,6 @@
 package deadlock.opencalls.deadlockprone;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
 import deadlock.opencalls.Point;
 import org.junit.jupiter.api.Test;
 

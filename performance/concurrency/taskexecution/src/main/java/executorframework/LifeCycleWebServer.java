@@ -1,6 +1,6 @@
 package executorframework;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;

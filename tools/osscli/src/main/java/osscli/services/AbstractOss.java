@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -52,7 +52,8 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public DeleteBucketResponse deleteBucket(DeleteBucketRequest request) {
-        throw new UnsupportedOssOperationException();
+        execute(request, Void.class);
+        return new DeleteBucketResponse(request.getBucket());
     }
 
     @Override
@@ -62,12 +63,12 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
 
     @Override
     public PutBucketResponse createBucket(PutBucketRequest request) {
-        throw new UnsupportedOssOperationException();
+        return execute(request);
     }
 
     @Override
     public PutBucketResponse createBucket(String bucketName) {
-        throw new UnsupportedOssOperationException();
+        return createBucket(new PutBucketRequest(bucketName));
     }
 
     @Override
@@ -135,69 +136,114 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
         }
 
         return new DownloadObjectResponse(request.getBucket(),
-                request.getKey(),
-                localFile.getAbsolutePath(),
-                size);
+                                            request.getKey(),
+                                            localFile.getAbsolutePath(),
+                                            size);
     }
 
     @Override
     public DeleteObjectResponse deleteObject(DeleteObjectRequest request) {
-        throw new UnsupportedOssOperationException();
+        execute(request, Void.class);
+        return new DeleteObjectResponse(request.getBucket(), request.getKey());
     }
 
     @Override
     public DeleteObjectResponse deleteObject(String bucket, String key) {
-        throw new UnsupportedOssOperationException();
+        return deleteObject(new DeleteObjectRequest(bucket, key));
     }
 
     @Override
     public ListObjectsResponse listObjects(ListObjectsRequest request) {
-        throw new UnsupportedOssOperationException();
+        request.setMaxKeys(40);
+        return execute(request);
     }
 
     @Override
     public ListAllObjectsResponse listAllObjects(ListAllObjectRequest request) {
-        throw new UnsupportedOssOperationException();
+        List<ObjectSummary> objectSummaryList = new ArrayList<>();
+
+        ListObjectsRequest listObjectsRequest =
+                new ListObjectsRequest(request.getBucket(), request.getPrefix());
+
+        while (objectSummaryList.addAll(listObjects(listObjectsRequest).getObjectSummaries()))
+            listObjectsRequest
+                    .setStartAfter(objectSummaryList.get(objectSummaryList.size() - 1).getKey());
+
+        ListAllObjectsResponse response = new ListAllObjectsResponse();
+        response.setObjectSummaryList(objectSummaryList);
+
+        return response;
     }
 
     @Override
     public ListAllObjectsResponse listAllObjects(String bucket, String prefix) {
-        throw new UnsupportedOssOperationException();
+        return listAllObjects(new ListAllObjectRequest(bucket, prefix));
     }
 
     @Override
     public ListAllObjectsResponse listAllObjects(String bucket) {
-        throw new UnsupportedOssOperationException();
+        return listAllObjects(new ListAllObjectRequest(bucket));
     }
 
     @Override
     public BatchOperationResponse batchUpload(BatchUploadRequest request) {
-        throw new UnsupportedOssOperationException();
+        final List<PutObjectRequest> requests;
+        try (Stream<Path> pathStream = Files.walk(Paths.get(request.getLocalPath()))) {
+            requests = pathStream
+                    .map(Path::toFile)
+                    .filter(File::isFile)
+                    .map(file ->
+                            new PutObjectRequest(request.getBucket(),
+                                    file.getPath().replace(request.getLocalPath(), ""), file))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new OssBaseException(e);
+        }
+
+        BatchOperationResponse response = new BatchUploadResponse();
+
+        return batchProcess(response,
+                requests,
+                PutObjectRequest::getKey,
+                putObjectRequest -> () -> putObject(putObjectRequest));
     }
 
     @Override
     public BatchOperationResponse batchUpload(String bucket, String path) {
-        throw new UnsupportedOssOperationException();
+        return batchUpload(new BatchUploadRequest(bucket, path));
     }
 
     @Override
     public BatchOperationResponse batchDownload(BatchDownloadRequest request) {
-        throw new UnsupportedOssOperationException();
+        BatchOperationResponse response = new BatchDownloadResponse();
+
+        return batchProcess(response,
+                listAllObjects(request.getBucket()).getObjectSummaryList(),
+                ObjectSummary::getKey,
+                objectSummary -> () -> downloadObject(objectSummary.getBucket(),
+                        objectSummary.getKey(),
+                        request.getDownloadPath()));
     }
 
     @Override
     public BatchOperationResponse batchDownload(String bucket, String path, String prefix) {
-        throw new UnsupportedOssOperationException();
+        return batchDownload(new BatchDownloadRequest(bucket, prefix, path));
     }
 
     @Override
     public BatchOperationResponse batchDelete(BatchDeleteRequest request) {
-        throw new UnsupportedOssOperationException();
+        BatchOperationResponse response = new BatchDeleteResponse();
+
+        return batchProcess(response,
+                listAllObjects(request.getBucket(), request.getPrefix()).getObjectSummaryList(),
+                ObjectSummary::getKey,
+                objectSummary -> () -> deleteObject(objectSummary.getBucket(),
+                        objectSummary.getKey()));
     }
 
     @Override
     public BatchOperationResponse batchDelete(String bucket, String prefix) {
-        throw new UnsupportedOssOperationException();
+        return batchDelete(new BatchDeleteRequest(bucket, prefix));
     }
 
     @Override
@@ -264,26 +310,31 @@ public abstract class AbstractOss<T> implements Oss, Client<T> {
      * @param <I> oss client 请求类型，经过 {@link RequestTransformers} 转换后的结果
      * @param <O> 执行 oss client 响应方法后的响应类型
      * @param <E> 通过 {@link ResponseTransformers} 将响应类型转换为 cli 服务的响应类型
+     * @param clientResponseType 对象存储请求的返回对象类型
      */
     @SuppressWarnings("unchecked")
     protected <R extends CliRequest, I, O, E extends CliResponse> E execute(R req, Class<?> clientResponseType) {
         I request = RequestTransformers.doTransform(req, req.getClass(), this.ossConfiguration.getType());
         O response;
         Method m = Arrays.stream(client.getClass().getMethods())
-                    .filter(method -> {
-                        if (clientResponseType != null)
-                            return method.getReturnType().equals(clientResponseType);
-                        return true;})
+                    .filter(method -> clientResponseType == null ||
+                            clientResponseType.equals(Void.class) ||
+                            method.getReturnType().equals(clientResponseType))
                     .filter(method -> Arrays.stream(method.getParameterTypes())
                                             .anyMatch(type -> type == request.getClass()))
                     .findFirst()
                     .orElseThrow(() -> new OssBaseException("没有匹配请求类型的方法 : " + request.getClass()));
         try {
+            // 针对没有返回值的情况直接返回 null
+            if (clientResponseType == Void.class) {
+                m.invoke(client, request);
+                return null;
+            }
             response = (O) m.invoke(client, request);
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new OssBaseException(e);
         }
-
         return ResponseTransformers.doTransform(response, m.getGenericReturnType());
     }
+
 }

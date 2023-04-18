@@ -1,7 +1,7 @@
 package initialization;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ThreadUtil;
 import jmm.initialization.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

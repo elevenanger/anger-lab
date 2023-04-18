@@ -1,8 +1,8 @@
 package managingstatedependence;
 
-import cn.anger.annotation.ThreadSafe;
-import cn.anger.concurrency.ThreadUtil;
-import cn.anger.random.Random;
+import labutils.annotation.ThreadSafe;
+import cn.anger.util.concurrency.ThreadUtil;
+import cn.anger.util.random.Random;
 
 /**
  * @author : anger

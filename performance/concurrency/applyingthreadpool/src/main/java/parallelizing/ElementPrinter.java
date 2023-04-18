@@ -1,6 +1,6 @@
 package parallelizing;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 
 import java.util.logging.Logger;
 

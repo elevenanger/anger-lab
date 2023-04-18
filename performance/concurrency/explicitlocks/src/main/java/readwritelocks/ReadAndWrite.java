@@ -1,6 +1,6 @@
 package readwritelocks;
 
-import cn.anger.random.Random;
+import cn.anger.util.random.Random;
 
 import java.util.ArrayList;
 import java.util.List;

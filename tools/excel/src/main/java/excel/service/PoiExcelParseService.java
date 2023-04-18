@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static cn.anger.objects.ObjectTransformer.*;
+import static cn.anger.util.objects.ObjectTransformer.fromSourceToTargetObject;
 
 /**
  * author : anger

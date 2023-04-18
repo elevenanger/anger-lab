@@ -1,7 +1,7 @@
 package executorframework.exectask;
 
-import cn.anger.concurrency.ThreadUtil;
-import cn.anger.timer.stopwatch.StopWatch;
+import cn.anger.util.concurrency.ThreadUtil;
+import cn.anger.util.timer.stopwatch.StopWatch;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;

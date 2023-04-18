@@ -1,7 +1,7 @@
 package anatomyofsynchronizer;
 
-import cn.anger.annotation.GuardedBy;
-import cn.anger.annotation.ThreadSafe;
+import labutils.annotation.GuardedBy;
+import labutils.annotation.ThreadSafe;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

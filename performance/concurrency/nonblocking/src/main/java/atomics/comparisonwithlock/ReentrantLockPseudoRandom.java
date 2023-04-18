@@ -1,6 +1,6 @@
 package atomics.comparisonwithlock;
 
-import cn.anger.random.Random;
+import cn.anger.util.random.Random;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

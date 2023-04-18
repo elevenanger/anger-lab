@@ -1,19 +1,20 @@
 package osscli.services.model.transform;
 
-import cn.anger.reflection.ReflectionUtil;
+import cn.anger.util.reflection.ReflectionUtil;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.qcloud.cos.model.COSObject;
+import com.qcloud.cos.model.ObjectListing;
 import osscli.exception.OssBaseException;
 import osscli.services.Oss;
 import osscli.services.model.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +23,17 @@ import java.util.stream.Collectors;
  */
 public class ResponseTransformers {
     private ResponseTransformers() {}
+
+    private static final Map<String, Field> transformerMap = getTransformerMap();
+
+    private static Map<String, Field> getTransformerMap() {
+        return Arrays.stream(ResponseTransformers.class.getFields())
+                .collect(Collectors.toMap(
+                        field -> {
+                            List<String> parameterTypes = ReflectionUtil.genericTypes(field);
+                            return parameterTypes.get(0);
+                        }, Function.identity()));
+    }
 
     public static final ResponseTransformer<List<Bucket>, ListBucketsResponse>
         seqAwsListBucketsResponseTransformer =
@@ -77,7 +89,6 @@ public class ResponseTransformers {
                     }).collect(Collectors.toList());
 
             response.setObjectSummaries(objectSummaries);
-            response.setCount(listObjectsV2Result.getKeyCount());
             response.setStartAfter(listObjectsV2Result.getStartAfter());
             response.setMaxKey(listObjectsV2Result.getMaxKeys());
             response.setCount(objectSummaries.size());
@@ -108,6 +119,41 @@ public class ResponseTransformers {
             return new ListBucketsResponse(bs);
         };
 
+    public static final ResponseTransformer<com.qcloud.cos.model.Bucket, PutBucketResponse>
+        cosPutBucketResponseTransformer =
+            bucket -> {
+                osscli.services.model.Bucket b = new osscli.services.model.Bucket();
+                b.setName(bucket.getName());
+                b.setType(Oss.Type.COS);
+                b.setCreateDate(bucket.getCreationDate());
+                return new PutBucketResponse(b);
+            };
+
+    public static final ResponseTransformer<ObjectListing, ListObjectsResponse>
+        cosListObjectResponseTransformer =
+        objectListing -> {
+            ListObjectsResponse response = new ListObjectsResponse();
+
+            List<ObjectSummary> objectSummaries =
+                objectListing.getObjectSummaries().stream()
+                    .map(objectSummary -> {
+                        ObjectSummary summary = new ObjectSummary();
+                        summary.setBucket(objectSummary.getBucketName());
+                        summary.setETag(objectSummary.getETag());
+                        summary.setKey(objectSummary.getKey());
+                        summary.setSize(objectSummary.getSize());
+                        summary.setLastModified(objectSummary.getLastModified());
+                        return summary;
+                    }).collect(Collectors.toList());
+
+            response.setObjectSummaries(objectSummaries);
+            response.setStartAfter(objectListing.getNextMarker());
+            response.setMaxKey(objectListing.getMaxKeys());
+            response.setCount(objectSummaries.size());
+
+            return response;
+        };
+
     public static final ResponseTransformer<com.qcloud.cos.model.PutObjectResult, PutObjectResponse>
         cosPutObjectResponseTransformer =
         putObjectResult -> {
@@ -128,16 +174,10 @@ public class ResponseTransformers {
     public static <T, R extends CliResponse> R doTransform(T t, Type type) {
         Optional<R> response = Optional.empty();
         try {
-            Field[] fields = ResponseTransformers.class.getFields();
-            for (Field field : fields) {
-                if (ReflectionUtil.genericTypes(field).contains(type.getTypeName())) {
-                    @SuppressWarnings("unchecked")
-                    ResponseTransformer<T, R> responseTransformer =
-                        (ResponseTransformer<T, R>) field.get(ResponseTransformer.class);
-                    response = Optional.ofNullable(responseTransformer.transform(t));
-                    break;
-                }
-            }
+            @SuppressWarnings("unchecked")
+            ResponseTransformer<T, R> responseTransformer =
+                (ResponseTransformer<T, R>) transformerMap.get(type.getTypeName()).get(ResponseTransformer.class);
+            response = Optional.ofNullable(responseTransformer.transform(t));
         } catch (IllegalAccessException e) {
             throw new OssBaseException(e);
         }

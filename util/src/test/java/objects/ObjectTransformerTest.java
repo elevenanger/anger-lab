@@ -7,7 +7,8 @@ import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static cn.anger.objects.ObjectTransformer.*;
+import static cn.anger.util.objects.ObjectTransformer.batchTrans;
+import static cn.anger.util.objects.ObjectTransformer.fromSourceToTargetObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 

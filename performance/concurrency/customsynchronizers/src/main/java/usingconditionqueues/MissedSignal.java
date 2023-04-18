@@ -1,6 +1,6 @@
 package usingconditionqueues;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
 
 import java.util.Random;
 

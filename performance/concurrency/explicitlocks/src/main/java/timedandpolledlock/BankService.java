@@ -1,7 +1,7 @@
 package timedandpolledlock;
 
-import cn.anger.concurrency.ThreadUtil;
-import cn.anger.random.Random;
+import cn.anger.util.concurrency.ThreadUtil;
+import cn.anger.util.random.Random;
 
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;

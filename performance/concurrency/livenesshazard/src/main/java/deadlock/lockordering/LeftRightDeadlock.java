@@ -1,6 +1,6 @@
 package deadlock.lockordering;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 
 /**
  * @author : anger

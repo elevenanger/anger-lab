@@ -1,6 +1,6 @@
 package testforcorrectness;
 
-import cn.anger.random.Random;
+import cn.anger.util.random.Random;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.concurrent.CyclicBarrier;

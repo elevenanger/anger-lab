@@ -1,6 +1,6 @@
 package deadlock.dynamiclockorder;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 
 import java.math.BigDecimal;
 

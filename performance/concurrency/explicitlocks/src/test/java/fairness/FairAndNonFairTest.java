@@ -1,11 +1,9 @@
 package fairness;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.locks.ReentrantLock;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author : anger

@@ -1,8 +1,8 @@
 package lists;
 
-import cn.anger.base.BaseResult;
-import cn.anger.base.SingleInt;
-import cn.anger.lists.ForkJoinList;
+import cn.anger.util.base.BaseResult;
+import cn.anger.util.base.SingleInt;
+import cn.anger.util.lists.ForkJoinList;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 

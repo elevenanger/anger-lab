@@ -1,6 +1,6 @@
 package managingstatedependence;
 
-import cn.anger.annotation.GuardedBy;
+import labutils.annotation.GuardedBy;
 
 /**
  * @author : anger

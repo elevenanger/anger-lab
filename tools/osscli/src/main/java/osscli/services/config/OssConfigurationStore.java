@@ -1,6 +1,6 @@
 package osscli.services.config;
 
-import cn.anger.cipher.sm.SM4Util;
+import cn.anger.util.cipher.sm.SM4Util;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.introspector.BeanAccess;

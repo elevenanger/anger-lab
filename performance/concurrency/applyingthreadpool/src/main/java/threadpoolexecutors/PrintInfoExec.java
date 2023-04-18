@@ -1,6 +1,6 @@
 package threadpoolexecutors;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;

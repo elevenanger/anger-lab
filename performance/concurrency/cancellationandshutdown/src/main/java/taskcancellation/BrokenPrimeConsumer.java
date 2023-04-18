@@ -1,6 +1,6 @@
 package taskcancellation;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 
 import java.math.BigInteger;
 import java.util.concurrent.ArrayBlockingQueue;

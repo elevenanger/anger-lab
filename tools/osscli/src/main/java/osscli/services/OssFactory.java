@@ -1,6 +1,6 @@
 package osscli.services;
 
-import osscli.services.aws.SeqAws;
+import osscli.services.aws.AwsService;
 import osscli.services.cos.COSService;
 import osscli.services.model.OssConfiguration;
 
@@ -13,7 +13,7 @@ public class OssFactory {
 
     public static Oss getInstance(OssConfiguration configuration) {
         switch (configuration.getType()) {
-            case AWS: return new SeqAws(configuration);
+            case AWS: return new AwsService(configuration);
             case COS: return new COSService(configuration);
             default: return null;
         }

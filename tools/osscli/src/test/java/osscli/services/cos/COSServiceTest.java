@@ -2,9 +2,7 @@ package osscli.services.cos;
 
 import org.junit.jupiter.api.Test;
 import osscli.services.config.OssConfigurationStore;
-import osscli.services.model.DownloadObjectResponse;
-import osscli.services.model.ListBucketsResponse;
-import osscli.services.model.PutObjectResponse;
+import osscli.services.model.*;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
@@ -21,7 +19,14 @@ class COSServiceTest {
 
     private static final String BUCKET = "anger-1317673019";
 
+    public static final String DOWN_PATH = "/Users/liuanglin/data/down/";
 
+    @Test
+    void createBucket() {
+        AtomicReference<PutBucketResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(cosService.createBucket("test")));
+        System.out.println(response.get());
+    }
 
     @Test
     void listBuckets() {
@@ -45,8 +50,47 @@ class COSServiceTest {
         assertDoesNotThrow(() -> response.set(
                 cosService.downloadObject(BUCKET,
                                     "slam_liu.jpeg",
-                                    "/Users/liuanglin/data/down/",
+                                    DOWN_PATH,
                                     "imageMogr2/thumbnail/!50p")));
+        System.out.println(response.get());
+    }
+
+    @Test
+    void deleteObject() {
+        AtomicReference<DeleteObjectResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(cosService.deleteObject(BUCKET, "slam_liu.jpeg")));
+        System.out.println(response.get());
+    }
+
+    @Test
+    void listObjects() {
+        AtomicReference<ListObjectsResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> {
+            response.set(cosService.listObjects(new ListObjectsRequest(BUCKET, "")));
+        });
+        System.out.println(response.get().getObjectSummaries().size());
+    }
+
+    @Test
+    void listAllObjects() {
+        AtomicReference<ListAllObjectsResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> {
+            response.set(cosService.listAllObjects(BUCKET));
+        });
+        System.out.println(response.get());
+    }
+
+    @Test
+    void batchDownload() {
+        AtomicReference<BatchOperationResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(cosService.batchDownload(BUCKET, DOWN_PATH, "")));
+        System.out.println(response.get());
+    }
+
+    @Test
+    void batchDelete() {
+        AtomicReference<BatchOperationResponse> response = new AtomicReference<>();
+        assertDoesNotThrow(() -> response.set(cosService.batchDelete(BUCKET, "target")));
         System.out.println(response.get());
     }
 }

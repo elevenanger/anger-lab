@@ -1,7 +1,7 @@
 package executetaskinthread;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
-import cn.anger.net.SocketUtil;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
+import cn.anger.util.net.SocketUtil;
 import org.junit.jupiter.api.Test;
 
 /**

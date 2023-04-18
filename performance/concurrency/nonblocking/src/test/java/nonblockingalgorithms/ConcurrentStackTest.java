@@ -1,7 +1,7 @@
 package nonblockingalgorithms;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
-import cn.anger.random.Random;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
+import cn.anger.util.random.Random;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

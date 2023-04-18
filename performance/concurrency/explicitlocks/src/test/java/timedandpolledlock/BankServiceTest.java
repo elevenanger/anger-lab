@@ -1,6 +1,6 @@
 package timedandpolledlock;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

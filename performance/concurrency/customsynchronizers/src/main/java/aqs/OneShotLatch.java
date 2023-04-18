@@ -1,6 +1,6 @@
 package aqs;
 
-import cn.anger.annotation.ThreadSafe;
+import labutils.annotation.ThreadSafe;
 
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 

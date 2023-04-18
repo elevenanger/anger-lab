@@ -1,6 +1,6 @@
 package stopthreadbasedservice.loggingservice;
 
-import cn.anger.concurrency.ConcurrentWorkStream;
+import cn.anger.util.concurrency.ConcurrentWorkStream;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -8,8 +8,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author : anger

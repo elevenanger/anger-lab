@@ -1,7 +1,7 @@
 package taskcancellation;
 
-import cn.anger.annotation.GuardedBy;
-import cn.anger.annotation.ThreadSafe;
+import labutils.annotation.GuardedBy;
+import labutils.annotation.ThreadSafe;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

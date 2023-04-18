@@ -1,4 +1,4 @@
-import cn.anger.util.FactorizationUtil;
+import labutils.util.FactorizationUtil;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;

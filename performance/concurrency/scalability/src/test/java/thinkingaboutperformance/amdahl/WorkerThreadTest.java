@@ -1,7 +1,7 @@
 package thinkingaboutperformance.amdahl;
 
-import cn.anger.concurrency.ThreadUtil;
-import cn.anger.timer.stopwatch.StopWatch;
+import cn.anger.util.concurrency.ThreadUtil;
+import cn.anger.util.timer.stopwatch.StopWatch;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

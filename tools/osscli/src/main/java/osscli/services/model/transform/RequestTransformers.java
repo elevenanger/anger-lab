@@ -1,6 +1,6 @@
 package osscli.services.model.transform;
 
-import cn.anger.reflection.ReflectionUtil;
+import cn.anger.util.reflection.ReflectionUtil;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -110,6 +110,21 @@ public abstract class RequestTransformers {
             listBucketsRequest ->
                     new com.qcloud.cos.model.ListBucketsRequest();
 
+    public static final RequestTransformer<PutBucketRequest, com.qcloud.cos.model.CreateBucketRequest>
+        cosPutBucketRequestTransformer =
+            putBucketRequest ->
+                new com.qcloud.cos.model.CreateBucketRequest(putBucketRequest.getBucketName());
+
+    public static final RequestTransformer<ListObjectsRequest, com.qcloud.cos.model.ListObjectsRequest>
+        cosListObjectRequestTransformer =
+        originRequest -> {
+            com.qcloud.cos.model.ListObjectsRequest request = new com.qcloud.cos.model.ListObjectsRequest();
+            request.setBucketName(originRequest.getBucketName());
+            request.setPrefix(originRequest.getPrefix());
+            request.setMarker(originRequest.getStartAfter());
+            request.setMaxKeys(originRequest.getMaxKeys());
+            return request;
+        };
     public static final RequestTransformer<PutObjectRequest, com.qcloud.cos.model.PutObjectRequest>
         cosPutObjectRequestTransformer =
             putObjectRequest -> new com.qcloud.cos.model.PutObjectRequest(
@@ -125,6 +140,12 @@ public abstract class RequestTransformers {
                         getObjectRequest.getKey());
                 copyCustomerQueryParametersToCOS(getObjectRequest, request);
                 return request;};
+
+    public static final RequestTransformer<DeleteObjectRequest, com.qcloud.cos.model.DeleteObjectRequest>
+        cosDeleteObjectRequestTransformer =
+            deleteObjectRequest -> new com.qcloud.cos.model.DeleteObjectRequest(
+                    deleteObjectRequest.getBucket(),
+                    deleteObjectRequest.getKey());
 
     @SuppressWarnings("unchecked")
     public static <T extends CliRequest, R> R doTransform(T t, Type requestType, Oss.Type ossType) {

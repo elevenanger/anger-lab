@@ -1,6 +1,6 @@
 package excel.service;
 
-import cn.anger.lists.Partition;
+import cn.anger.util.lists.Partition;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import org.springframework.util.CollectionUtils;

@@ -1,7 +1,7 @@
 package parallelizing.recursive;
 
-import cn.anger.concurrency.ThreadUtil;
-import cn.anger.util.FactorizationUtil;
+import cn.anger.util.concurrency.ThreadUtil;
+import labutils.util.FactorizationUtil;
 
 import java.math.BigInteger;
 import java.util.Arrays;

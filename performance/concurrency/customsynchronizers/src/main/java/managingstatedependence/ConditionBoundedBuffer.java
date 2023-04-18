@@ -1,6 +1,6 @@
 package managingstatedependence;
 
-import cn.anger.annotation.ThreadSafe;
+import labutils.annotation.ThreadSafe;
 
 /**
  * @author : anger

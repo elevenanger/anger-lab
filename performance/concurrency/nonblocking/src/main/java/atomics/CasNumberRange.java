@@ -1,6 +1,6 @@
 package atomics;
 
-import cn.anger.annotation.Immutable;
+import labutils.annotation.Immutable;
 
 import java.util.concurrent.atomic.AtomicReference;
 

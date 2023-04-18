@@ -1,6 +1,6 @@
 package jmm.initializationsafety;
 
-import cn.anger.concurrency.ThreadUtil;
+import cn.anger.util.concurrency.ThreadUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
