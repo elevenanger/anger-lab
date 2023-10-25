@@ -4,25 +4,20 @@ metadata:
   name: global-config
 data:
   java_opts: >
-    -server
     -XX:InitialHeapSize=256m
     -XX:MaxHeapSize=512m
     -XX:MaxNewSize=64m
-    -verbose:gc
     -Xloggc:/home/app/gc/gc.log
-    -XX:+UseG1GC
     -XX:+PrintGCDetails
     -XX:+PrintGCTimeStamps
     -XX:+PrintGCDateStamps
     -XX:+HeapDumpOnOutOfMemoryError
-    -XX:+PrintTLAB
+    -XX:+UseG1GC
     -XX:+UseGCLogFileRotation
+    -XX:NumberOfGCLogFiles=5
     -XX:+UseCompressedClassPointers
     -XX:+UseCompressedOops
-    -XX:+PrintStringDeduplicationStatistics
     -XX:+UseStringDeduplication
-    -XX:NumberOfGCLogFiles=8
     -XX:ParallelGCThreads=2
-    -XX:NativeMemoryTracking=detail
-    -XX:MaxGCPauseMillis=100
-    -XX:GCTimeRatio=19
+    -XX:MaxGCPauseMillis=50
+    -XX:GCTimeRatio=29

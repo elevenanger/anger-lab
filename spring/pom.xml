@@ -15,6 +15,7 @@
         <module>mvc</module>
         <module>cache</module>
         <module>persist</module>
+        <module>spring-configuration</module>
     </modules>
 
     <artifactId>spring</artifactId>
